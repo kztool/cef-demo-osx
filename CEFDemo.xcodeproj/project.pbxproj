@@ -25,11 +25,6 @@
 		CED5F9232215854B00DC81E9 /* popup.html in Resources */ = {isa = PBXBuildFile; fileRef = CED5F9032215854B00DC81E9 /* popup.html */; };
 		CED5F9242215854B00DC81E9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CED5F9042215854B00DC81E9 /* README.md */; };
 		CED5F9252215854B00DC81E9 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = CED5F9052215854B00DC81E9 /* manifest.json */; };
-		CED5F9262215854B00DC81E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CED5F9072215854B00DC81E9 /* InfoPlist.strings */; };
-		CED5F9272215854B00DC81E9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CED5F9092215854B00DC81E9 /* MainMenu.xib */; };
-		CED5F9282215854B00DC81E9 /* helper-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CED5F90B2215854B00DC81E9 /* helper-Info.plist */; };
-		CED5F9292215854B00DC81E9 /* cefclient.icns in Resources */ = {isa = PBXBuildFile; fileRef = CED5F90C2215854B00DC81E9 /* cefclient.icns */; };
-		CED5F92A2215854B00DC81E9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CED5F90D2215854B00DC81E9 /* Info.plist */; };
 		CED5F92B2215854B00DC81E9 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CED5F90E2215854B00DC81E9 /* logo.png */; };
 		CED5F92C2215854B00DC81E9 /* response_filter.html in Resources */ = {isa = PBXBuildFile; fileRef = CED5F90F2215854B00DC81E9 /* response_filter.html */; };
 		CED5F92D2215854B00DC81E9 /* drm.html in Resources */ = {isa = PBXBuildFile; fileRef = CED5F9102215854B00DC81E9 /* drm.html */; };
@@ -110,11 +105,6 @@
 		CED5F9032215854B00DC81E9 /* popup.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = popup.html; sourceTree = "<group>"; };
 		CED5F9042215854B00DC81E9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CED5F9052215854B00DC81E9 /* manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
-		CED5F9082215854B00DC81E9 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CED5F90A2215854B00DC81E9 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		CED5F90B2215854B00DC81E9 /* helper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "helper-Info.plist"; sourceTree = "<group>"; };
-		CED5F90C2215854B00DC81E9 /* cefclient.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cefclient.icns; sourceTree = "<group>"; };
-		CED5F90D2215854B00DC81E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED5F90E2215854B00DC81E9 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		CED5F90F2215854B00DC81E9 /* response_filter.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = response_filter.html; sourceTree = "<group>"; };
 		CED5F9102215854B00DC81E9 /* drm.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = drm.html; sourceTree = "<group>"; };
@@ -283,7 +273,6 @@
 				CED5F8FD2215854B00DC81E9 /* transparency.html */,
 				CED5F8FE2215854B00DC81E9 /* performance.html */,
 				CED5F8FF2215854B00DC81E9 /* extensions */,
-				CED5F9062215854B00DC81E9 /* mac */,
 				CED5F90E2215854B00DC81E9 /* logo.png */,
 				CED5F90F2215854B00DC81E9 /* response_filter.html */,
 				CED5F9102215854B00DC81E9 /* drm.html */,
@@ -315,18 +304,6 @@
 				CED5F9052215854B00DC81E9 /* manifest.json */,
 			);
 			path = set_page_color;
-			sourceTree = "<group>";
-		};
-		CED5F9062215854B00DC81E9 /* mac */ = {
-			isa = PBXGroup;
-			children = (
-				CED5F9072215854B00DC81E9 /* InfoPlist.strings */,
-				CED5F9092215854B00DC81E9 /* MainMenu.xib */,
-				CED5F90B2215854B00DC81E9 /* helper-Info.plist */,
-				CED5F90C2215854B00DC81E9 /* cefclient.icns */,
-				CED5F90D2215854B00DC81E9 /* Info.plist */,
-			);
-			path = mac;
 			sourceTree = "<group>";
 		};
 		CEE2F533221538BC007FF9A6 /* browser */ = {
@@ -557,7 +534,6 @@
 				CED5F9242215854B00DC81E9 /* README.md in Resources */,
 				CED5F9312215854B00DC81E9 /* binding.html in Resources */,
 				CED5F91C2215854B00DC81E9 /* window.html in Resources */,
-				CED5F9292215854B00DC81E9 /* cefclient.icns in Resources */,
 				CED5F91D2215854B00DC81E9 /* menu_icon.1x.png in Resources */,
 				CED5F91B2215854B00DC81E9 /* preferences.html in Resources */,
 				CED5F9202215854B00DC81E9 /* performance.html in Resources */,
@@ -565,13 +541,9 @@
 				CED5F92F2215854B00DC81E9 /* server.html in Resources */,
 				CED5F92C2215854B00DC81E9 /* response_filter.html in Resources */,
 				CED5F9322215854B00DC81E9 /* draggable.html in Resources */,
-				CED5F9262215854B00DC81E9 /* InfoPlist.strings in Resources */,
 				CED5F91A2215854B00DC81E9 /* dialogs.html in Resources */,
-				CED5F92A2215854B00DC81E9 /* Info.plist in Resources */,
 				CED5F9302215854B00DC81E9 /* xmlhttprequest.html in Resources */,
-				CED5F9272215854B00DC81E9 /* MainMenu.xib in Resources */,
 				CED5F92E2215854B00DC81E9 /* websocket.html in Resources */,
-				CED5F9282215854B00DC81E9 /* helper-Info.plist in Resources */,
 				CED5F91E2215854B00DC81E9 /* performance2.html in Resources */,
 				CED5F9192215854B00DC81E9 /* localstorage.html in Resources */,
 				CED5F9332215854B00DC81E9 /* menu_icon.2x.png in Resources */,
@@ -676,25 +648,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		CED5F9072215854B00DC81E9 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CED5F9082215854B00DC81E9 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		CED5F9092215854B00DC81E9 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CED5F90A2215854B00DC81E9 /* English */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CEAAA3BF221527C800EE27EB /* Debug */ = {
