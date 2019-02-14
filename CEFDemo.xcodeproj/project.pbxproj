@@ -54,13 +54,6 @@
 		CEE2F598221538BC007FF9A6 /* client_browser.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F570221538BC007FF9A6 /* client_browser.cc */; };
 		CEE2F59B221538BC007FF9A6 /* bytes_write_handler.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F576221538BC007FF9A6 /* bytes_write_handler.cc */; };
 		CEE2F59D221538BC007FF9A6 /* root_window_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F57A221538BC007FF9A6 /* root_window_manager.cc */; };
-		CEE2F5A2221538C7007FF9A6 /* client_app_delegates_common.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5A0221538C7007FF9A6 /* client_app_delegates_common.cc */; };
-		CEE2F5A3221538C7007FF9A6 /* scheme_test_common.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5A1221538C7007FF9A6 /* scheme_test_common.cc */; };
-		CEE2F5AC221538D1007FF9A6 /* client_renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5A5221538D1007FF9A6 /* client_renderer.cc */; };
-		CEE2F5AD221538D1007FF9A6 /* performance_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5A7221538D1007FF9A6 /* performance_test.cc */; };
-		CEE2F5AE221538D1007FF9A6 /* performance_test_tests.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5A9221538D1007FF9A6 /* performance_test_tests.cc */; };
-		CEE2F5AF221538D1007FF9A6 /* client_app_delegates_renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5AB221538D1007FF9A6 /* client_app_delegates_renderer.cc */; };
-		CEE2F5D5221538E3007FF9A6 /* client_app_renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5B3221538E3007FF9A6 /* client_app_renderer.cc */; };
 		CEE2F5D6221538E3007FF9A6 /* pdf.html in Resources */ = {isa = PBXBuildFile; fileRef = CEE2F5B5221538E3007FF9A6 /* pdf.html */; };
 		CEE2F5D7221538E3007FF9A6 /* window_icon.1x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE2F5B6221538E3007FF9A6 /* window_icon.1x.png */; };
 		CEE2F5D8221538E3007FF9A6 /* window_icon.2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEE2F5B7221538E3007FF9A6 /* window_icon.2x.png */; };
@@ -154,18 +147,6 @@
 		CEE2F576221538BC007FF9A6 /* bytes_write_handler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bytes_write_handler.cc; sourceTree = "<group>"; };
 		CEE2F579221538BC007FF9A6 /* root_window_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = root_window_manager.h; sourceTree = "<group>"; };
 		CEE2F57A221538BC007FF9A6 /* root_window_manager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = root_window_manager.cc; sourceTree = "<group>"; };
-		CEE2F59F221538C7007FF9A6 /* scheme_test_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheme_test_common.h; sourceTree = "<group>"; };
-		CEE2F5A0221538C7007FF9A6 /* client_app_delegates_common.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_app_delegates_common.cc; sourceTree = "<group>"; };
-		CEE2F5A1221538C7007FF9A6 /* scheme_test_common.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheme_test_common.cc; sourceTree = "<group>"; };
-		CEE2F5A5221538D1007FF9A6 /* client_renderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_renderer.cc; sourceTree = "<group>"; };
-		CEE2F5A6221538D1007FF9A6 /* performance_test_setup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = performance_test_setup.h; sourceTree = "<group>"; };
-		CEE2F5A7221538D1007FF9A6 /* performance_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = performance_test.cc; sourceTree = "<group>"; };
-		CEE2F5A8221538D1007FF9A6 /* performance_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = performance_test.h; sourceTree = "<group>"; };
-		CEE2F5A9221538D1007FF9A6 /* performance_test_tests.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = performance_test_tests.cc; sourceTree = "<group>"; };
-		CEE2F5AA221538D1007FF9A6 /* client_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_renderer.h; sourceTree = "<group>"; };
-		CEE2F5AB221538D1007FF9A6 /* client_app_delegates_renderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_app_delegates_renderer.cc; sourceTree = "<group>"; };
-		CEE2F5B2221538E3007FF9A6 /* client_app_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_app_renderer.h; sourceTree = "<group>"; };
-		CEE2F5B3221538E3007FF9A6 /* client_app_renderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_app_renderer.cc; sourceTree = "<group>"; };
 		CEE2F5B5221538E3007FF9A6 /* pdf.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = pdf.html; sourceTree = "<group>"; };
 		CEE2F5B6221538E3007FF9A6 /* window_icon.1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = window_icon.1x.png; sourceTree = "<group>"; };
 		CEE2F5B7221538E3007FF9A6 /* window_icon.2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = window_icon.2x.png; sourceTree = "<group>"; };
@@ -239,8 +220,6 @@
 			children = (
 				CED5F8F42215854B00DC81E9 /* resources */,
 				CEE2F5B0221538E3007FF9A6 /* shared */,
-				CEE2F5A4221538D1007FF9A6 /* renderer */,
-				CEE2F59E221538C7007FF9A6 /* common */,
 				CEE2F533221538BC007FF9A6 /* browser */,
 				CEE2F5E922153DB9007FF9A6 /* main.mm */,
 				CEAAA3B6221527C800EE27EB /* Assets.xcassets */,
@@ -353,48 +332,14 @@
 			path = browser;
 			sourceTree = "<group>";
 		};
-		CEE2F59E221538C7007FF9A6 /* common */ = {
-			isa = PBXGroup;
-			children = (
-				CEE2F59F221538C7007FF9A6 /* scheme_test_common.h */,
-				CEE2F5A0221538C7007FF9A6 /* client_app_delegates_common.cc */,
-				CEE2F5A1221538C7007FF9A6 /* scheme_test_common.cc */,
-			);
-			path = common;
-			sourceTree = "<group>";
-		};
-		CEE2F5A4221538D1007FF9A6 /* renderer */ = {
-			isa = PBXGroup;
-			children = (
-				CEE2F5A5221538D1007FF9A6 /* client_renderer.cc */,
-				CEE2F5A6221538D1007FF9A6 /* performance_test_setup.h */,
-				CEE2F5A7221538D1007FF9A6 /* performance_test.cc */,
-				CEE2F5A8221538D1007FF9A6 /* performance_test.h */,
-				CEE2F5A9221538D1007FF9A6 /* performance_test_tests.cc */,
-				CEE2F5AA221538D1007FF9A6 /* client_renderer.h */,
-				CEE2F5AB221538D1007FF9A6 /* client_app_delegates_renderer.cc */,
-			);
-			path = renderer;
-			sourceTree = "<group>";
-		};
 		CEE2F5B0221538E3007FF9A6 /* shared */ = {
 			isa = PBXGroup;
 			children = (
-				CEE2F5B1221538E3007FF9A6 /* renderer */,
 				CEE2F5B4221538E3007FF9A6 /* resources */,
 				CEE2F5BA221538E3007FF9A6 /* browser */,
 				CEE2F5CD221538E3007FF9A6 /* common */,
 			);
 			path = shared;
-			sourceTree = "<group>";
-		};
-		CEE2F5B1221538E3007FF9A6 /* renderer */ = {
-			isa = PBXGroup;
-			children = (
-				CEE2F5B2221538E3007FF9A6 /* client_app_renderer.h */,
-				CEE2F5B3221538E3007FF9A6 /* client_app_renderer.cc */,
-			);
-			path = renderer;
 			sourceTree = "<group>";
 		};
 		CEE2F5B4221538E3007FF9A6 /* resources */ = {
@@ -601,7 +546,6 @@
 				CEE2F57C221538BC007FF9A6 /* client_handler_std.cc in Sources */,
 				CEE2F591221538BC007FF9A6 /* temp_window_mac.mm in Sources */,
 				CEE2F588221538BC007FF9A6 /* root_window_mac.mm in Sources */,
-				CEE2F5A2221538C7007FF9A6 /* client_app_delegates_common.cc in Sources */,
 				CEE2F592221538BC007FF9A6 /* main_context_impl.cc in Sources */,
 				CEE2F5DF221538E3007FF9A6 /* client_app_browser.cc in Sources */,
 				CEE2F5E0221538E3007FF9A6 /* resource_util_mac.mm in Sources */,
@@ -612,13 +556,10 @@
 				CEE2F5E3221538E3007FF9A6 /* main_message_loop_external_pump_mac.mm in Sources */,
 				CEE2F587221538BC007FF9A6 /* image_cache.cc in Sources */,
 				CEE2F5E7221538E3007FF9A6 /* client_switches.cc in Sources */,
-				CEE2F5D5221538E3007FF9A6 /* client_app_renderer.cc in Sources */,
-				CEE2F5AF221538D1007FF9A6 /* client_app_delegates_renderer.cc in Sources */,
 				CEE2F596221538BC007FF9A6 /* window_test_runner_mac.mm in Sources */,
 				CEE2F584221538BC007FF9A6 /* main_context_impl_posix.cc in Sources */,
 				CEE2F58F221538BC007FF9A6 /* client_handler.cc in Sources */,
 				CEE2F581221538BC007FF9A6 /* browser_window_std_mac.mm in Sources */,
-				CEE2F5AE221538D1007FF9A6 /* performance_test_tests.cc in Sources */,
 				CEE2F58D221538BC007FF9A6 /* root_window_create.cc in Sources */,
 				CEE2F5DC221538E3007FF9A6 /* resource_util_posix.cc in Sources */,
 				CEE2F5DD221538E3007FF9A6 /* extension_util.cc in Sources */,
@@ -626,15 +567,12 @@
 				CEE2F580221538BC007FF9A6 /* client_app_delegates_browser.cc in Sources */,
 				CEE2F5E6221538E3007FF9A6 /* client_app.cc in Sources */,
 				CEE2F597221538BC007FF9A6 /* main_context.cc in Sources */,
-				CEE2F5AD221538D1007FF9A6 /* performance_test.cc in Sources */,
 				CEE2F5E5221538E3007FF9A6 /* client_app_other.cc in Sources */,
 				CEE2F5E4221538E3007FF9A6 /* main_message_loop.cc in Sources */,
-				CEE2F5AC221538D1007FF9A6 /* client_renderer.cc in Sources */,
 				CEE2F59B221538BC007FF9A6 /* bytes_write_handler.cc in Sources */,
 				CEE2F58E221538BC007FF9A6 /* root_window.cc in Sources */,
 				CEE2F5E1221538E3007FF9A6 /* file_util.cc in Sources */,
 				CEE2F598221538BC007FF9A6 /* client_browser.cc in Sources */,
-				CEE2F5A3221538C7007FF9A6 /* scheme_test_common.cc in Sources */,
 				CEE2F5DB221538E3007FF9A6 /* main_message_loop_external_pump.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
