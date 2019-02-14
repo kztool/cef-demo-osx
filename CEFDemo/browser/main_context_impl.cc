@@ -191,20 +191,6 @@ void MainContextImpl::PopulateBrowserSettings(CefBrowserSettings* settings) {
     settings->background_color = browser_background_color_;
 }
 
-void MainContextImpl::PopulateOsrSettings(OsrRendererSettings* settings) {
-  settings->show_update_rect =
-      command_line_->HasSwitch(switches::kShowUpdateRect);
-
-#if defined(OS_WIN)
-  settings->shared_texture_enabled = shared_texture_enabled_;
-#endif
-  settings->external_begin_frame_enabled = external_begin_frame_enabled_;
-  settings->begin_frame_rate = windowless_frame_rate_;
-
-  if (browser_background_color_ != 0)
-    settings->background_color = browser_background_color_;
-}
-
 RootWindowManager* MainContextImpl::GetRootWindowManager() {
   DCHECK(InValidState());
   return root_window_manager_.get();

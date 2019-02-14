@@ -13,18 +13,10 @@
 #include "include/cef_web_plugin.h"
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_stream_resource_handler.h"
-#include "browser/binding_test.h"
-#include "browser/dialog_test.h"
-#include "browser/drm_test.h"
 #include "browser/main_context.h"
-#include "browser/preferences_test.h"
 #include "browser/resource.h"
 #include "browser/response_filter_test.h"
 #include "browser/root_window_manager.h"
-#include "browser/scheme_test.h"
-#include "browser/server_test.h"
-#include "browser/urlrequest_test.h"
-#include "browser/window_test.h"
 #include "shared/browser/resource_util.h"
 
 namespace client {
@@ -770,31 +762,26 @@ bool IsTestURL(const std::string& url, const std::string& path) {
 void CreateMessageHandlers(MessageHandlerSet& handlers) {
   handlers.insert(new PromptHandler);
 
-  // Create the binding test handlers.
-  binding_test::CreateMessageHandlers(handlers);
-
-  // Create the dialog test handlers.
-  dialog_test::CreateMessageHandlers(handlers);
-
-  // Create the drm test handlers.
-  drm_test::CreateMessageHandlers(handlers);
-
-  // Create the preferences test handlers.
-  preferences_test::CreateMessageHandlers(handlers);
-
-  // Create the server test handlers.
-  server_test::CreateMessageHandlers(handlers);
-
-  // Create the urlrequest test handlers.
-  urlrequest_test::CreateMessageHandlers(handlers);
-
-  // Create the window test handlers.
-  window_test::CreateMessageHandlers(handlers);
-}
-
-void RegisterSchemeHandlers() {
-  // Register the scheme handler.
-  scheme_test::RegisterSchemeHandlers();
+//  // Create the binding test handlers.
+//  binding_test::CreateMessageHandlers(handlers);
+//
+//  // Create the dialog test handlers.
+//  dialog_test::CreateMessageHandlers(handlers);
+//
+//  // Create the drm test handlers.
+//  drm_test::CreateMessageHandlers(handlers);
+//
+//  // Create the preferences test handlers.
+//  preferences_test::CreateMessageHandlers(handlers);
+//
+//  // Create the server test handlers.
+//  server_test::CreateMessageHandlers(handlers);
+//
+//  // Create the urlrequest test handlers.
+//  urlrequest_test::CreateMessageHandlers(handlers);
+//
+//  // Create the window test handlers.
+//  window_test::CreateMessageHandlers(handlers);
 }
 
 CefRefPtr<CefResponseFilter> GetResourceResponseFilter(

@@ -31,7 +31,6 @@ class MainContextImpl : public MainContext {
   bool UseWindowlessRendering() OVERRIDE;
   void PopulateSettings(CefSettings* settings) OVERRIDE;
   void PopulateBrowserSettings(CefBrowserSettings* settings) OVERRIDE;
-  void PopulateOsrSettings(OsrRendererSettings* settings) OVERRIDE;
   RootWindowManager* GetRootWindowManager() OVERRIDE;
 
   // Initialize CEF and associated main context state. This method must be

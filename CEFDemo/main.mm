@@ -388,9 +388,6 @@ int RunMain(int argc, char* argv[]) {
   // Initialize CEF.
   context->Initialize(main_args, settings, app, NULL);
 
-  // Register scheme handlers.
-  test_runner::RegisterSchemeHandlers();
-
   // Create the application delegate and window.
   ClientAppDelegate* delegate = [[ClientAppDelegate alloc]
       initWithControls:!command_line->HasSwitch(switches::kHideControls)
