@@ -15,7 +15,6 @@
 #include "include/wrapper/cef_stream_resource_handler.h"
 #include "browser/main_context.h"
 #include "browser/resource.h"
-#include "browser/response_filter_test.h"
 #include "browser/root_window_manager.h"
 #include "shared/browser/resource_util.h"
 
@@ -761,38 +760,8 @@ bool IsTestURL(const std::string& url, const std::string& path) {
 
 void CreateMessageHandlers(MessageHandlerSet& handlers) {
   handlers.insert(new PromptHandler);
-
-//  // Create the binding test handlers.
-//  binding_test::CreateMessageHandlers(handlers);
-//
-//  // Create the dialog test handlers.
-//  dialog_test::CreateMessageHandlers(handlers);
-//
-//  // Create the drm test handlers.
-//  drm_test::CreateMessageHandlers(handlers);
-//
-//  // Create the preferences test handlers.
-//  preferences_test::CreateMessageHandlers(handlers);
-//
-//  // Create the server test handlers.
-//  server_test::CreateMessageHandlers(handlers);
-//
-//  // Create the urlrequest test handlers.
-//  urlrequest_test::CreateMessageHandlers(handlers);
-//
-//  // Create the window test handlers.
-//  window_test::CreateMessageHandlers(handlers);
 }
 
-CefRefPtr<CefResponseFilter> GetResourceResponseFilter(
-    CefRefPtr<CefBrowser> browser,
-    CefRefPtr<CefFrame> frame,
-    CefRefPtr<CefRequest> request,
-    CefRefPtr<CefResponse> response) {
-  // Create the response filter.
-  return response_filter_test::GetResourceResponseFilter(browser, frame,
-                                                         request, response);
-}
 
 }  // namespace test_runner
 }  // namespace client

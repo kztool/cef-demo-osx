@@ -50,13 +50,6 @@ bool IsTestURL(const std::string& url, const std::string& path);
 typedef std::set<CefMessageRouterBrowserSide::Handler*> MessageHandlerSet;
 void CreateMessageHandlers(MessageHandlerSet& handlers);
 
-// Create a resource response filter for tests.
-CefRefPtr<CefResponseFilter> GetResourceResponseFilter(
-    CefRefPtr<CefBrowser> browser,
-    CefRefPtr<CefFrame> frame,
-    CefRefPtr<CefRequest> request,
-    CefRefPtr<CefResponse> response);
-
 }  // namespace test_runner
 }  // namespace client
 
