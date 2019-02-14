@@ -56,7 +56,6 @@
 		CEE2F5DB221538E3007FF9A6 /* main_message_loop_external_pump.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5BB221538E3007FF9A6 /* main_message_loop_external_pump.mm */; };
 		CEE2F5DC221538E3007FF9A6 /* resource_util_posix.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5BF221538E3007FF9A6 /* resource_util_posix.mm */; };
 		CEE2F5DD221538E3007FF9A6 /* extension_util.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5C1221538E3007FF9A6 /* extension_util.mm */; };
-		CEE2F5DE221538E3007FF9A6 /* geometry_util.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5C2221538E3007FF9A6 /* geometry_util.mm */; };
 		CEE2F5DF221538E3007FF9A6 /* client_app_browser.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5C4221538E3007FF9A6 /* client_app_browser.mm */; };
 		CEE2F5E0221538E3007FF9A6 /* resource_util_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5C5221538E3007FF9A6 /* resource_util_mac.mm */; };
 		CEE2F5E1221538E3007FF9A6 /* file_util.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5C6221538E3007FF9A6 /* file_util.mm */; };
@@ -145,7 +144,6 @@
 		CEE2F5BF221538E3007FF9A6 /* resource_util_posix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = resource_util_posix.mm; sourceTree = "<group>"; };
 		CEE2F5C0221538E3007FF9A6 /* file_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file_util.h; sourceTree = "<group>"; };
 		CEE2F5C1221538E3007FF9A6 /* extension_util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = extension_util.mm; sourceTree = "<group>"; };
-		CEE2F5C2221538E3007FF9A6 /* geometry_util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = geometry_util.mm; sourceTree = "<group>"; };
 		CEE2F5C3221538E3007FF9A6 /* main_message_loop_external_pump.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_message_loop_external_pump.h; sourceTree = "<group>"; };
 		CEE2F5C4221538E3007FF9A6 /* client_app_browser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = client_app_browser.mm; sourceTree = "<group>"; };
 		CEE2F5C5221538E3007FF9A6 /* resource_util_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = resource_util_mac.mm; sourceTree = "<group>"; };
@@ -154,7 +152,6 @@
 		CEE2F5C8221538E3007FF9A6 /* main_message_loop_external_pump_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main_message_loop_external_pump_mac.mm; sourceTree = "<group>"; };
 		CEE2F5C9221538E3007FF9A6 /* main_message_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_message_loop.h; sourceTree = "<group>"; };
 		CEE2F5CA221538E3007FF9A6 /* main_message_loop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main_message_loop.mm; sourceTree = "<group>"; };
-		CEE2F5CB221538E3007FF9A6 /* geometry_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry_util.h; sourceTree = "<group>"; };
 		CEE2F5CC221538E3007FF9A6 /* resource_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resource_util.h; sourceTree = "<group>"; };
 		CEE2F5CF221538E3007FF9A6 /* client_app.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = client_app.mm; sourceTree = "<group>"; };
 		CEE2F5D0221538E3007FF9A6 /* client_switches.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = client_switches.mm; sourceTree = "<group>"; };
@@ -332,8 +329,6 @@
 				CEE2F5C1221538E3007FF9A6 /* extension_util.mm */,
 				CEE2F5C0221538E3007FF9A6 /* file_util.h */,
 				CEE2F5C6221538E3007FF9A6 /* file_util.mm */,
-				CEE2F5CB221538E3007FF9A6 /* geometry_util.h */,
-				CEE2F5C2221538E3007FF9A6 /* geometry_util.mm */,
 				CEE2F5C8221538E3007FF9A6 /* main_message_loop_external_pump_mac.mm */,
 				CEE2F5C3221538E3007FF9A6 /* main_message_loop_external_pump.h */,
 				CEE2F5BB221538E3007FF9A6 /* main_message_loop_external_pump.mm */,
@@ -513,7 +508,6 @@
 				CEE2F593221538BC007FF9A6 /* browser_window.mm in Sources */,
 				CEE2F59D221538BC007FF9A6 /* root_window_manager.mm in Sources */,
 				CEE2F594221538BC007FF9A6 /* window_test_runner.mm in Sources */,
-				CEE2F5DE221538E3007FF9A6 /* geometry_util.mm in Sources */,
 				CEE2F5E3221538E3007FF9A6 /* main_message_loop_external_pump_mac.mm in Sources */,
 				CEE2F587221538BC007FF9A6 /* image_cache.mm in Sources */,
 				CEE2F5E7221538E3007FF9A6 /* client_switches.mm in Sources */,
