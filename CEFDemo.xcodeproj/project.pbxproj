@@ -287,8 +287,8 @@
 				CEE2F56A221538BC007FF9A6 /* window_test_runner_mac.mm */,
 				CEE2F562221538BC007FF9A6 /* window_test_runner.h */,
 				CEE2F564221538BC007FF9A6 /* window_test_runner.mm */,
-				CEF4E9882216A8B500F5E8E7 /* utils.mm */,
 				CEF4E9892216A8B500F5E8E7 /* utils.h */,
+				CEF4E9882216A8B500F5E8E7 /* utils.mm */,
 			);
 			path = browser;
 			sourceTree = "<group>";

@@ -357,20 +357,12 @@ void SetupResourceManager(CefRefPtr<CefResourceManager> resource_manager) {
       new RequestDumpResourceProvider(test_origin + "request.html"), 0,
       std::string());
 
-// Add provider for bundled resource files.
-#if defined(OS_WIN)
-  // Read resources from the binary.
-  resource_manager->AddProvider(
-      CreateBinaryResourceProvider(test_origin, std::string()), 100,
-      std::string());
-#elif defined(OS_POSIX)
   // Read resources from a directory on disk.
   std::string resource_dir;
   if (GetResourceDir(resource_dir)) {
     resource_manager->AddDirectoryProvider(test_origin, resource_dir, 100,
                                            std::string());
   }
-#endif
 }
 
 void Alert(CefRefPtr<CefBrowser> browser, const std::string& message) {
