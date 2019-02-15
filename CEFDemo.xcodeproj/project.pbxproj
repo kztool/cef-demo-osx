@@ -680,8 +680,6 @@
 					Cocoa,
 					"$(SRCROOT)/libs/cef/$(CONFIGURATION)/libcef_dll_wrapper.a",
 					"$(SRCROOT)/libs/cef/$(CONFIGURATION)/cef_sandbox.a",
-					"-framework",
-					OpenGL,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kztool.dev.CEFDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
