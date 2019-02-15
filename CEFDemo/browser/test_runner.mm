@@ -14,7 +14,6 @@
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_stream_resource_handler.h"
 #include "browser/main_context.h"
-#include "browser/resource.h"
 #include "browser/root_window_manager.h"
 #include "shared/browser/resource_util.h"
 
