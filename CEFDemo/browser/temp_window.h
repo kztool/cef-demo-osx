@@ -6,26 +6,12 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_TEMP_WINDOW_H_
 #pragma once
 
-#include "browser/client_types.h"
+#include "browser/utils.h"
 
-#if defined(OS_WIN)
-#include "browser/temp_window_win.h"
-#elif defined(OS_LINUX)
-#include "browser/temp_window_x11.h"
-#elif defined(OS_MACOSX)
 #include "browser/temp_window_mac.h"
-#endif
 
 namespace client {
-
-#if defined(OS_WIN)
-typedef TempWindowWin TempWindow;
-#elif defined(OS_LINUX)
-typedef TempWindowX11 TempWindow;
-#elif defined(OS_MACOSX)
-typedef TempWindowMac TempWindow;
-#endif
-
+  typedef TempWindowMac TempWindow;
 }  // namespace client
 
 #endif  // CEF_TESTS_CEFCLIENT_BROWSER_TEMP_WINDOW_H_

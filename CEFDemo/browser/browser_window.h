@@ -9,7 +9,7 @@
 #include "include/base/cef_scoped_ptr.h"
 #include "include/cef_browser.h"
 #include "browser/client_handler.h"
-#include "browser/client_types.h"
+#include "browser/utils.h"
 
 namespace client {
 

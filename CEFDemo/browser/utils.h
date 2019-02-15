@@ -18,6 +18,15 @@
 #include "include/cef_path_util.h"
 #include "include/wrapper/cef_resource_manager.h"
 
+#define ClientWindowHandle CefWindowHandle
+#ifdef __cplusplus
+#ifdef __OBJC__
+@class NSWindow;
+#else
+class NSWindow;
+#endif
+#endif
+
 namespace client {
   // Returns the directory containing resource files.
   bool GetResourceDir(std::string& dir);

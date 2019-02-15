@@ -13,11 +13,8 @@
 #include "include/wrapper/cef_helpers.h"
 #include "include/wrapper/cef_message_router.h"
 #include "include/wrapper/cef_resource_manager.h"
-#include "browser/client_types.h"
 
-#if defined(OS_LINUX)
-#include "browser/dialog_handler_gtk.h"
-#endif
+#include "browser/utils.h"
 
 namespace client {
 

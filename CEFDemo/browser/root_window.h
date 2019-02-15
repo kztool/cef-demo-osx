@@ -13,9 +13,11 @@
 #include "include/base/cef_ref_counted.h"
 #include "include/cef_browser.h"
 #include "include/views/cef_window.h"
-#include "browser/client_types.h"
+
 #include "browser/image_cache.h"
 #include "shared/browser/main_message_loop.h"
+
+#include "browser/utils.h"
 
 namespace client {
 
