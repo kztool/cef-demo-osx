@@ -6,7 +6,7 @@
 
 #include "browser/browser_window.h"
 #include "browser/client_handler_std.h"
-#include "shared/browser/main_message_loop.h"
+#include "browser/main_message_loop.h"
 
 
 namespace client {

@@ -7,7 +7,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include "include/wrapper/cef_helpers.h"
-#include "shared/browser/main_message_loop.h"
+#include "browser/main_message_loop.h"
 
 namespace client {
 namespace window_test {

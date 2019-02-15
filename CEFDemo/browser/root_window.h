@@ -15,7 +15,7 @@
 #include "include/views/cef_window.h"
 
 #include "browser/image_cache.h"
-#include "shared/browser/main_message_loop.h"
+#include "browser/main_message_loop.h"
 
 #include "browser/utils.h"
 

@@ -178,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				CED5F8F42215854B00DC81E9 /* resources */,
-				CEE2F5B0221538E3007FF9A6 /* shared */,
 				CEE2F533221538BC007FF9A6 /* browser */,
 				CEE2F5E922153DB9007FF9A6 /* main.mm */,
 				CEAAA3B6221527C800EE27EB /* Assets.xcassets */,
@@ -247,6 +246,10 @@
 		CEE2F533221538BC007FF9A6 /* browser */ = {
 			isa = PBXGroup;
 			children = (
+				CEE2F5BC221538E3007FF9A6 /* main_message_loop_std.h */,
+				CEE2F5C7221538E3007FF9A6 /* main_message_loop_std.mm */,
+				CEE2F5C9221538E3007FF9A6 /* main_message_loop.h */,
+				CEE2F5CA221538E3007FF9A6 /* main_message_loop.mm */,
 				CEE2F5D1221538E3007FF9A6 /* client_switches.h */,
 				CEE2F5D0221538E3007FF9A6 /* client_switches.mm */,
 				CEE2F5D3221538E3007FF9A6 /* client_app.h */,
@@ -286,25 +289,6 @@
 				CEE2F564221538BC007FF9A6 /* window_test_runner.mm */,
 				CEF4E9892216A8B500F5E8E7 /* utils.h */,
 				CEF4E9882216A8B500F5E8E7 /* utils.mm */,
-			);
-			path = browser;
-			sourceTree = "<group>";
-		};
-		CEE2F5B0221538E3007FF9A6 /* shared */ = {
-			isa = PBXGroup;
-			children = (
-				CEE2F5BA221538E3007FF9A6 /* browser */,
-			);
-			path = shared;
-			sourceTree = "<group>";
-		};
-		CEE2F5BA221538E3007FF9A6 /* browser */ = {
-			isa = PBXGroup;
-			children = (
-				CEE2F5BC221538E3007FF9A6 /* main_message_loop_std.h */,
-				CEE2F5C7221538E3007FF9A6 /* main_message_loop_std.mm */,
-				CEE2F5C9221538E3007FF9A6 /* main_message_loop.h */,
-				CEE2F5CA221538E3007FF9A6 /* main_message_loop.mm */,
 			);
 			path = browser;
 			sourceTree = "<group>";
