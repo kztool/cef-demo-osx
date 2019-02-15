@@ -94,7 +94,6 @@ class RootWindowManager : public RootWindow::Delegate {
   CefRefPtr<CefRequestContext> GetRequestContext(
       RootWindow* root_window) OVERRIDE;
   scoped_refptr<ImageCache> GetImageCache() OVERRIDE;
-  void OnTest(RootWindow* root_window, int test_id) OVERRIDE;
   void OnExit(RootWindow* root_window) OVERRIDE;
   void OnRootWindowDestroyed(RootWindow* root_window) OVERRIDE;
   void OnRootWindowActivated(RootWindow* root_window) OVERRIDE;

@@ -15,29 +15,6 @@
 #include "shared/browser/main_message_loop_std.h"
 #include "shared/common/client_switches.h"
 
-namespace {
-
-// Returns the top menu bar with the specified |tag|.
-NSMenuItem* GetMenuBarMenuWithTag(NSInteger tag) {
-  NSMenu* main_menu = [[NSApplication sharedApplication] mainMenu];
-  NSInteger found_index = [main_menu indexOfItemWithTag:tag];
-  if (found_index >= 0)
-    return [main_menu itemAtIndex:found_index];
-  return nil;
-}
-
-// Returns the item in |menu| that has the specified |action_selector|.
-NSMenuItem* GetMenuItemWithAction(NSMenu* menu, SEL action_selector) {
-  for (NSInteger i = 0; i < menu.numberOfItems; ++i) {
-    NSMenuItem* item = [menu itemAtIndex:i];
-    if (item.action == action_selector)
-      return item;
-  }
-  return nil;
-}
-
-}  // namespace
-
 // Receives notifications from the application. Will delete itself when done.
 @interface ClientAppDelegate : NSObject<NSApplicationDelegate> {
  @private
@@ -48,23 +25,6 @@ NSMenuItem* GetMenuItemWithAction(NSMenu* menu, SEL action_selector) {
 - (id)initWithControls:(bool)with_controls andOsr:(bool)with_osr;
 - (void)createApplication:(id)object;
 - (void)tryToTerminateApplication:(NSApplication*)app;
-- (void)testsItemSelected:(int)command_id;
-- (IBAction)menuTestsGetText:(id)sender;
-- (IBAction)menuTestsGetSource:(id)sender;
-- (IBAction)menuTestsWindowNew:(id)sender;
-- (IBAction)menuTestsWindowPopup:(id)sender;
-- (IBAction)menuTestsRequest:(id)sender;
-- (IBAction)menuTestsPluginInfo:(id)sender;
-- (IBAction)menuTestsZoomIn:(id)sender;
-- (IBAction)menuTestsZoomOut:(id)sender;
-- (IBAction)menuTestsZoomReset:(id)sender;
-- (IBAction)menuTestsSetFPS:(id)sender;
-- (IBAction)menuTestsSetScaleFactor:(id)sender;
-- (IBAction)menuTestsTracingBegin:(id)sender;
-- (IBAction)menuTestsTracingEnd:(id)sender;
-- (IBAction)menuTestsPrint:(id)sender;
-- (IBAction)menuTestsPrintToPdf:(id)sender;
-- (IBAction)menuTestsOtherTests:(id)sender;
 - (void)enableAccessibility:(bool)bEnable;
 @end
 
@@ -201,21 +161,6 @@ NSMenuItem* GetMenuItemWithAction(NSMenu* menu, SEL action_selector) {
   // Set the delegate for application events.
   [application setDelegate:self];
 
-  if (!with_osr_) {
-    // Remove the OSR-related menu items when OSR is disabled.
-    NSMenuItem* tests_menu = GetMenuBarMenuWithTag(8);
-    if (tests_menu) {
-      NSMenuItem* set_fps_item = GetMenuItemWithAction(
-          tests_menu.submenu, @selector(menuTestsSetFPS:));
-      if (set_fps_item)
-        [tests_menu.submenu removeItem:set_fps_item];
-      NSMenuItem* set_scale_factor_item = GetMenuItemWithAction(
-          tests_menu.submenu, @selector(menuTestsSetScaleFactor:));
-      if (set_scale_factor_item)
-        [tests_menu.submenu removeItem:set_scale_factor_item];
-    }
-  }
-
   client::RootWindowConfig window_config;
   window_config.with_controls = with_controls_;
   window_config.with_osr = with_osr_;
@@ -231,84 +176,6 @@ NSMenuItem* GetMenuItemWithAction(NSMenu* menu, SEL action_selector) {
 
 - (void)orderFrontStandardAboutPanel:(id)sender {
   [[NSApplication sharedApplication] orderFrontStandardAboutPanel:nil];
-}
-
-- (void)testsItemSelected:(int)command_id {
-  // Retrieve the active RootWindow.
-  NSWindow* key_window = [[NSApplication sharedApplication] keyWindow];
-  if (!key_window)
-    return;
-
-  scoped_refptr<client::RootWindow> root_window =
-      client::RootWindow::GetForNSWindow(key_window);
-
-  CefRefPtr<CefBrowser> browser = root_window->GetBrowser();
-  if (browser.get())
-    client::test_runner::RunTest(browser, command_id);
-}
-
-- (IBAction)menuTestsGetText:(id)sender {
-  [self testsItemSelected:ID_TESTS_GETTEXT];
-}
-
-- (IBAction)menuTestsGetSource:(id)sender {
-  [self testsItemSelected:ID_TESTS_GETSOURCE];
-}
-
-- (IBAction)menuTestsWindowNew:(id)sender {
-  [self testsItemSelected:ID_TESTS_WINDOW_NEW];
-}
-
-- (IBAction)menuTestsWindowPopup:(id)sender {
-  [self testsItemSelected:ID_TESTS_WINDOW_POPUP];
-}
-
-- (IBAction)menuTestsRequest:(id)sender {
-  [self testsItemSelected:ID_TESTS_REQUEST];
-}
-
-- (IBAction)menuTestsPluginInfo:(id)sender {
-  [self testsItemSelected:ID_TESTS_PLUGIN_INFO];
-}
-
-- (IBAction)menuTestsZoomIn:(id)sender {
-  [self testsItemSelected:ID_TESTS_ZOOM_IN];
-}
-
-- (IBAction)menuTestsZoomOut:(id)sender {
-  [self testsItemSelected:ID_TESTS_ZOOM_OUT];
-}
-
-- (IBAction)menuTestsZoomReset:(id)sender {
-  [self testsItemSelected:ID_TESTS_ZOOM_RESET];
-}
-
-- (IBAction)menuTestsSetFPS:(id)sender {
-  [self testsItemSelected:ID_TESTS_OSR_FPS];
-}
-
-- (IBAction)menuTestsSetScaleFactor:(id)sender {
-  [self testsItemSelected:ID_TESTS_OSR_DSF];
-}
-
-- (IBAction)menuTestsTracingBegin:(id)sender {
-  [self testsItemSelected:ID_TESTS_TRACING_BEGIN];
-}
-
-- (IBAction)menuTestsTracingEnd:(id)sender {
-  [self testsItemSelected:ID_TESTS_TRACING_END];
-}
-
-- (IBAction)menuTestsPrint:(id)sender {
-  [self testsItemSelected:ID_TESTS_PRINT];
-}
-
-- (IBAction)menuTestsPrintToPdf:(id)sender {
-  [self testsItemSelected:ID_TESTS_PRINT_TO_PDF];
-}
-
-- (IBAction)menuTestsOtherTests:(id)sender {
-  [self testsItemSelected:ID_TESTS_OTHER_TESTS];
 }
 
 - (void)enableAccessibility:(bool)bEnable {

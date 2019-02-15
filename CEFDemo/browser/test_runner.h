@@ -17,9 +17,6 @@
 namespace client {
 namespace test_runner {
 
-// Run a test.
-void RunTest(CefRefPtr<CefBrowser> browser, int id);
-
 // Returns the contents of the CefRequest as a string.
 std::string DumpRequestContents(CefRefPtr<CefRequest> request);
 

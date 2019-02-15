@@ -371,12 +371,6 @@ scoped_refptr<ImageCache> RootWindowManager::GetImageCache() {
   return image_cache_;
 }
 
-void RootWindowManager::OnTest(RootWindow* root_window, int test_id) {
-  REQUIRE_MAIN_THREAD();
-
-  test_runner::RunTest(root_window->GetBrowser(), test_id);
-}
-
 void RootWindowManager::OnExit(RootWindow* root_window) {
   REQUIRE_MAIN_THREAD();
 

@@ -123,7 +123,6 @@
 		CEE2F563221538BC007FF9A6 /* root_window_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = root_window_mac.h; sourceTree = "<group>"; };
 		CEE2F564221538BC007FF9A6 /* window_test_runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = window_test_runner.mm; sourceTree = "<group>"; };
 		CEE2F567221538BC007FF9A6 /* client_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_types.h; sourceTree = "<group>"; };
-		CEE2F569221538BC007FF9A6 /* resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resource.h; sourceTree = "<group>"; };
 		CEE2F56A221538BC007FF9A6 /* window_test_runner_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = window_test_runner_mac.mm; sourceTree = "<group>"; };
 		CEE2F56B221538BC007FF9A6 /* image_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_cache.h; sourceTree = "<group>"; };
 		CEE2F56C221538BC007FF9A6 /* main_context.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main_context.mm; sourceTree = "<group>"; };
@@ -274,7 +273,6 @@
 				CEE2F56B221538BC007FF9A6 /* image_cache.h */,
 				CEE2F560221538BC007FF9A6 /* main_context_impl.h */,
 				CEE2F554221538BC007FF9A6 /* main_context.h */,
-				CEE2F569221538BC007FF9A6 /* resource.h */,
 				CEE2F563221538BC007FF9A6 /* root_window_mac.h */,
 				CEE2F579221538BC007FF9A6 /* root_window_manager.h */,
 				CEE2F55A221538BC007FF9A6 /* root_window.h */,

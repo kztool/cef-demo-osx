@@ -79,9 +79,6 @@ class RootWindow
     // Returns the ImageCache.
     virtual scoped_refptr<ImageCache> GetImageCache() = 0;
 
-    // Called to execute a test. See resource.h for |test_id| values.
-    virtual void OnTest(RootWindow* root_window, int test_id) = 0;
-
     // Called to exit the application.
     virtual void OnExit(RootWindow* root_window) = 0;
 
