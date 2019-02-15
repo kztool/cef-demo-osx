@@ -9,7 +9,6 @@
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
 #include "include/cef_application_mac.h"
-#include "browser/browser_window_std_mac.h"
 #include "browser/main_context.h"
 #include "browser/temp_window.h"
 #include "browser/window_test_runner_mac.h"
@@ -443,7 +442,7 @@ void RootWindowMac::WindowDestroyed() {
 }
 
 void RootWindowMac::CreateBrowserWindow(const std::string& startup_url) {
-    browser_window_.reset(new BrowserWindowStdMac(this, startup_url));
+    browser_window_.reset(new BrowserWindow(this, startup_url));
 }
 
 void RootWindowMac::CreateRootWindow(const CefBrowserSettings& settings,
