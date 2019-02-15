@@ -27,11 +27,7 @@
 
 namespace client {
 
-#if defined(OS_WIN)
-#define NEWLINE "\r\n"
-#else
 #define NEWLINE "\n"
-#endif
 
 namespace {
 
@@ -253,11 +249,6 @@ ClientHandler::ClientHandler(Delegate* delegate,
       focus_on_editable_field_(false),
       initial_navigation_(true) {
   DCHECK(!console_log_file_.empty());
-
-#if defined(OS_LINUX)
-  // Provide the GTK-based dialog implementation on Linux.
-  dialog_handler_ = new ClientDialogHandlerGtk();
-#endif
 
   resource_manager_ = new CefResourceManager();
   test_runner::SetupResourceManager(resource_manager_);

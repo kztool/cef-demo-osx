@@ -5,7 +5,7 @@
 #include <Cocoa/Cocoa.h>
 
 #include "browser/browser_window.h"
-#include "browser/client_handler_std.h"
+#include "browser/client_handler.h"
 #include "browser/main_message_loop.h"
 
 
@@ -13,7 +13,7 @@ namespace client {
   BrowserWindow::BrowserWindow(Delegate* delegate, const std::string& startup_url)
   : delegate_(delegate), is_closing_(false) {
     DCHECK(delegate_);
-    client_handler_ = new ClientHandlerStd(this, startup_url);
+    client_handler_ = new ClientHandler(this, false, startup_url);
   }
   
   void BrowserWindow::SetDeviceScaleFactor(float device_scale_factor) {}

@@ -109,15 +109,6 @@ class ClientHandler : public CefClient,
                                 CefProcessId source_process,
                                 CefRefPtr<CefProcessMessage> message) OVERRIDE;
 
-#if defined(OS_LINUX)
-  CefRefPtr<CefDialogHandler> GetDialogHandler() OVERRIDE {
-    return dialog_handler_;
-  }
-  CefRefPtr<CefJSDialogHandler> GetJSDialogHandler() OVERRIDE {
-    return dialog_handler_;
-  }
-#endif
-
   // CefContextMenuHandler methods
   void OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
                            CefRefPtr<CefFrame> frame,
@@ -324,11 +315,6 @@ class ClientHandler : public CefClient,
   // True if Favicon images should be downloaded.
   bool download_favicon_images_;
 
-#if defined(OS_LINUX)
-  // Custom dialog handler for GTK.
-  CefRefPtr<ClientDialogHandlerGtk> dialog_handler_;
-#endif
-
   // Handles the browser side of query routing. The renderer side is handled
   // in client_renderer.cc.
   CefRefPtr<CefMessageRouterBrowserSide> message_router_;
@@ -369,6 +355,7 @@ class ClientHandler : public CefClient,
   // Set of Handlers registered with the message router.
   MessageHandlerSet message_handler_set_;
 
+  IMPLEMENT_REFCOUNTING(ClientHandler);
   DISALLOW_COPY_AND_ASSIGN(ClientHandler);
 };
 
