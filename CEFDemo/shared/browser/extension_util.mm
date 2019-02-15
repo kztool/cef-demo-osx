@@ -35,16 +35,10 @@ std::string GetInternalPath(const std::string& extension_path) {
     internal_path = extension_path;
   }
 
-#if defined(OS_WIN)
-  // Normalize path separators.
-  std::replace(internal_path.begin(), internal_path.end(), '\\', '/');
-#endif
-
   return internal_path;
 }
 
-typedef base::Callback<void(CefRefPtr<CefDictionaryValue> /*manifest*/)>
-    ManifestCallback;
+typedef base::Callback<void(CefRefPtr<CefDictionaryValue> /*manifest*/)> ManifestCallback;
 
 void RunManifestCallback(const ManifestCallback& callback,
                          CefRefPtr<CefDictionaryValue> manifest) {
@@ -187,20 +181,13 @@ void AddInternalExtensionToResourceManager(
   const std::string& resource_path =
       GetInternalExtensionResourcePath(extension->GetPath());
 
-// Add provider for bundled resource files.
-#if defined(OS_WIN)
-  // Read resources from the binary.
-  resource_manager->AddProvider(
-      CreateBinaryResourceProvider(origin, resource_path), 50, std::string());
-#elif defined(OS_POSIX)
   // Read resources from a directory on disk.
   std::string resource_dir;
   if (GetResourceDir(resource_dir)) {
-    resource_dir += "/" + resource_path;
-    resource_manager->AddDirectoryProvider(origin, resource_dir, 50,
-                                           std::string());
+      resource_dir += "/" + resource_path;
+      resource_manager->AddDirectoryProvider(origin, resource_dir, 50,
+                                             std::string());
   }
-#endif
 }
 
 std::string GetExtensionOrigin(const std::string& extension_id) {
