@@ -9,14 +9,9 @@
 namespace client {
 
 namespace {
-
 // These flags must match the Chromium values.
 const char kProcessType[] = "type";
 const char kRendererProcess[] = "renderer";
-#if defined(OS_LINUX)
-const char kZygoteProcess[] = "zygote";
-#endif
-
 }  // namespace
 
 ClientApp::ClientApp() {}
@@ -31,10 +26,6 @@ ClientApp::ProcessType ClientApp::GetProcessType(
   const std::string& process_type = command_line->GetSwitchValue(kProcessType);
   if (process_type == kRendererProcess)
     return RendererProcess;
-#if defined(OS_LINUX)
-  else if (process_type == kZygoteProcess)
-    return ZygoteProcess;
-#endif
 
   return OtherProcess;
 }
