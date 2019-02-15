@@ -6,24 +6,14 @@
 
 #include "browser/client_browser.h"
 
-#if defined(OS_LINUX)
-#include "browser/print_handler_gtk.h"
-#endif
-
 namespace client {
+  // static
+  void ClientAppBrowser::CreateDelegates(DelegateSet& delegates) {
+    browser::CreateDelegates(delegates);
+  }
 
-// static
-void ClientAppBrowser::CreateDelegates(DelegateSet& delegates) {
-  browser::CreateDelegates(delegates);
-}
-
-// static
-CefRefPtr<CefPrintHandler> ClientAppBrowser::CreatePrintHandler() {
-#if defined(OS_LINUX)
-  return new ClientPrintHandlerGtk();
-#else
-  return NULL;
-#endif
-}
-
+  // static
+  CefRefPtr<CefPrintHandler> ClientAppBrowser::CreatePrintHandler() {
+    return NULL;
+  }
 }  // namespace client

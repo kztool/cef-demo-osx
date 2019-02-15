@@ -7,27 +7,26 @@
 #include "include/cef_command_line.h"
 
 namespace client {
-
-namespace {
-// These flags must match the Chromium values.
-const char kProcessType[] = "type";
-const char kRendererProcess[] = "renderer";
-}  // namespace
-
-ClientApp::ClientApp() {}
-
-// static
-ClientApp::ProcessType ClientApp::GetProcessType(
-    CefRefPtr<CefCommandLine> command_line) {
-  // The command-line flag won't be specified for the browser process.
-  if (!command_line->HasSwitch(kProcessType))
-    return BrowserProcess;
-
-  const std::string& process_type = command_line->GetSwitchValue(kProcessType);
-  if (process_type == kRendererProcess)
-    return RendererProcess;
-
-  return OtherProcess;
-}
-
+  namespace {
+    // These flags must match the Chromium values.
+    const char kProcessType[] = "type";
+    const char kRendererProcess[] = "renderer";
+  }  // namespace
+  
+  ClientApp::ClientApp() {}
+  
+  // static
+  ClientApp::ProcessType ClientApp::GetProcessType(CefRefPtr<CefCommandLine> command_line) {
+    // The command-line flag won't be specified for the browser process.
+    if (!command_line->HasSwitch(kProcessType))
+      return BrowserProcess;
+    
+    const std::string& process_type = command_line->GetSwitchValue(kProcessType);
+    if (process_type == kRendererProcess)
+      return RendererProcess;
+    
+    return OtherProcess;
+  }
+  
 }  // namespace client
+
