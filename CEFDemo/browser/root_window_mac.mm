@@ -13,7 +13,7 @@
 #include "browser/temp_window.h"
 #include "browser/window_test_runner_mac.h"
 #include "shared/browser/main_message_loop.h"
-#include "shared/common/client_switches.h"
+#include "browser/client_switches.h"
 
 // Receives notifications from controls and the browser window. Will delete
 // itself when done.

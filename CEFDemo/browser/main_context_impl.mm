@@ -6,7 +6,7 @@
 
 #include "include/cef_parser.h"
 #include "include/cef_web_plugin.h"
-#include "shared/common/client_switches.h"
+#include "browser/client_switches.h"
 
 namespace client {
 

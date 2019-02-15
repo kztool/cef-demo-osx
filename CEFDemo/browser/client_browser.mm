@@ -7,7 +7,7 @@
 #include "include/cef_command_line.h"
 #include "include/cef_crash_util.h"
 #include "include/cef_file_util.h"
-#include "shared/common/client_switches.h"
+#include "browser/client_switches.h"
 
 namespace client {
   namespace browser {

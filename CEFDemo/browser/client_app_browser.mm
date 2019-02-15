@@ -2,11 +2,11 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "shared/browser/client_app_browser.h"
+#include "browser/client_app_browser.h"
 
 #include "include/base/cef_logging.h"
 #include "include/cef_cookie.h"
-#include "shared/common/client_switches.h"
+#include "browser/client_switches.h"
 
 namespace client {
 

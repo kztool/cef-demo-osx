@@ -10,9 +10,9 @@
 #include "browser/main_context_impl.h"
 #include "browser/root_window.h"
 #include "browser/test_runner.h"
-#include "shared/browser/client_app_browser.h"
+#include "browser/client_app_browser.h"
 #include "shared/browser/main_message_loop_std.h"
-#include "shared/common/client_switches.h"
+#include "browser/client_switches.h"
 
 // Receives notifications from the application. Will delete itself when done.
 @interface ClientAppDelegate : NSObject<NSApplicationDelegate> {

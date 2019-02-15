@@ -13,7 +13,7 @@
 #include "browser/test_runner.h"
 
 
-#include "shared/common/client_switches.h"
+#include "browser/client_switches.h"
 
 #include "browser/utils.h"
 

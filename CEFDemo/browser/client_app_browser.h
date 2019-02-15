@@ -8,7 +8,7 @@
 
 #include <set>
 
-#include "shared/common/client_app.h"
+#include "browser/client_app.h"
 
 namespace client {
 

@@ -247,6 +247,12 @@
 		CEE2F533221538BC007FF9A6 /* browser */ = {
 			isa = PBXGroup;
 			children = (
+				CEE2F5D1221538E3007FF9A6 /* client_switches.h */,
+				CEE2F5D0221538E3007FF9A6 /* client_switches.mm */,
+				CEE2F5D3221538E3007FF9A6 /* client_app.h */,
+				CEE2F5CF221538E3007FF9A6 /* client_app.mm */,
+				CEE2F5BE221538E3007FF9A6 /* client_app_browser.h */,
+				CEE2F5C4221538E3007FF9A6 /* client_app_browser.mm */,
 				CEE2F573221538BC007FF9A6 /* browser_window.h */,
 				CEE2F561221538BC007FF9A6 /* browser_window.mm */,
 				CEE2F53D221538BC007FF9A6 /* client_app_delegates_browser.mm */,
@@ -288,7 +294,6 @@
 			isa = PBXGroup;
 			children = (
 				CEE2F5BA221538E3007FF9A6 /* browser */,
-				CEE2F5CD221538E3007FF9A6 /* common */,
 			);
 			path = shared;
 			sourceTree = "<group>";
@@ -296,25 +301,12 @@
 		CEE2F5BA221538E3007FF9A6 /* browser */ = {
 			isa = PBXGroup;
 			children = (
-				CEE2F5BE221538E3007FF9A6 /* client_app_browser.h */,
-				CEE2F5C4221538E3007FF9A6 /* client_app_browser.mm */,
 				CEE2F5BC221538E3007FF9A6 /* main_message_loop_std.h */,
 				CEE2F5C7221538E3007FF9A6 /* main_message_loop_std.mm */,
 				CEE2F5C9221538E3007FF9A6 /* main_message_loop.h */,
 				CEE2F5CA221538E3007FF9A6 /* main_message_loop.mm */,
 			);
 			path = browser;
-			sourceTree = "<group>";
-		};
-		CEE2F5CD221538E3007FF9A6 /* common */ = {
-			isa = PBXGroup;
-			children = (
-				CEE2F5D3221538E3007FF9A6 /* client_app.h */,
-				CEE2F5D1221538E3007FF9A6 /* client_switches.h */,
-				CEE2F5CF221538E3007FF9A6 /* client_app.mm */,
-				CEE2F5D0221538E3007FF9A6 /* client_switches.mm */,
-			);
-			path = common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
