@@ -4,8 +4,7 @@
 
 #include "browser/image_cache.h"
 
-#include "shared/browser/file_util.h"
-#include "shared/browser/resource_util.h"
+#include "browser/utils.h"
 
 namespace client {
 

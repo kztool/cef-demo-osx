@@ -15,7 +15,8 @@
 #include "include/wrapper/cef_stream_resource_handler.h"
 #include "browser/main_context.h"
 #include "browser/root_window_manager.h"
-#include "shared/browser/resource_util.h"
+
+#include "browser/utils.h"
 
 namespace client {
 namespace test_runner {

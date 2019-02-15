@@ -20,9 +20,10 @@
 #include "browser/main_context.h"
 #include "browser/root_window_manager.h"
 #include "browser/test_runner.h"
-#include "shared/browser/extension_util.h"
-#include "shared/browser/resource_util.h"
+
 #include "shared/common/client_switches.h"
+
+#include "browser/utils.h"
 
 namespace client {
 

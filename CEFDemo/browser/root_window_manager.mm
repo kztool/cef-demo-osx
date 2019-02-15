@@ -11,9 +11,11 @@
 #include "include/wrapper/cef_helpers.h"
 #include "browser/main_context.h"
 #include "browser/test_runner.h"
-#include "shared/browser/extension_util.h"
-#include "shared/browser/resource_util.h"
+
+
 #include "shared/common/client_switches.h"
+
+#include "browser/utils.h"
 
 namespace client {
 
