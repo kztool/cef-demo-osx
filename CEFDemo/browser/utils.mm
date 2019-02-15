@@ -9,6 +9,176 @@
 #include "utils.h"
 
 namespace client {
+  namespace {
+    // Implementation adapted from Chromium's base/mac/foundation_util.mm
+    bool UncachedAmIBundled() {
+      return [[[NSBundle mainBundle] bundlePath] hasSuffix:@".app"];
+    }
+    
+    bool AmIBundled() {
+      static bool am_i_bundled = UncachedAmIBundled();
+      return am_i_bundled;
+    }
+    
+    bool FileExists(const char* path) {
+      FILE* f = fopen(path, "rb");
+      if (f) {
+        fclose(f);
+        return true;
+      }
+      return false;
+    }
+    
+    bool ReadFileToString(const char* path, std::string& data) {
+      // Implementation adapted from base/file_util.cc
+      FILE* file = fopen(path, "rb");
+      if (!file)
+        return false;
+      
+      char buf[1 << 16];
+      size_t len;
+      while ((len = fread(buf, 1, sizeof(buf), file)) > 0)
+        data.append(buf, len);
+      fclose(file);
+      
+      return true;
+    }
+  }  // namespace
+  
+  bool LoadBinaryResource(const char* resource_name, std::string& resource_data) {
+    std::string path;
+    if (!GetResourceDir(path))
+      return false;
+    
+    path.append("/");
+    path.append(resource_name);
+    
+    return ReadFileToString(path.c_str(), resource_data);
+  }
+  
+  CefRefPtr<CefStreamReader> GetBinaryResourceReader(const char* resource_name) {
+    std::string path;
+    if (!GetResourceDir(path))
+      return NULL;
+    
+    path.append("/");
+    path.append(resource_name);
+    
+    if (!FileExists(path.c_str()))
+      return NULL;
+    
+    return CefStreamReader::CreateForFile(path);
+  }
+  
+  // Implementation adapted from Chromium's base/base_path_mac.mm
+  bool GetResourceDir(std::string& dir) {
+    // Retrieve the executable directory.
+    uint32_t pathSize = 0;
+    _NSGetExecutablePath(NULL, &pathSize);
+    if (pathSize > 0) {
+      dir.resize(pathSize);
+      _NSGetExecutablePath(const_cast<char*>(dir.c_str()), &pathSize);
+    }
+    
+    if (AmIBundled()) {
+      // Trim executable name up to the last separator.
+      std::string::size_type last_separator = dir.find_last_of("/");
+      dir.resize(last_separator);
+      dir.append("/../Resources");
+      return true;
+    }
+    
+    dir.append("/Resources");
+    return true;
+  }
+}  // namespace client
+
+
+namespace client {
+  BytesWriteHandler::BytesWriteHandler(size_t grow)
+  : grow_(grow), datasize_(grow), offset_(0) {
+    DCHECK_GT(grow, 0U);
+    data_ = malloc(grow);
+    DCHECK(data_ != NULL);
+  }
+  
+  BytesWriteHandler::~BytesWriteHandler() {
+    if (data_)
+      free(data_);
+  }
+  
+  size_t BytesWriteHandler::Write(const void* ptr, size_t size, size_t n) {
+    base::AutoLock lock_scope(lock_);
+    size_t rv;
+    if (offset_ + static_cast<int64>(size * n) >= datasize_ &&
+        Grow(size * n) == 0) {
+      rv = 0;
+    } else {
+      memcpy(reinterpret_cast<char*>(data_) + offset_, ptr, size * n);
+      offset_ += size * n;
+      rv = n;
+    }
+    
+    return rv;
+  }
+  
+  int BytesWriteHandler::Seek(int64 offset, int whence) {
+    int rv = -1L;
+    base::AutoLock lock_scope(lock_);
+    switch (whence) {
+      case SEEK_CUR:
+        if (offset_ + offset > datasize_ || offset_ + offset < 0)
+          break;
+        offset_ += offset;
+        rv = 0;
+        break;
+      case SEEK_END: {
+        int64 offset_abs = std::abs(offset);
+        if (offset_abs > datasize_)
+          break;
+        offset_ = datasize_ - offset_abs;
+        rv = 0;
+        break;
+      }
+      case SEEK_SET:
+        if (offset > datasize_ || offset < 0)
+          break;
+        offset_ = offset;
+        rv = 0;
+        break;
+    }
+    
+    return rv;
+  }
+  
+  int64 BytesWriteHandler::Tell() {
+    base::AutoLock lock_scope(lock_);
+    return offset_;
+  }
+  
+  int BytesWriteHandler::Flush() {
+    return 0;
+  }
+  
+  size_t BytesWriteHandler::Grow(size_t size) {
+    lock_.AssertAcquired();
+    size_t rv;
+    size_t s = (size > grow_ ? size : grow_);
+    void* tmp = realloc(data_, datasize_ + s);
+    DCHECK(tmp != NULL);
+    if (tmp) {
+      data_ = tmp;
+      datasize_ += s;
+      rv = datasize_;
+    } else {
+      rv = 0;
+    }
+    
+    return rv;
+  }
+}  // namespace client
+
+namespace client {
   namespace file_util {
     // namespace private functions
     namespace {
@@ -321,89 +491,3 @@ namespace client {
   }  // namespace extension_util
 }  // namespace client
 
-
-
-namespace client {
-  namespace {
-    // Implementation adapted from Chromium's base/mac/foundation_util.mm
-    bool UncachedAmIBundled() {
-      return [[[NSBundle mainBundle] bundlePath] hasSuffix:@".app"];
-    }
-    
-    bool AmIBundled() {
-      static bool am_i_bundled = UncachedAmIBundled();
-      return am_i_bundled;
-    }
-    
-    bool FileExists(const char* path) {
-      FILE* f = fopen(path, "rb");
-      if (f) {
-        fclose(f);
-        return true;
-      }
-      return false;
-    }
-    
-    bool ReadFileToString(const char* path, std::string& data) {
-      // Implementation adapted from base/file_util.cc
-      FILE* file = fopen(path, "rb");
-      if (!file)
-        return false;
-      
-      char buf[1 << 16];
-      size_t len;
-      while ((len = fread(buf, 1, sizeof(buf), file)) > 0)
-        data.append(buf, len);
-      fclose(file);
-      
-      return true;
-    }
-  }  // namespace
-  
-  bool LoadBinaryResource(const char* resource_name, std::string& resource_data) {
-    std::string path;
-    if (!GetResourceDir(path))
-      return false;
-    
-    path.append("/");
-    path.append(resource_name);
-    
-    return ReadFileToString(path.c_str(), resource_data);
-  }
-  
-  CefRefPtr<CefStreamReader> GetBinaryResourceReader(const char* resource_name) {
-    std::string path;
-    if (!GetResourceDir(path))
-      return NULL;
-    
-    path.append("/");
-    path.append(resource_name);
-    
-    if (!FileExists(path.c_str()))
-      return NULL;
-    
-    return CefStreamReader::CreateForFile(path);
-  }
-  
-  // Implementation adapted from Chromium's base/base_path_mac.mm
-  bool GetResourceDir(std::string& dir) {
-    // Retrieve the executable directory.
-    uint32_t pathSize = 0;
-    _NSGetExecutablePath(NULL, &pathSize);
-    if (pathSize > 0) {
-      dir.resize(pathSize);
-      _NSGetExecutablePath(const_cast<char*>(dir.c_str()), &pathSize);
-    }
-    
-    if (AmIBundled()) {
-      // Trim executable name up to the last separator.
-      std::string::size_type last_separator = dir.find_last_of("/");
-      dir.resize(last_separator);
-      dir.append("/../Resources");
-      return true;
-    }
-    
-    dir.append("/Resources");
-    return true;
-  }
-}  // namespace client
