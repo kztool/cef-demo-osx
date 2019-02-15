@@ -13,6 +13,7 @@
 #import <Foundation/Foundation.h>
 #include <string>
 #include <mach-o/dyld.h>
+#include <iomanip>
 
 #include "include/cef_parser.h"
 #include "include/cef_path_util.h"

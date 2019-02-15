@@ -6,14 +6,7 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_IMAGE_CACHE_H_
 #pragma once
 
-#include <map>
-#include <vector>
-
-#include "include/base/cef_bind.h"
-#include "include/base/cef_ref_counted.h"
-#include "include/cef_image.h"
-#include "include/wrapper/cef_closure_task.h"
-#include "include/wrapper/cef_helpers.h"
+#include "browser/utils.h"
 
 namespace client {
 

@@ -4,23 +4,9 @@
 
 #include "browser/client_handler.h"
 
-#include <stdio.h>
-#include <algorithm>
-#include <iomanip>
-#include <sstream>
-#include <string>
-
-#include "include/base/cef_bind.h"
-#include "include/cef_browser.h"
-#include "include/cef_frame.h"
-#include "include/cef_parser.h"
-#include "include/cef_ssl_status.h"
-#include "include/cef_x509_certificate.h"
-#include "include/wrapper/cef_closure_task.h"
 #include "browser/main_context.h"
 #include "browser/root_window_manager.h"
 #include "browser/test_runner.h"
-
 #include "browser/client_switches.h"
 
 #include "browser/utils.h"
