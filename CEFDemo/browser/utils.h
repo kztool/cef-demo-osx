@@ -6,8 +6,8 @@
 //  Copyright © 2019 田硕. All rights reserved.
 //
 
-#ifndef utils_h
-#define utils_h
+#ifndef CEF_TESTS_CEFCLIENT_BROWSER_UTILS_H_
+#define CEF_TESTS_CEFCLIENT_BROWSER_UTILS_H_
 #pragma once
 
 #import <Foundation/Foundation.h>
