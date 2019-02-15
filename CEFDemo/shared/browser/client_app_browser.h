@@ -65,7 +65,6 @@ class ClientAppBrowser : public ClientApp, public CefBrowserProcessHandler {
   CefRefPtr<CefPrintHandler> GetPrintHandler() OVERRIDE {
     return print_handler_;
   }
-  void OnScheduleMessagePumpWork(int64 delay) OVERRIDE;
 
   // Set of supported Delegates.
   DelegateSet delegates_;
