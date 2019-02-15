@@ -11,7 +11,7 @@
 #include "browser/root_window.h"
 #include "browser/test_runner.h"
 #include "browser/client_app_browser.h"
-#include "browser/main_message_loop_std.h"
+#include "browser/main_message_loop.h"
 #include "browser/client_switches.h"
 
 // Receives notifications from the application. Will delete itself when done.
@@ -237,7 +237,7 @@ int RunMain(int argc, char* argv[]) {
   context->PopulateSettings(&settings);
 
   // Create the main message loop object.
-  scoped_ptr<MainMessageLoop> message_loop(new MainMessageLoopStd);
+  scoped_ptr<MainMessageLoop> message_loop(new MainMessageLoop);
 
   // Initialize CEF.
   context->Initialize(main_args, settings, app, NULL);

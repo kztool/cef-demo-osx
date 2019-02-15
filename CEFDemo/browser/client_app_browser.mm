@@ -10,9 +10,7 @@
 #include "include/cef_file_util.h"
 
 namespace client {
-  
   namespace {
-
     class ClientBrowserDelegate : public ClientAppBrowser::Delegate {
     public:
       ClientBrowserDelegate() {}
@@ -42,9 +40,7 @@ namespace client {
       DISALLOW_COPY_AND_ASSIGN(ClientBrowserDelegate);
       IMPLEMENT_REFCOUNTING(ClientBrowserDelegate);
     };
-    
   }  // namespace
-  
   
   ClientAppBrowser::ClientAppBrowser() {
     delegates_.insert(new ClientBrowserDelegate);
