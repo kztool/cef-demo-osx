@@ -7,7 +7,7 @@
 #include "include/cef_app.h"
 #import "include/cef_application_mac.h"
 #import "include/wrapper/cef_library_loader.h"
-#include "browser/main_context_impl.h"
+#include "browser/main_context.h"
 #include "browser/root_window.h"
 #include "browser/test_runner.h"
 #include "browser/client_app_browser.h"
@@ -229,7 +229,7 @@ int RunMain(int argc, char* argv[]) {
     app = new ClientAppBrowser();
 
   // Create the main context object.
-  scoped_ptr<MainContextImpl> context(new MainContextImpl(command_line, true));
+  scoped_ptr<MainContext> context(new MainContext(command_line, true));
 
   CefSettings settings;
 

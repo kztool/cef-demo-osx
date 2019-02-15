@@ -8,13 +8,13 @@
 
 #include <string>
 
-#include "include/base/cef_ref_counted.h"
-#include "include/internal/cef_types_wrappers.h"
+#include "include/cef_app.h"
 
-namespace client {
-  
-  class RootWindowManager;
-  
+#include "browser/main_context.h"
+#include "browser/root_window_manager.h"
+#include "browser/client_switches.h"
+
+namespace client {  
   // Used to store global context in the browser process. The methods of this
   // class are thread-safe unless otherwise indicated.
   class MainContext {
@@ -22,42 +22,69 @@ namespace client {
     // Returns the singleton instance of this object.
     static MainContext* Get();
     
-    // Returns the full path to the console log file.
-    virtual std::string GetConsoleLogPath() = 0;
+    MainContext(CefRefPtr<CefCommandLine> command_line,
+                    bool terminate_when_all_windows_closed);
     
-    // Returns the full path to |file_name|.
-    virtual std::string GetDownloadPath(const std::string& file_name) = 0;
+    // MainContext members.
+    std::string GetConsoleLogPath();
+    std::string GetDownloadPath(const std::string& file_name);
+    std::string GetAppWorkingDirectory();
+    std::string GetMainURL();
+    cef_color_t GetBackgroundColor();
+    bool UseViews();
+    bool UseWindowlessRendering();
+    void PopulateSettings(CefSettings* settings);
+    void PopulateBrowserSettings(CefBrowserSettings* settings);
+    RootWindowManager* GetRootWindowManager();
     
-    // Returns the app working directory including trailing path separator.
-    virtual std::string GetAppWorkingDirectory() = 0;
+    // Initialize CEF and associated main context state. This method must be
+    // called on the same thread that created this object.
+    bool Initialize(const CefMainArgs& args,
+                    const CefSettings& settings,
+                    CefRefPtr<CefApp> application,
+                    void* windows_sandbox_info);
     
-    // Returns the main application URL.
-    virtual std::string GetMainURL() = 0;
+    // Shut down CEF and associated context state. This method must be called on
+    // the same thread that created this object.
+    void Shutdown();
     
-    // Returns the background color.
-    virtual cef_color_t GetBackgroundColor() = 0;
+  private:
+    // Allow deletion via scoped_ptr only.
+    friend struct base::DefaultDeleter<MainContext>;
     
-    // Returns true if the Views framework will be used.
-    virtual bool UseViews() = 0;
+    // Returns true if the context is in a valid state (initialized and not yet
+    // shut down).
+    bool InValidState() const { return initialized_ && !shutdown_; }
     
-    // Returns true if windowless (off-screen) rendering will be used.
-    virtual bool UseWindowlessRendering() = 0;
+    CefRefPtr<CefCommandLine> command_line_;
+    const bool terminate_when_all_windows_closed_;
     
-    // Populate |settings| based on command-line arguments.
-    virtual void PopulateSettings(CefSettings* settings) = 0;
-    virtual void PopulateBrowserSettings(CefBrowserSettings* settings) = 0;
+    // Track context state. Accessing these variables from multiple threads is
+    // safe because only a single thread will exist at the time that they're set
+    // (during context initialization and shutdown).
+    bool initialized_;
+    bool shutdown_;
     
-    // Returns the object used to create/manage RootWindow instances.
-    virtual RootWindowManager* GetRootWindowManager() = 0;
+    std::string main_url_;
+    cef_color_t background_color_;
+    cef_color_t browser_background_color_;
+    bool use_windowless_rendering_;
+    int windowless_frame_rate_;
+    bool use_views_;
+    
+    scoped_ptr<RootWindowManager> root_window_manager_;
+    
+    bool external_begin_frame_enabled_;
+    
+    // Used to verify that methods are called on the correct thread.
+    base::ThreadChecker thread_checker_;
+    
+    DISALLOW_COPY_AND_ASSIGN(MainContext);
     
   protected:
     MainContext();
     virtual ~MainContext();
-    
-  private:
-    DISALLOW_COPY_AND_ASSIGN(MainContext);
   };
-  
 }  // namespace client
 
 #endif  // CEF_TESTS_CEFCLIENT_BROWSER_MAIN_CONTEXT_H_
