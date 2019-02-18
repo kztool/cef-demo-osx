@@ -31,7 +31,7 @@
 		CEAFB7BB221A66AE00EED73D /* response_filter.html in Resources */ = {isa = PBXBuildFile; fileRef = CEAFB7A7221A66AE00EED73D /* response_filter.html */; };
 		CEAFB7BC221A66AE00EED73D /* localstorage.html in Resources */ = {isa = PBXBuildFile; fileRef = CEAFB7A8221A66AE00EED73D /* localstorage.html */; };
 		CEE2F587221538BC007FF9A6 /* image_cache.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F547221538BC007FF9A6 /* image_cache.mm */; };
-		CEE2F588221538BC007FF9A6 /* root_window_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F549221538BC007FF9A6 /* root_window_mac.mm */; };
+		CEE2F588221538BC007FF9A6 /* root_window.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F549221538BC007FF9A6 /* root_window.mm */; };
 		CEE2F58B221538BC007FF9A6 /* test_runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F54D221538BC007FF9A6 /* test_runner.mm */; };
 		CEE2F58F221538BC007FF9A6 /* client_handler.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F557221538BC007FF9A6 /* client_handler.mm */; };
 		CEE2F591221538BC007FF9A6 /* temp_window.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F55B221538BC007FF9A6 /* temp_window.mm */; };
@@ -79,7 +79,7 @@
 		CEE2F53A221538BC007FF9A6 /* temp_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = temp_window.h; sourceTree = "<group>"; };
 		CEE2F53F221538BC007FF9A6 /* test_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test_runner.h; sourceTree = "<group>"; };
 		CEE2F547221538BC007FF9A6 /* image_cache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = image_cache.mm; sourceTree = "<group>"; };
-		CEE2F549221538BC007FF9A6 /* root_window_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = root_window_mac.mm; sourceTree = "<group>"; };
+		CEE2F549221538BC007FF9A6 /* root_window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = root_window.mm; sourceTree = "<group>"; };
 		CEE2F54D221538BC007FF9A6 /* test_runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = test_runner.mm; sourceTree = "<group>"; };
 		CEE2F554221538BC007FF9A6 /* main_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_context.h; sourceTree = "<group>"; };
 		CEE2F555221538BC007FF9A6 /* window_test_runner_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = window_test_runner_mac.h; sourceTree = "<group>"; };
@@ -88,7 +88,7 @@
 		CEE2F55B221538BC007FF9A6 /* temp_window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = temp_window.mm; sourceTree = "<group>"; };
 		CEE2F561221538BC007FF9A6 /* browser_window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = browser_window.mm; sourceTree = "<group>"; };
 		CEE2F562221538BC007FF9A6 /* window_test_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = window_test_runner.h; sourceTree = "<group>"; };
-		CEE2F563221538BC007FF9A6 /* root_window_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = root_window_mac.h; sourceTree = "<group>"; };
+		CEE2F563221538BC007FF9A6 /* root_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = root_window.h; sourceTree = "<group>"; };
 		CEE2F564221538BC007FF9A6 /* window_test_runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = window_test_runner.mm; sourceTree = "<group>"; };
 		CEE2F56A221538BC007FF9A6 /* window_test_runner_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = window_test_runner_mac.mm; sourceTree = "<group>"; };
 		CEE2F56B221538BC007FF9A6 /* image_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_cache.h; sourceTree = "<group>"; };
@@ -213,8 +213,8 @@
 				CEE2F547221538BC007FF9A6 /* image_cache.mm */,
 				CEE2F554221538BC007FF9A6 /* main_context.h */,
 				CEE2F56C221538BC007FF9A6 /* main_context.mm */,
-				CEE2F563221538BC007FF9A6 /* root_window_mac.h */,
-				CEE2F549221538BC007FF9A6 /* root_window_mac.mm */,
+				CEE2F563221538BC007FF9A6 /* root_window.h */,
+				CEE2F549221538BC007FF9A6 /* root_window.mm */,
 				CEE2F579221538BC007FF9A6 /* root_window_manager.h */,
 				CEE2F57A221538BC007FF9A6 /* root_window_manager.mm */,
 				CEE2F55B221538BC007FF9A6 /* temp_window.mm */,
@@ -372,7 +372,7 @@
 			files = (
 				CEE2F58B221538BC007FF9A6 /* test_runner.mm in Sources */,
 				CEE2F591221538BC007FF9A6 /* temp_window.mm in Sources */,
-				CEE2F588221538BC007FF9A6 /* root_window_mac.mm in Sources */,
+				CEE2F588221538BC007FF9A6 /* root_window.mm in Sources */,
 				CEE2F5DF221538E3007FF9A6 /* client_app_browser.mm in Sources */,
 				CEE2F593221538BC007FF9A6 /* browser_window.mm in Sources */,
 				CEE2F59D221538BC007FF9A6 /* root_window_manager.mm in Sources */,
