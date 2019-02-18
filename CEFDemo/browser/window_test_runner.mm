@@ -12,14 +12,11 @@
 
 namespace client {
   namespace window_test {
-    
     namespace {
-      
       NSWindow* GetWindow(CefRefPtr<CefBrowser> browser) {
         NSView* view = (NSView*)browser->GetHost()->GetWindowHandle();
         return [view window];
       }
-      
     }  // namespace
     
     WindowTestRunner::WindowTestRunner() {}
@@ -88,7 +85,6 @@ namespace client {
         [window performZoom:nil];
     }
     
-    
     // static
     void WindowTestRunner::ModifyBounds(const CefRect& display, CefRect& window) {
       window.x += display.x;
@@ -111,7 +107,6 @@ namespace client {
       if (window.y + window.height >= display.y + display.height)
         window.y = display.y + display.height - window.height;
     }
-    
   }  // namespace window_test
 }  // namespace client
 
