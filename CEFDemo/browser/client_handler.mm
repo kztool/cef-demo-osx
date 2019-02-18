@@ -907,8 +907,7 @@ return std::string(#def); \
     
     // The popup browser will be parented to a new native window.
     // Don't show URL bar and navigation buttons on DevTools windows.
-    MainContext::Get()->GetRootWindowManager()->CreateRootWindowAsPopup(
-                                                                        !is_devtools, is_osr(), popupFeatures, windowInfo, client, settings);
+    MainContext::Get()->GetRootWindowManager()->CreateRootWindowAsPopup(!is_devtools, is_osr(), popupFeatures, windowInfo, client, settings);
     
     return true;
   }
@@ -1020,17 +1019,16 @@ return std::string(#def); \
       delegate_->OnSetLoadingState(isLoading, canGoBack, canGoForward);
   }
   
-  void ClientHandler::NotifyDraggableRegions(
-                                             const std::vector<CefDraggableRegion>& regions) {
+  void ClientHandler::NotifyDraggableRegions(const std::vector<CefDraggableRegion>& regions) {
     if (!CURRENTLY_ON_MAIN_THREAD()) {
       // Execute this method on the main thread.
-      MAIN_POST_CLOSURE(
-                        base::Bind(&ClientHandler::NotifyDraggableRegions, this, regions));
+      MAIN_POST_CLOSURE(base::Bind(&ClientHandler::NotifyDraggableRegions, this, regions));
       return;
     }
     
-    if (delegate_)
+    if (delegate_) {
       delegate_->OnSetDraggableRegions(regions);
+    }
   }
   
   void ClientHandler::NotifyTakeFocus(bool next) {
@@ -1040,8 +1038,9 @@ return std::string(#def); \
       return;
     }
     
-    if (delegate_)
+    if (delegate_) {
       delegate_->OnTakeFocus(next);
+    }
   }
   
   void ClientHandler::BuildTestMenu(CefRefPtr<CefMenuModel> model) {
@@ -1049,20 +1048,19 @@ return std::string(#def); \
       model->AddSeparator();
     
     // Build the sub menu.
-    CefRefPtr<CefMenuModel> submenu =
-    model->AddSubMenu(CLIENT_ID_TESTMENU_SUBMENU, "Context Menu Test");
+    CefRefPtr<CefMenuModel> submenu = model->AddSubMenu(CLIENT_ID_TESTMENU_SUBMENU, "Context Menu Test");
     submenu->AddCheckItem(CLIENT_ID_TESTMENU_CHECKITEM, "Check Item");
     submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM1, "Radio Item 1", 0);
     submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM2, "Radio Item 2", 0);
     submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM3, "Radio Item 3", 0);
     
     // Check the check item.
-    if (test_menu_state_.check_item)
-      submenu->SetChecked(CLIENT_ID_TESTMENU_CHECKITEM, true);
+    if (test_menu_state_.check_item) {
+       submenu->SetChecked(CLIENT_ID_TESTMENU_CHECKITEM, true);
+    }
     
     // Check the selected radio item.
-    submenu->SetChecked(
-                        CLIENT_ID_TESTMENU_RADIOITEM1 + test_menu_state_.radio_item, true);
+    submenu->SetChecked(CLIENT_ID_TESTMENU_RADIOITEM1 + test_menu_state_.radio_item, true);
   }
   
   bool ClientHandler::ExecuteTestMenu(int command_id) {
