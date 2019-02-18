@@ -11,7 +11,7 @@
 #include "include/cef_application_mac.h"
 #include "browser/main_context.h"
 #include "browser/temp_window.h"
-#include "browser/window_test_runner_mac.h"
+#include "browser/window_test_runner.h"
 #include "browser/main_message_loop.h"
 #include "browser/client_switches.h"
 
@@ -658,8 +658,8 @@ namespace client {
     
     CefRefPtr<CefBrowser> browser = GetBrowser();
     if (browser) {
-      scoped_ptr<window_test::WindowTestRunnerMac> test_runner(
-                                                               new window_test::WindowTestRunnerMac());
+      scoped_ptr<window_test::WindowTestRunner> test_runner(
+                                                               new window_test::WindowTestRunner());
       if (fullscreen)
         test_runner->Maximize(browser);
       else
