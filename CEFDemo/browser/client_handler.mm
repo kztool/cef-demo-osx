@@ -15,7 +15,6 @@ namespace client {
 #define NEWLINE "\n"
   
   namespace {
-    
     // Custom menu command Ids.
     enum client_menu_ids {
       CLIENT_ID_SHOW_DEVTOOLS = MENU_ID_USER_FIRST,
