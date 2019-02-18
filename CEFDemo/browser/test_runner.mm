@@ -60,14 +60,10 @@ namespace client {
           }
           
           CefResponse::HeaderMap response_headers;
-          CefRefPtr<CefStreamReader> response =
-          GetDumpResponse(request->request(), response_headers);
-          
-          request->Continue(new CefStreamResourceHandler(200, "OK", "text/html",
-                                                         response_headers, response));
+          CefRefPtr<CefStreamReader> response = GetDumpResponse(request->request(), response_headers);
+          request->Continue(new CefStreamResourceHandler(200, "OK", "text/html", response_headers, response));
           return true;
         }
-        
       private:
         std::string url_;
         
@@ -109,7 +105,6 @@ namespace client {
         // Rebuild the URL with a file extension.
         return url_base + ".html" + url_suffix;
       }
-      
     }  // namespace
     
     std::string DumpRequestContents(CefRefPtr<CefRequest> request) {
