@@ -85,9 +85,7 @@ namespace client {
     
     // Constructor may be called on any thread.
     // |delegate| must outlive this object or DetachDelegate() must be called.
-    ClientHandler(Delegate* delegate,
-                  bool is_osr,
-                  const std::string& startup_url);
+    ClientHandler(Delegate* delegate, const std::string& startup_url);
     
     // This object may outlive the Delegate object so it's necessary for the
     // Delegate to detach itself before destruction.
@@ -257,9 +255,6 @@ namespace client {
     // Returns the startup URL.
     std::string startup_url() const { return startup_url_; }
     
-    // Returns true if this handler uses off-screen rendering.
-    bool is_osr() const { return is_osr_; }
-    
     // Set/get whether the client should download favicon images. Only safe to
     // call immediately after client creation or on the browser process UI thread.
     bool download_favicon_images() const { return download_favicon_images_; }
@@ -300,9 +295,6 @@ namespace client {
     
     // THREAD SAFE MEMBERS
     // The following members may be accessed from any thread.
-    
-    // True if this handler uses off-screen rendering.
-    const bool is_osr_;
     
     // The startup URL.
     const std::string startup_url_;

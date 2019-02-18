@@ -13,7 +13,7 @@ namespace client {
   BrowserWindow::BrowserWindow(Delegate* delegate, const std::string& startup_url)
   : delegate_(delegate), is_closing_(false) {
     DCHECK(delegate_);
-    client_handler_ = new ClientHandler(this, false, startup_url);
+    client_handler_ = new ClientHandler(this, startup_url);
   }
   
   void BrowserWindow::SetDeviceScaleFactor(float device_scale_factor) {}

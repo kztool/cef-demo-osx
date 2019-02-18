@@ -16,10 +16,9 @@
 @interface ClientAppDelegate : NSObject<NSApplicationDelegate> {
 @private
   bool with_controls_;
-  bool with_osr_;
 }
 
-- (id)initWithControls:(bool)with_controls andOsr:(bool)with_osr;
+- (id)initWithControls:(bool)with_controls;
 - (void)createApplication:(id)object;
 - (void)tryToTerminateApplication:(NSApplication*)app;
 - (void)enableAccessibility:(bool)bEnable;
@@ -106,10 +105,9 @@
 
 @implementation ClientAppDelegate
 
-- (id)initWithControls:(bool)with_controls andOsr:(bool)with_osr {
+- (id)initWithControls:(bool)with_controls {
   if (self = [super init]) {
     with_controls_ = with_controls;
-    with_osr_ = with_osr;
   }
   return self;
 }
@@ -160,7 +158,6 @@
   
   client::RootWindowConfig window_config;
   window_config.with_controls = with_controls_;
-  window_config.with_osr = with_osr_;
   
   // Create the first window.
   client::MainContext::Get()->GetRootWindowManager()->CreateRootWindow(
@@ -239,8 +236,7 @@ namespace client {
       
       // Create the application delegate and window.
       ClientAppDelegate* delegate = [[ClientAppDelegate alloc]
-                                     initWithControls:!command_line->HasSwitch(switches::kHideControls)
-                                     andOsr:settings.windowless_rendering_enabled ? true : false];
+                                     initWithControls:!command_line->HasSwitch(switches::kHideControls)];
       [delegate performSelectorOnMainThread:@selector(createApplication:)
                                  withObject:nil
                               waitUntilDone:NO];

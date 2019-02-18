@@ -151,7 +151,6 @@ namespace client {
   
   scoped_refptr<RootWindow> RootWindowManager::CreateRootWindowAsPopup(
                                                                        bool with_controls,
-                                                                       bool with_osr,
                                                                        const CefPopupFeatures& popupFeatures,
                                                                        CefWindowInfo& windowInfo,
                                                                        CefRefPtr<CefClient>& client,
@@ -166,8 +165,7 @@ namespace client {
     MainContext::Get()->PopulateBrowserSettings(&settings);
     
     scoped_refptr<RootWindow> root_window = RootWindow::Create();
-    root_window->InitAsPopup(this, with_controls, with_osr, popupFeatures,
-                             windowInfo, client, settings);
+    root_window->InitAsPopup(this, with_controls, popupFeatures, windowInfo, client, settings);
     
     // Store a reference to the root window on the main thread.
     OnRootWindowCreated(root_window);
@@ -180,8 +178,7 @@ namespace client {
                                                                            const CefRect& source_bounds,
                                                                            CefRefPtr<CefWindow> parent_window,
                                                                            const base::Closure& close_callback,
-                                                                           bool with_controls,
-                                                                           bool with_osr) {
+                                                                           bool with_controls) {
     const std::string& extension_url = extension_util::GetExtensionURL(extension);
     if (extension_url.empty()) {
       NOTREACHED() << "Extension cannot be loaded directly.";
@@ -193,7 +190,6 @@ namespace client {
     // ClientHandler::OnAutoResize.
     RootWindowConfig config;
     config.with_controls = with_controls;
-    config.with_osr = with_osr;
     config.with_extension = true;
     config.initially_hidden = true;
     config.source_bounds = source_bounds;
@@ -432,13 +428,11 @@ namespace client {
                                                 CefRefPtr<CefExtension> extension,
                                                 const CefRect& source_bounds,
                                                 CefRefPtr<CefWindow> parent_window,
-                                                const base::Closure& close_callback,
-                                                bool with_osr) {
+                                                const base::Closure& close_callback) {
     REQUIRE_MAIN_THREAD();
     
     if (!HasRootWindowAsExtension(extension)) {
-      CreateRootWindowAsExtension(extension, source_bounds, parent_window,
-                                  close_callback, false, with_osr);
+      CreateRootWindowAsExtension(extension, source_bounds, parent_window, close_callback, false);
     }
   }
   

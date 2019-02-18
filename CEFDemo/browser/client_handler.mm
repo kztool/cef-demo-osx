@@ -220,11 +220,8 @@ return std::string(#def); \
     DISALLOW_COPY_AND_ASSIGN(ClientDownloadImageCallback);
   };
   
-  ClientHandler::ClientHandler(Delegate* delegate,
-                               bool is_osr,
-                               const std::string& startup_url)
-  : is_osr_(is_osr),
-  startup_url_(startup_url),
+  ClientHandler::ClientHandler(Delegate* delegate, const std::string& startup_url)
+  : startup_url_(startup_url),
   download_favicon_images_(false),
   delegate_(delegate),
   browser_count_(0),
@@ -623,7 +620,6 @@ return std::string(#def); \
       // browser window.
       RootWindowConfig config;
       config.with_controls = true;
-      config.with_osr = is_osr();
       config.url = target_url;
       MainContext::Get()->GetRootWindowManager()->CreateRootWindow(config);
       return true;
@@ -830,7 +826,6 @@ return std::string(#def); \
     
     RootWindowConfig config;
     config.with_controls = false;
-    config.with_osr = is_osr();
     config.url = test_runner::GetDataURI(ss.str(), "text/html");
     MainContext::Get()->GetRootWindowManager()->CreateRootWindow(config);
   }
@@ -845,7 +840,7 @@ return std::string(#def); \
     
     // The popup browser will be parented to a new native window.
     // Don't show URL bar and navigation buttons on DevTools windows.
-    MainContext::Get()->GetRootWindowManager()->CreateRootWindowAsPopup(!is_devtools, is_osr(), popupFeatures, windowInfo, client, settings);
+    MainContext::Get()->GetRootWindowManager()->CreateRootWindowAsPopup(!is_devtools, popupFeatures, windowInfo, client, settings);
     
     return true;
   }

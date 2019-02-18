@@ -43,9 +43,6 @@ namespace client {
     // If true the window will show controls.
     bool with_controls;
     
-    // If true the window will use off-screen rendering.
-    bool with_osr;
-    
     // If true the window is hosting an extension app.
     bool with_extension;
     
@@ -120,8 +117,7 @@ namespace client {
         virtual void CreateExtensionWindow(CefRefPtr<CefExtension> extension,
                                            const CefRect& source_bounds,
                                            CefRefPtr<CefWindow> parent_window,
-                                           const base::Closure& close_callback,
-                                           bool with_osr) = 0;
+                                           const base::Closure& close_callback) = 0;
         
       protected:
         virtual ~Delegate() {}
@@ -165,7 +161,6 @@ namespace client {
       // method directly. Called on the UI thread.
       void InitAsPopup(RootWindow::Delegate* delegate,
                                bool with_controls,
-                               bool with_osr,
                                const CefPopupFeatures& popupFeatures,
                                CefWindowInfo& windowInfo,
                                CefRefPtr<CefClient>& client,
@@ -199,9 +194,6 @@ namespace client {
       
       // Returns the native handle for this window, if any.
       ClientWindowHandle GetWindowHandle() const;
-      
-      // Returns true if this window is using windowless rendering (osr).
-      bool WithWindowlessRendering() const;
       
       // Returns true if this window is hosting an extension app.
       bool WithExtension() const;
@@ -248,7 +240,6 @@ namespace client {
     // After initialization all members are only accessed on the main thread.
     // Members set during initialization.
     bool with_controls_;
-    bool with_osr_;
     bool with_extension_;
     bool is_popup_;
     CefRect start_rect_;

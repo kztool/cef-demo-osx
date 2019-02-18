@@ -30,12 +30,10 @@ namespace client {
     
     // Create a new native popup window.
     // If |with_controls| is true the window will show controls.
-    // If |with_osr| is true the window will use off-screen rendering.
     // This method is called from ClientHandler::CreatePopupWindow() to
     // create a new popup or DevTools window. Must be called on the UI thread.
     scoped_refptr<RootWindow> CreateRootWindowAsPopup(
                                                       bool with_controls,
-                                                      bool with_osr,
                                                       const CefPopupFeatures& popupFeatures,
                                                       CefWindowInfo& windowInfo,
                                                       CefRefPtr<CefClient>& client,
@@ -43,15 +41,13 @@ namespace client {
     
     // Create a new top-level native window to host |extension|.
     // If |with_controls| is true the window will show controls.
-    // If |with_osr| is true the window will use off-screen rendering.
     // This method can be called from anywhere.
     scoped_refptr<RootWindow> CreateRootWindowAsExtension(
                                                           CefRefPtr<CefExtension> extension,
                                                           const CefRect& source_bounds,
                                                           CefRefPtr<CefWindow> parent_window,
                                                           const base::Closure& close_callback,
-                                                          bool with_controls,
-                                                          bool with_osr);
+                                                          bool with_controls);
     
     // Returns true if a window hosting |extension| currently exists. Must be
     // called on the main thread.
@@ -102,8 +98,7 @@ namespace client {
     void CreateExtensionWindow(CefRefPtr<CefExtension> extension,
                                const CefRect& source_bounds,
                                CefRefPtr<CefWindow> parent_window,
-                               const base::Closure& close_callback,
-                               bool with_osr) OVERRIDE;
+                               const base::Closure& close_callback) OVERRIDE;
     
     void CleanupOnUIThread();
     

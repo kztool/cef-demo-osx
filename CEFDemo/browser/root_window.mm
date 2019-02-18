@@ -207,7 +207,6 @@ namespace client {
   RootWindowConfig::RootWindowConfig()
   : always_on_top(false),
   with_controls(true),
-  with_osr(false),
   with_extension(false),
   initially_hidden(false),
   url(MainContext::Get()->GetMainURL()) {}
@@ -229,8 +228,7 @@ namespace client {
     
     ExtensionSet::const_iterator it = extensions.begin();
     for (; it != extensions.end(); ++it) {
-      delegate_->CreateExtensionWindow(*it, CefRect(), NULL, base::Closure(),
-                                       WithWindowlessRendering());
+      delegate_->CreateExtensionWindow(*it, CefRect(), NULL, base::Closure());
     }
   }
   
@@ -263,7 +261,6 @@ namespace client {
   
   RootWindow::RootWindow()
   : with_controls_(false),
-  with_osr_(false),
   is_popup_(false),
   initialized_(false),
   window_(nil),
@@ -292,7 +289,6 @@ namespace client {
     
     delegate_ = delegate;
     with_controls_ = config.with_controls;
-    with_osr_ = config.with_osr;
     with_extension_ = config.with_extension;
     start_rect_ = config.bounds;
     
@@ -311,7 +307,6 @@ namespace client {
   
   void RootWindow::InitAsPopup(RootWindow::Delegate* delegate,
                                   bool with_controls,
-                                  bool with_osr,
                                   const CefPopupFeatures& popupFeatures,
                                   CefWindowInfo& windowInfo,
                                   CefRefPtr<CefClient>& client,
@@ -321,7 +316,6 @@ namespace client {
     
     delegate_ = delegate;
     with_controls_ = with_controls;
-    with_osr_ = with_osr;
     is_popup_ = true;
     
     if (popupFeatures.xSet)
@@ -425,17 +419,11 @@ namespace client {
   
   void RootWindow::SetDeviceScaleFactor(float device_scale_factor) {
     REQUIRE_MAIN_THREAD();
-    
-    if (browser_window_ && with_osr_)
-      browser_window_->SetDeviceScaleFactor(device_scale_factor);
   }
   
   float RootWindow::GetDeviceScaleFactor() const {
     REQUIRE_MAIN_THREAD();
-    
-    if (browser_window_ && with_osr_)
-      return browser_window_->GetDeviceScaleFactor();
-    
+
     NOTREACHED();
     return 0.0f;
   }
@@ -451,11 +439,6 @@ namespace client {
   ClientWindowHandle RootWindow::GetWindowHandle() const {
     REQUIRE_MAIN_THREAD();
     return [window_ contentView];
-  }
-  
-  bool RootWindow::WithWindowlessRendering() const {
-    REQUIRE_MAIN_THREAD();
-    return with_osr_;
   }
   
   bool RootWindow::WithExtension() const {
@@ -524,12 +507,11 @@ namespace client {
     NSView* contentView = [window_ contentView];
     NSRect contentBounds = [contentView bounds];
     
-    if (!with_osr_) {
-      // Make the content view for the window have a layer. This will make all
-      // sub-views have layers. This is necessary to ensure correct layer
-      // ordering of all child views and their layers.
-      [contentView setWantsLayer:YES];
-    }
+    // Make the content view for the window have a layer. This will make all
+    // sub-views have layers. This is necessary to ensure correct layer
+    // ordering of all child views and their layers.
+    [contentView setWantsLayer:YES];
+
     
     if (with_controls_) {
       // Create the buttons.
