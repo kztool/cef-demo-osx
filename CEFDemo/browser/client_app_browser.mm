@@ -9,6 +9,8 @@
 #include "include/cef_crash_util.h"
 #include "include/cef_file_util.h"
 
+#include "browser/utils.h"
+
 namespace client {
   namespace {
     class ClientBrowserDelegate : public ClientAppBrowser::Delegate {
