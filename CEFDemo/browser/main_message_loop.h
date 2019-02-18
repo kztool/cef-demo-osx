@@ -88,7 +88,6 @@ client::MainMessageLoop::Get()->PostClosure(closure)
       }
     }
   };
-  
 }  // namespace client
 
 #endif  // CEF_TESTS_SHARED_BROWSER_MAIN_MESSAGE_LOOP_H_
