@@ -96,13 +96,12 @@ namespace client {
   }
   
   
-
   
-  void BrowserWindow::CreateBrowser(
-                                          ClientWindowHandle parent_handle,
-                                          const CefRect& rect,
-                                          const CefBrowserSettings& settings,
-                                          CefRefPtr<CefRequestContext> request_context) {
+  
+  void BrowserWindow::CreateBrowser(ClientWindowHandle parent_handle,
+                                    const CefRect& rect,
+                                    const CefBrowserSettings& settings,
+                                    CefRefPtr<CefRequestContext> request_context) {
     REQUIRE_MAIN_THREAD();
     
     CefWindowInfo window_info;
@@ -115,9 +114,9 @@ namespace client {
   }
   
   void BrowserWindow::GetPopupConfig(CefWindowHandle temp_handle,
-                                           CefWindowInfo& windowInfo,
-                                           CefRefPtr<CefClient>& client,
-                                           CefBrowserSettings& settings) {
+                                     CefWindowInfo& windowInfo,
+                                     CefRefPtr<CefClient>& client,
+                                     CefBrowserSettings& settings) {
     CEF_REQUIRE_UI_THREAD();
     
     // The window will be properly sized after the browser is created.
@@ -126,10 +125,10 @@ namespace client {
   }
   
   void BrowserWindow::ShowPopup(ClientWindowHandle parent_handle,
-                                      int x,
-                                      int y,
-                                      size_t width,
-                                      size_t height) {
+                                int x,
+                                int y,
+                                size_t width,
+                                size_t height) {
     REQUIRE_MAIN_THREAD();
     
     NSView* browser_view = GetWindowHandle();
@@ -170,4 +169,5 @@ namespace client {
     return NULL;
   }
 }  // namespace client
+
 
