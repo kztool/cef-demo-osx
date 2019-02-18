@@ -15,11 +15,7 @@ namespace client {
   class ClientAppBrowser : public ClientApp, public CefBrowserProcessHandler {
   public:
     ClientAppBrowser();
-  private:    
-    // Create the Linux print handler. Implemented by cefclient in
-    // client_app_delegates_browser.cc
-    static CefRefPtr<CefPrintHandler> CreatePrintHandler();
-    
+  private:        
     // CefApp methods.
     void OnBeforeCommandLineProcessing(const CefString& process_type,
                                        CefRefPtr<CefCommandLine> command_line) OVERRIDE;
@@ -31,12 +27,6 @@ namespace client {
     void OnContextInitialized() OVERRIDE;
     void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) OVERRIDE;
 
-    CefRefPtr<CefPrintHandler> GetPrintHandler() OVERRIDE {
-      return print_handler_;
-    }
-    
-    CefRefPtr<CefPrintHandler> print_handler_;
-    
     IMPLEMENT_REFCOUNTING(ClientAppBrowser);
     DISALLOW_COPY_AND_ASSIGN(ClientAppBrowser);
   };

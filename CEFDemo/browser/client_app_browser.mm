@@ -13,11 +13,6 @@
 namespace client {  
   ClientAppBrowser::ClientAppBrowser() {}
   
-  // static
-  CefRefPtr<CefPrintHandler> ClientAppBrowser::CreatePrintHandler() {
-    return NULL;
-  }
-  
   void ClientAppBrowser::OnBeforeCommandLineProcessing(const CefString& process_type,
                                                        CefRefPtr<CefCommandLine> command_line) {
     // Pass additional command-line flags to the browser process.
@@ -53,12 +48,9 @@ namespace client {
   
   void ClientAppBrowser::OnContextInitialized() {
     // Register cookieable schemes with the global cookie manager.
-    CefRefPtr<CefCookieManager> manager =
-    CefCookieManager::GetGlobalManager(NULL);
+    CefRefPtr<CefCookieManager> manager =CefCookieManager::GetGlobalManager(NULL);
     DCHECK(manager.get());
     manager->SetSupportedSchemes(cookieable_schemes_, NULL);
-    
-    print_handler_ = CreatePrintHandler();
   }
   
   void ClientAppBrowser::OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) {

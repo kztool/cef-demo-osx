@@ -221,10 +221,7 @@ int RunMain(int argc, char* argv[]) {
   command_line->InitFromArgv(argc, argv);
 
   // Create a ClientApp of the correct type.
-  CefRefPtr<CefApp> app;
-  ClientApp::ProcessType process_type = ClientApp::GetProcessType(command_line);
-  if (process_type == ClientApp::BrowserProcess)
-    app = new ClientAppBrowser();
+  CefRefPtr<CefApp> app(new ClientAppBrowser);
 
   // Create the main context object.
   scoped_ptr<MainContext> context(new MainContext(command_line, true));
