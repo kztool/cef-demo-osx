@@ -5,7 +5,6 @@
 #include "browser/client_app_browser.h"
 
 #include "include/cef_cookie.h"
-#include "browser/client_switches.h"
 #include "include/cef_crash_util.h"
 #include "include/cef_file_util.h"
 

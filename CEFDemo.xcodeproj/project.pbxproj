@@ -42,7 +42,6 @@
 		CEE2F5DF221538E3007FF9A6 /* client_app_browser.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5C4221538E3007FF9A6 /* client_app_browser.mm */; };
 		CEE2F5E4221538E3007FF9A6 /* main_message_loop.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5CA221538E3007FF9A6 /* main_message_loop.mm */; };
 		CEE2F5E6221538E3007FF9A6 /* client_app.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5CF221538E3007FF9A6 /* client_app.mm */; };
-		CEE2F5E7221538E3007FF9A6 /* client_switches.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5D0221538E3007FF9A6 /* client_switches.mm */; };
 		CEE2F5EA22153DB9007FF9A6 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEE2F5E922153DB9007FF9A6 /* main.mm */; };
 		CEF4E98A2216A8B500F5E8E7 /* utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEF4E9882216A8B500F5E8E7 /* utils.mm */; };
 /* End PBXBuildFile section */
@@ -98,8 +97,6 @@
 		CEE2F5C9221538E3007FF9A6 /* main_message_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main_message_loop.h; sourceTree = "<group>"; };
 		CEE2F5CA221538E3007FF9A6 /* main_message_loop.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main_message_loop.mm; sourceTree = "<group>"; };
 		CEE2F5CF221538E3007FF9A6 /* client_app.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = client_app.mm; sourceTree = "<group>"; };
-		CEE2F5D0221538E3007FF9A6 /* client_switches.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = client_switches.mm; sourceTree = "<group>"; };
-		CEE2F5D1221538E3007FF9A6 /* client_switches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_switches.h; sourceTree = "<group>"; };
 		CEE2F5D3221538E3007FF9A6 /* client_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_app.h; sourceTree = "<group>"; };
 		CEE2F5E922153DB9007FF9A6 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		CEF4E9882216A8B500F5E8E7 /* utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = utils.mm; sourceTree = "<group>"; };
@@ -196,8 +193,6 @@
 			children = (
 				CEE2F5C9221538E3007FF9A6 /* main_message_loop.h */,
 				CEE2F5CA221538E3007FF9A6 /* main_message_loop.mm */,
-				CEE2F5D1221538E3007FF9A6 /* client_switches.h */,
-				CEE2F5D0221538E3007FF9A6 /* client_switches.mm */,
 				CEE2F5D3221538E3007FF9A6 /* client_app.h */,
 				CEE2F5CF221538E3007FF9A6 /* client_app.mm */,
 				CEE2F5BE221538E3007FF9A6 /* client_app_browser.h */,
@@ -373,7 +368,6 @@
 				CEE2F59D221538BC007FF9A6 /* root_window_manager.mm in Sources */,
 				CEE2F594221538BC007FF9A6 /* window_test_runner.mm in Sources */,
 				CEE2F587221538BC007FF9A6 /* image_cache.mm in Sources */,
-				CEE2F5E7221538E3007FF9A6 /* client_switches.mm in Sources */,
 				CEE2F58F221538BC007FF9A6 /* client_handler.mm in Sources */,
 				CEE2F5EA22153DB9007FF9A6 /* main.mm in Sources */,
 				CEF4E98A2216A8B500F5E8E7 /* utils.mm in Sources */,

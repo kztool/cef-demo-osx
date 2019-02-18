@@ -12,7 +12,6 @@
 
 #include "browser/main_context.h"
 #include "browser/root_window_manager.h"
-#include "browser/client_switches.h"
 
 namespace client {  
   // Used to store global context in the browser process. The methods of this

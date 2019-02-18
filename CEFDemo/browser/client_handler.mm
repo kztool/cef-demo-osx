@@ -7,7 +7,6 @@
 #include "browser/main_context.h"
 #include "browser/root_window_manager.h"
 #include "browser/test_runner.h"
-#include "browser/client_switches.h"
 
 #include "browser/utils.h"
 

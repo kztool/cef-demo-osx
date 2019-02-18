@@ -12,9 +12,6 @@
 #include "browser/main_context.h"
 #include "browser/test_runner.h"
 
-
-#include "browser/client_switches.h"
-
 #include "browser/utils.h"
 
 namespace client {
