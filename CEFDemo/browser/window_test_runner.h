@@ -15,18 +15,8 @@ namespace client {
     // the browser process UI thread unless otherwise indicated.
     class WindowTestRunner {
     public:
-      void SetPos(CefRefPtr<CefBrowser> browser,
-                          int x,
-                          int y,
-                          int width,
-                          int height);
-      void Minimize(CefRefPtr<CefBrowser> browser);
       void Maximize(CefRefPtr<CefBrowser> browser);
       void Restore(CefRefPtr<CefBrowser> browser);
-      
-      // Fit |window| inside |display|. Coordinates are relative to the upper-left
-      // corner of the display.
-      static void ModifyBounds(const CefRect& display, CefRect& window);
       
       WindowTestRunner();
       virtual ~WindowTestRunner() {}

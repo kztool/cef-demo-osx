@@ -657,8 +657,7 @@ namespace client {
     
     CefRefPtr<CefBrowser> browser = GetBrowser();
     if (browser) {
-      scoped_ptr<window_test::WindowTestRunner> test_runner(
-                                                               new window_test::WindowTestRunner());
+      scoped_ptr<window_test::WindowTestRunner> test_runner(new window_test::WindowTestRunner());
       if (fullscreen)
         test_runner->Maximize(browser);
       else
