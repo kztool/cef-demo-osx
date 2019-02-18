@@ -20,9 +20,7 @@
 
 namespace client {
   namespace test_runner {
-    
     namespace {
-      
       const char kTestHost[] = "tests";
       const char kLocalHost[] = "localhost";
       const char kTestOrigin[] = "http://tests/";
@@ -383,23 +381,9 @@ return #code
       frame->ExecuteJavaScript("alert('" + msg + "');", frame->GetURL(), 0);
     }
     
-    bool IsTestURL(const std::string& url, const std::string& path) {
-      CefURLParts parts;
-      CefParseURL(url, parts);
-      
-      const std::string& url_host = CefString(&parts.host);
-      if (url_host != kTestHost && url_host != kLocalHost)
-        return false;
-      
-      const std::string& url_path = CefString(&parts.path);
-      return url_path.find(path) == 0;
-    }
-    
     void CreateMessageHandlers(MessageHandlerSet& handlers) {
       handlers.insert(new PromptHandler);
     }
-    
-    
   }  // namespace test_runner
 }  // namespace client
 
