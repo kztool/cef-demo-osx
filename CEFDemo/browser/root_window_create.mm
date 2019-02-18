@@ -3,40 +3,15 @@
 // can be found in the LICENSE file.
 
 #include "browser/root_window.h"
-
-#if defined(OS_WIN) || defined(OS_LINUX)
-#include "browser/root_window_views.h"
-#endif
-
-#if defined(OS_WIN)
-#include "browser/root_window_win.h"
-#elif defined(OS_LINUX)
-#include "browser/root_window_gtk.h"
-#elif defined(OS_MACOSX)
 #include "browser/root_window_mac.h"
-#endif
 
 namespace client {
-
-// static
-scoped_refptr<RootWindow> RootWindow::Create(bool use_views) {
-  if (use_views) {
-#if defined(OS_WIN) || defined(OS_LINUX)
-    return new RootWindowViews();
-#else
-    LOG(FATAL) << "Views framework is not supported on this platform.";
-#endif
+  // static
+  scoped_refptr<RootWindow> RootWindow::Create(bool use_views) {
+    if (use_views) {
+      LOG(FATAL) << "Views framework is not supported on this platform.";
+    }
+    
+    return new RootWindowMac();
   }
-
-#if defined(OS_WIN)
-  return new RootWindowWin();
-#elif defined(OS_LINUX)
-  return new RootWindowGtk();
-#elif defined(OS_MACOSX)
-  return new RootWindowMac();
-#endif
-
-  return NULL;
-}
-
 }  // namespace client
