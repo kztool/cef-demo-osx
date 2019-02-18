@@ -13,19 +13,21 @@
 namespace client {
   
   // Base class for customizing process-type-based behavior.
-  class ClientApp : public CefApp {
+  class ClientApp : public CefApp, public CefBrowserProcessHandler  {
   public:
     ClientApp();
     
-    enum ProcessType {
-      BrowserProcess,
-      RendererProcess,
-      ZygoteProcess,
-      OtherProcess,
-    };
+    // CefApp methods.
+    void OnBeforeCommandLineProcessing(const CefString& process_type,
+                                       CefRefPtr<CefCommandLine> command_line) OVERRIDE;
+    CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() OVERRIDE {
+      return this;
+    }
     
-    // Determine the process type based on command-line arguments.
-    static ProcessType GetProcessType(CefRefPtr<CefCommandLine> command_line);
+    // CefBrowserProcessHandler methods.
+    void OnContextInitialized() OVERRIDE;
+    void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) OVERRIDE;
+    
     
   protected:
     // Schemes that will be registered with the global cookie manager.
@@ -33,6 +35,7 @@ namespace client {
     
   private:
     DISALLOW_COPY_AND_ASSIGN(ClientApp);
+    IMPLEMENT_REFCOUNTING(ClientApp);
   };
   
 }  // namespace client

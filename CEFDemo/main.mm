@@ -9,7 +9,7 @@
 #import "include/wrapper/cef_library_loader.h"
 #include "browser/main_context.h"
 #include "browser/test_runner.h"
-#include "browser/client_app_browser.h"
+#include "browser/client_app.h"
 #include "browser/main_message_loop.h"
 
 // Receives notifications from the application. Will delete itself when done.
@@ -221,7 +221,7 @@ int RunMain(int argc, char* argv[]) {
   command_line->InitFromArgv(argc, argv);
 
   // Create a ClientApp of the correct type.
-  CefRefPtr<CefApp> app(new ClientAppBrowser);
+  CefRefPtr<CefApp> app(new ClientApp);
 
   // Create the main context object.
   scoped_ptr<MainContext> context(new MainContext(command_line, true));

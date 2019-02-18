@@ -5,27 +5,53 @@
 #include "browser/client_app.h"
 
 #include "include/cef_command_line.h"
+#include "browser/utils.h"
 
 namespace client {
-  namespace {
-    // These flags must match the Chromium values.
-    const char kProcessType[] = "type";
-    const char kRendererProcess[] = "renderer";
-  }  // namespace
-  
   ClientApp::ClientApp() {}
   
-  // static
-  ClientApp::ProcessType ClientApp::GetProcessType(CefRefPtr<CefCommandLine> command_line) {
-    // The command-line flag won't be specified for the browser process.
-    if (!command_line->HasSwitch(kProcessType))
-      return BrowserProcess;
+  void ClientApp::OnBeforeCommandLineProcessing(const CefString& process_type,
+                                                       CefRefPtr<CefCommandLine> command_line) {
+    // Pass additional command-line flags to the browser process.
+    if (process_type.empty()) {
+      // Pass additional command-line flags when off-screen rendering is enabled.
+      if (command_line->HasSwitch(switches::kOffScreenRenderingEnabled) &&
+          !command_line->HasSwitch(switches::kSharedTextureEnabled)) {
+        // Use software rendering and compositing (disable GPU) for increased FPS
+        // and decreased CPU usage. This will also disable WebGL so remove these
+        // switches if you need that capability.
+        // See https://bitbucket.org/chromiumembedded/cef/issues/1257 for details.
+        if (!command_line->HasSwitch(switches::kEnableGPU)) {
+          command_line->AppendSwitch("disable-gpu");
+          command_line->AppendSwitch("disable-gpu-compositing");
+        }
+      }
+      
+      if (command_line->HasSwitch(switches::kUseViews) &&
+          !command_line->HasSwitch("top-chrome-md")) {
+        // Use non-material mode on all platforms by default. Among other things
+        // this causes menu buttons to show hover state. See usage of
+        // MaterialDesignController::IsModeMaterial() in Chromium code.
+        command_line->AppendSwitchWithValue("top-chrome-md", "non-material");
+      }
+      
+      if (!command_line->HasSwitch(switches::kCachePath) &&
+          !command_line->HasSwitch("disable-gpu-shader-disk-cache")) {
+        // Don't create a "GPUCache" directory when cache-path is unspecified.
+        command_line->AppendSwitch("disable-gpu-shader-disk-cache");
+      }
+    }
+  }
+  
+  void ClientApp::OnContextInitialized() {
+    // Register cookieable schemes with the global cookie manager.
+    CefRefPtr<CefCookieManager> manager =CefCookieManager::GetGlobalManager(NULL);
+    DCHECK(manager.get());
+    manager->SetSupportedSchemes(cookieable_schemes_, NULL);
+  }
+  
+  void ClientApp::OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) {
     
-    const std::string& process_type = command_line->GetSwitchValue(kProcessType);
-    if (process_type == kRendererProcess)
-      return RendererProcess;
-    
-    return OtherProcess;
   }
   
 }  // namespace client
