@@ -37,12 +37,6 @@ namespace client {
 
     // Show a JS alert message.
     void Alert(CefRefPtr<CefBrowser> browser, const std::string& message);
-    
-    // Create all CefMessageRouterBrowserSide::Handler objects. They will be
-    // deleted when the ClientHandler is destroyed.
-    typedef std::set<CefMessageRouterBrowserSide::Handler*> MessageHandlerSet;
-    void CreateMessageHandlers(MessageHandlerSet& handlers);
-    
   }  // namespace test_runner
 }  // namespace client
 

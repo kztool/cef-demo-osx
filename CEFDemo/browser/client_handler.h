@@ -233,8 +233,6 @@ namespace client {
                                    int port,
                                    const X509CertificateList& certificates,
                                    CefRefPtr<CefSelectClientCertificateCallback> callback) OVERRIDE;
-    void OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser,
-                                   TerminationStatus status) OVERRIDE;
     
     // Returns the number of browsers currently using this handler. Can only be
     // called on the CEF UI thread.
@@ -315,10 +313,6 @@ namespace client {
     // True if Favicon images should be downloaded.
     bool download_favicon_images_;
     
-    // Handles the browser side of query routing. The renderer side is handled
-    // in client_renderer.cc.
-    CefRefPtr<CefMessageRouterBrowserSide> message_router_;
-    
     // Manages the registration and delivery of resources.
     CefRefPtr<CefResourceManager> resource_manager_;
     
@@ -351,9 +345,6 @@ namespace client {
     
     // True for the initial navigation after browser creation.
     bool initial_navigation_;
-    
-    // Set of Handlers registered with the message router.
-    MessageHandlerSet message_handler_set_;
     
     IMPLEMENT_REFCOUNTING(ClientHandler);
     DISALLOW_COPY_AND_ASSIGN(ClientHandler);

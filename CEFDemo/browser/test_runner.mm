@@ -43,72 +43,6 @@ namespace client {
         return result;
       }
       
-      const char kPrompt[] = "Prompt.";
-      const char kPromptFPS[] = "FPS";
-      const char kPromptDSF[] = "DSF";
-      
-      // Handles execution of prompt results.
-      class PromptHandler : public CefMessageRouterBrowserSide::Handler {
-      public:
-        PromptHandler() {}
-        
-        // Called due to cefQuery execution.
-        virtual bool OnQuery(CefRefPtr<CefBrowser> browser,
-                             CefRefPtr<CefFrame> frame,
-                             int64 query_id,
-                             const CefString& request,
-                             bool persistent,
-                             CefRefPtr<Callback> callback) OVERRIDE {
-          // Parse |request| which takes the form "Prompt.[type]:[value]".
-          const std::string& request_str = request;
-          if (request_str.find(kPrompt) != 0)
-            return false;
-          
-          std::string type = request_str.substr(sizeof(kPrompt) - 1);
-          size_t delim = type.find(':');
-          if (delim == std::string::npos)
-            return false;
-          
-          const std::string& value = type.substr(delim + 1);
-          type = type.substr(0, delim);
-          
-          // Canceling the prompt dialog returns a value of "null".
-          if (value != "null") {
-            if (type == kPromptFPS)
-              SetFPS(browser, atoi(value.c_str()));
-            else if (type == kPromptDSF)
-              SetDSF(browser, static_cast<float>(atof(value.c_str())));
-          }
-          
-          // Nothing is done with the response.
-          callback->Success(CefString());
-          return true;
-        }
-        
-      private:
-        void SetFPS(CefRefPtr<CefBrowser> browser, int fps) {
-          if (fps <= 0) {
-            // Reset to the default value.
-            CefBrowserSettings settings;
-            MainContext::Get()->PopulateBrowserSettings(&settings);
-            fps = settings.windowless_frame_rate;
-          }
-          
-          browser->GetHost()->SetWindowlessFrameRate(fps);
-        }
-        
-        void SetDSF(CefRefPtr<CefBrowser> browser, float dsf) {
-          MainMessageLoop::Get()->PostClosure(
-                                              base::Bind(&PromptHandler::SetDSFOnMainThread, browser, dsf));
-        }
-        
-        static void SetDSFOnMainThread(CefRefPtr<CefBrowser> browser, float dsf) {
-          RootWindow::GetForBrowser(browser->GetIdentifier())
-          ->SetDeviceScaleFactor(dsf);
-        }
-      };
-      
-      
       // Provider that dumps the request contents.
       class RequestDumpResourceProvider : public CefResourceManager::Provider {
       public:
@@ -379,10 +313,6 @@ return #code
       // Execute a JavaScript alert().
       CefRefPtr<CefFrame> frame = browser->GetMainFrame();
       frame->ExecuteJavaScript("alert('" + msg + "');", frame->GetURL(), 0);
-    }
-    
-    void CreateMessageHandlers(MessageHandlerSet& handlers) {
-      handlers.insert(new PromptHandler);
     }
   }  // namespace test_runner
 }  // namespace client

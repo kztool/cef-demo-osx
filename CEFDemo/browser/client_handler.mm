@@ -260,12 +260,7 @@ return std::string(#def); \
                                                CefProcessId source_process,
                                                CefRefPtr<CefProcessMessage> message) {
     CEF_REQUIRE_UI_THREAD();
-    
-    if (message_router_->OnProcessMessageReceived(browser, source_process,
-                                                  message)) {
-      return true;
-    }
-    
+  
     // Check for messages from the client renderer.
     std::string message_name = message->GetName();
     if (message_name == kFocusedNodeChangedMessage) {
@@ -534,18 +529,6 @@ return std::string(#def); \
     
     browser_count_++;
     
-    if (!message_router_) {
-      // Create the browser-side router for query handling.
-      CefMessageRouterConfig config;
-      message_router_ = CefMessageRouterBrowserSide::Create(config);
-      
-      // Register handlers with the router.
-      test_runner::CreateMessageHandlers(message_handler_set_);
-      MessageHandlerSet::const_iterator it = message_handler_set_.begin();
-      for (; it != message_handler_set_.end(); ++it)
-        message_router_->AddHandler(*(it), false);
-    }
-    
     // Disable mouse cursor change if requested via the command-line flag.
     if (mouse_cursor_change_disabled_)
       browser->GetHost()->SetMouseCursorChangeDisabled(true);
@@ -578,17 +561,6 @@ return std::string(#def); \
   
   void ClientHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
     CEF_REQUIRE_UI_THREAD();
-    
-    if (--browser_count_ == 0) {
-      // Remove and delete message router handlers.
-      MessageHandlerSet::const_iterator it = message_handler_set_.begin();
-      for (; it != message_handler_set_.end(); ++it) {
-        message_router_->RemoveHandler(*(it));
-        delete *(it);
-      }
-      message_handler_set_.clear();
-      message_router_ = NULL;
-    }
     
     NotifyBrowserClosed(browser);
   }
@@ -636,7 +608,6 @@ return std::string(#def); \
                                      bool is_redirect) {
     CEF_REQUIRE_UI_THREAD();
     
-    message_router_->OnBeforeBrowse(browser, frame);
     return false;
   }
   
@@ -766,38 +737,6 @@ return std::string(#def); \
     }
     
     return true;
-  }
-  
-  void ClientHandler::OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser,
-                                                TerminationStatus status) {
-    CEF_REQUIRE_UI_THREAD();
-    
-    message_router_->OnRenderProcessTerminated(browser);
-    
-    // Don't reload if there's no start URL, or if the crash URL was specified.
-    if (startup_url_.empty() || startup_url_ == "chrome://crash")
-      return;
-    
-    CefRefPtr<CefFrame> frame = browser->GetMainFrame();
-    std::string url = frame->GetURL();
-    
-    // Don't reload if the termination occurred before any URL had successfully
-    // loaded.
-    if (url.empty())
-      return;
-    
-    std::string start_url = startup_url_;
-    
-    // Convert URLs to lowercase for easier comparison.
-    std::transform(url.begin(), url.end(), url.begin(), tolower);
-    std::transform(start_url.begin(), start_url.end(), start_url.begin(),
-                   tolower);
-    
-    // Don't reload the URL that just resulted in termination.
-    if (url.find(start_url) == 0)
-      return;
-    
-    frame->LoadURL(startup_url_);
   }
   
   int ClientHandler::GetBrowserCount() const {
