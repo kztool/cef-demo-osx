@@ -8,7 +8,6 @@
 #import "include/cef_application_mac.h"
 #import "include/wrapper/cef_library_loader.h"
 #include "browser/main_context.h"
-#include "browser/root_window.h"
 #include "browser/test_runner.h"
 #include "browser/client_app_browser.h"
 #include "browser/main_message_loop.h"

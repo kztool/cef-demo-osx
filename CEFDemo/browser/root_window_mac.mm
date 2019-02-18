@@ -207,6 +207,41 @@
 
 namespace client {
   
+  
+  
+  RootWindowConfig::RootWindowConfig()
+  : always_on_top(false),
+  with_controls(true),
+  with_osr(false),
+  with_extension(false),
+  initially_hidden(false),
+  url(MainContext::Get()->GetMainURL()) {}
+  
+  RootWindow::RootWindow() : delegate_(NULL) {}
+  
+  RootWindow::~RootWindow() {}
+  
+  // static
+  scoped_refptr<RootWindow> RootWindow::GetForBrowser(int browser_id) {
+    return MainContext::Get()->GetRootWindowManager()->GetWindowForBrowser(
+                                                                           browser_id);
+  }
+  
+  void RootWindow::OnExtensionsChanged(const ExtensionSet& extensions) {
+    REQUIRE_MAIN_THREAD();
+    DCHECK(delegate_);
+    DCHECK(!WithExtension());
+    
+    if (extensions.empty())
+      return;
+    
+    ExtensionSet::const_iterator it = extensions.begin();
+    for (; it != extensions.end(); ++it) {
+      delegate_->CreateExtensionWindow(*it, CefRect(), NULL, base::Closure(),
+                                       WithWindowlessRendering());
+    }
+  }
+  
   namespace {
     
     // Sizes for URL bar layout.
@@ -700,5 +735,13 @@ namespace client {
     return [delegate root_window];
   }
   
+  // static
+  scoped_refptr<RootWindow> RootWindow::Create(bool use_views) {
+    if (use_views) {
+      LOG(FATAL) << "Views framework is not supported on this platform.";
+    }
+    
+    return new RootWindowMac();
+  }
 }  // namespace client
 

@@ -11,7 +11,7 @@
 #include "include/base/cef_scoped_ptr.h"
 #include "include/cef_command_line.h"
 #include "browser/image_cache.h"
-#include "browser/root_window.h"
+#include "browser/root_window_mac.h"
 #include "browser/temp_window.h"
 
 namespace client {
