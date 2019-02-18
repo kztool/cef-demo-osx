@@ -9,24 +9,25 @@
 #include "browser/window_test_runner.h"
 
 namespace client {
-namespace window_test {
-
-// Mac OS X platform implementation.
-class WindowTestRunnerMac : public WindowTestRunner {
- public:
-  WindowTestRunnerMac();
-
-  void SetPos(CefRefPtr<CefBrowser> browser,
-              int x,
-              int y,
-              int width,
-              int height) OVERRIDE;
-  void Minimize(CefRefPtr<CefBrowser> browser) OVERRIDE;
-  void Maximize(CefRefPtr<CefBrowser> browser) OVERRIDE;
-  void Restore(CefRefPtr<CefBrowser> browser) OVERRIDE;
-};
-
-}  // namespace window_test
+  namespace window_test {
+    
+    // Mac OS X platform implementation.
+    class WindowTestRunnerMac : public WindowTestRunner {
+    public:
+      WindowTestRunnerMac();
+      
+      void SetPos(CefRefPtr<CefBrowser> browser,
+                  int x,
+                  int y,
+                  int width,
+                  int height) OVERRIDE;
+      void Minimize(CefRefPtr<CefBrowser> browser) OVERRIDE;
+      void Maximize(CefRefPtr<CefBrowser> browser) OVERRIDE;
+      void Restore(CefRefPtr<CefBrowser> browser) OVERRIDE;
+    };
+    
+  }  // namespace window_test
 }  // namespace client
 
 #endif  // CEF_TESTS_CEFCLIENT_BROWSER_WINDOW_TEST_RUNNER_MAC_H_
+
