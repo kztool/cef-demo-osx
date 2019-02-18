@@ -286,8 +286,7 @@ return #code
       // Read resources from a directory on disk.
       std::string resource_dir;
       if (GetResourceDir(resource_dir)) {
-        resource_manager->AddDirectoryProvider(test_origin, resource_dir, 100,
-                                               std::string());
+        resource_manager->AddDirectoryProvider(test_origin, resource_dir, 100, std::string());
       }
     }
     
