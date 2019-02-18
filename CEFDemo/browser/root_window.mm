@@ -11,7 +11,6 @@
 #include "include/cef_application_mac.h"
 #include "browser/main_context.h"
 #include "browser/temp_window.h"
-#include "browser/window_test_runner.h"
 #include "browser/main_message_loop.h"
 
 // Receives notifications from controls and the browser window. Will delete
@@ -653,15 +652,21 @@ namespace client {
   }
   
   void RootWindow::OnSetFullscreen(bool fullscreen) {
+    CEF_REQUIRE_UI_THREAD();
     REQUIRE_MAIN_THREAD();
     
     CefRefPtr<CefBrowser> browser = GetBrowser();
-    if (browser) {
-      scoped_ptr<window_test::WindowTestRunner> test_runner(new window_test::WindowTestRunner());
-      if (fullscreen)
-        test_runner->Maximize(browser);
-      else
-        test_runner->Restore(browser);
+    NSWindow* window = [browser->GetHost()->GetWindowHandle() window];
+    if (browser && window != nil) {
+      if (fullscreen) {
+        [window performZoom:nil];
+      } else {
+        if ([window isMiniaturized]) {
+          [window deminiaturize:nil];
+        } else if ([window isZoomed]) {
+          [window performZoom:nil];
+        } else {}
+      }
     }
   }
   
