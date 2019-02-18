@@ -140,7 +140,7 @@ namespace client {
     MainContext::Get()->PopulateBrowserSettings(&settings);
     
     scoped_refptr<RootWindow> root_window =
-    RootWindow::Create(MainContext::Get()->UseViews());
+    RootWindow::Create();
     root_window->Init(this, config, settings);
     
     // Store a reference to the root window on the main thread.
@@ -165,8 +165,7 @@ namespace client {
     
     MainContext::Get()->PopulateBrowserSettings(&settings);
     
-    scoped_refptr<RootWindow> root_window =
-    RootWindow::Create(MainContext::Get()->UseViews());
+    scoped_refptr<RootWindow> root_window = RootWindow::Create();
     root_window->InitAsPopup(this, with_controls, with_osr, popupFeatures,
                              windowInfo, client, settings);
     

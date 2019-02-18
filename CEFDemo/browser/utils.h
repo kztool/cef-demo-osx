@@ -41,13 +41,9 @@ namespace client {
     //   cef/libcef/common/cef_switches.cc
     //   chrome/common/chrome_switches.cc (not all apply)
     //   content/public/common/content_switches.cc
-    
-    const char kMultiThreadedMessageLoop[] = "multi-threaded-message-loop";
-    const char kExternalMessagePump[] = "external-message-pump";
+
     const char kCachePath[] = "cache-path";
     const char kUrl[] = "url";
-    const char kOffScreenRenderingEnabled[] = "off-screen-rendering-enabled";
-    const char kOffScreenFrameRate[] = "off-screen-frame-rate";
     const char kTransparentPaintingEnabled[] = "transparent-painting-enabled";
     const char kShowUpdateRect[] = "show-update-rect";
     const char kSharedTextureEnabled[] = "shared-texture-enabled";
@@ -59,7 +55,6 @@ namespace client {
     const char kBackgroundColor[] = "background-color";
     const char kEnableGPU[] = "enable-gpu";
     const char kFilterURL[] = "filter-url";
-    const char kUseViews[] = "use-views";
     const char kHideFrame[] = "hide-frame";
     const char kHideControls[] = "hide-controls";
     const char kAlwaysOnTop[] = "always-on-top";

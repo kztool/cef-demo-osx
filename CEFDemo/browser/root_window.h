@@ -131,7 +131,7 @@ namespace client {
       // Use RootWindowManager::CreateRootWindow() or CreateRootWindowAsPopup()
       // instead of calling this method directly. |use_views| will be true if the
       // Views framework should be used.
-      static scoped_refptr<RootWindow> Create(bool use_views);
+      static scoped_refptr<RootWindow> Create();
       
       // Returns the RootWindow associated with the specified |browser_id|. Must be
       // called on the main thread.

@@ -734,11 +734,7 @@ namespace client {
   }
   
   // static
-  scoped_refptr<RootWindow> RootWindow::Create(bool use_views) {
-    if (use_views) {
-      LOG(FATAL) << "Views framework is not supported on this platform.";
-    }
-    
+  scoped_refptr<RootWindow> RootWindow::Create() {
     return new RootWindow();
   }
 }  // namespace client

@@ -30,8 +30,6 @@ namespace client {
     std::string GetAppWorkingDirectory();
     std::string GetMainURL();
     cef_color_t GetBackgroundColor();
-    bool UseViews();
-    bool UseWindowlessRendering();
     void PopulateSettings(CefSettings* settings);
     void PopulateBrowserSettings(CefBrowserSettings* settings);
     RootWindowManager* GetRootWindowManager();
@@ -67,14 +65,9 @@ namespace client {
     std::string main_url_;
     cef_color_t background_color_;
     cef_color_t browser_background_color_;
-    bool use_windowless_rendering_;
-    int windowless_frame_rate_;
-    bool use_views_;
     
     scoped_ptr<RootWindowManager> root_window_manager_;
-    
-    bool external_begin_frame_enabled_;
-    
+
     // Used to verify that methods are called on the correct thread.
     base::ThreadChecker thread_checker_;
     

@@ -47,9 +47,7 @@ namespace client {
   initialized_(false),
   shutdown_(false),
   background_color_(0),
-  browser_background_color_(0),
-  windowless_frame_rate_(0),
-  use_views_(false) {
+  browser_background_color_(0) {
     DCHECK(!g_main_context);
     DCHECK(command_line_.get());
     
@@ -61,47 +59,15 @@ namespace client {
     if (main_url_.empty())
       main_url_ = kDefaultUrl;
     
-    // Whether windowless (off-screen) rendering will be used.
-    use_windowless_rendering_ =
-    command_line_->HasSwitch(switches::kOffScreenRenderingEnabled);
-    
-    if (use_windowless_rendering_ &&
-        command_line_->HasSwitch(switches::kOffScreenFrameRate)) {
-      windowless_frame_rate_ =
-      atoi(command_line_->GetSwitchValue(switches::kOffScreenFrameRate)
-           .ToString()
-           .c_str());
-    }
-    
-    // Whether transparent painting is used with windowless rendering.
-    const bool use_transparent_painting =
-    use_windowless_rendering_ &&
-    command_line_->HasSwitch(switches::kTransparentPaintingEnabled);
-    
-    
-    external_begin_frame_enabled_ =
-    use_windowless_rendering_ &&
-    command_line_->HasSwitch(switches::kExternalBeginFrameEnabled);
-    
-    if (windowless_frame_rate_ <= 0) {
-      windowless_frame_rate_ = 30;
-    }
-    
+  
     if (command_line_->HasSwitch(switches::kBackgroundColor)) {
       // Parse the background color value.
       background_color_ =
       ParseColor(command_line_->GetSwitchValue(switches::kBackgroundColor));
     }
     
-    if (background_color_ == 0 && !use_views_) {
-      // Set an explicit background color.
-      background_color_ = CefColorSetARGB(255, 255, 255, 255);
-    }
-    
-    // |browser_background_color_| should remain 0 to enable transparent painting.
-    if (!use_transparent_painting) {
-      browser_background_color_ = background_color_;
-    }
+    background_color_ = CefColorSetARGB(255, 255, 255, 255);
+    browser_background_color_ = background_color_;
     
     const std::string& cdm_path =
     command_line_->GetSwitchValue(switches::kWidevineCdmPath);
@@ -133,33 +99,15 @@ namespace client {
     return background_color_;
   }
   
-  bool MainContext::UseViews() {
-    return use_views_;
-  }
-  
-  bool MainContext::UseWindowlessRendering() {
-    return use_windowless_rendering_;
-  }
-  
   void MainContext::PopulateSettings(CefSettings* settings) {
-    if (!settings->multi_threaded_message_loop) {
-      settings->external_message_pump =
-      command_line_->HasSwitch(switches::kExternalMessagePump);
-    }
-    
     CefString(&settings->cache_path) =
     command_line_->GetSwitchValue(switches::kCachePath);
-    
-    if (use_windowless_rendering_)
-      settings->windowless_rendering_enabled = true;
     
     if (browser_background_color_ != 0)
       settings->background_color = browser_background_color_;
   }
   
   void MainContext::PopulateBrowserSettings(CefBrowserSettings* settings) {
-    settings->windowless_frame_rate = windowless_frame_rate_;
-    
     if (browser_background_color_ != 0)
       settings->background_color = browser_background_color_;
   }
@@ -182,8 +130,7 @@ namespace client {
     
     // Need to create the RootWindowManager after calling CefInitialize because
     // TempWindowX11 uses cef_get_xdisplay().
-    root_window_manager_.reset(
-                               new RootWindowManager(terminate_when_all_windows_closed_));
+    root_window_manager_.reset(new RootWindowManager(terminate_when_all_windows_closed_));
     
     initialized_ = true;
     
