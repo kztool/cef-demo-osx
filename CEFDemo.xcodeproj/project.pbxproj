@@ -153,7 +153,7 @@
 		CEAAA3B2221527C700EE27EB /* CEFDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CEAFB794221A665C00EED73D /* Resources */,
+				CEAFB794221A665C00EED73D /* resources */,
 				CEE2F533221538BC007FF9A6 /* browser */,
 				CEE2F5E922153DB9007FF9A6 /* main.mm */,
 				CEAAA3B6221527C800EE27EB /* Assets.xcassets */,
@@ -172,7 +172,7 @@
 			path = "CEFDemo Helper";
 			sourceTree = "<group>";
 		};
-		CEAFB794221A665C00EED73D /* Resources */ = {
+		CEAFB794221A665C00EED73D /* resources */ = {
 			isa = PBXGroup;
 			children = (
 				CEAFB799221A66AD00EED73D /* binding.html */,
@@ -196,7 +196,7 @@
 				CEAFB7A5221A66AE00EED73D /* window.html */,
 				CEAFB7A4221A66AE00EED73D /* xmlhttprequest.html */,
 			);
-			path = Resources;
+			path = resources;
 			sourceTree = "<group>";
 		};
 		CEE2F533221538BC007FF9A6 /* browser */ = {
