@@ -20,15 +20,15 @@
 @interface RootWindowDelegate : NSObject<NSWindowDelegate> {
 @private
   NSWindow* window_;
-  client::RootWindowMac* root_window_;
+  client::RootWindow* root_window_;
   bool force_close_;
 }
 
-@property(nonatomic, readonly) client::RootWindowMac* root_window;
+@property(nonatomic, readonly) client::RootWindow* root_window;
 @property(nonatomic, readwrite) bool force_close;
 
 - (id)initWithWindow:(NSWindow*)window
-       andRootWindow:(client::RootWindowMac*)root_window;
+       andRootWindow:(client::RootWindow*)root_window;
 - (IBAction)goBack:(id)sender;
 - (IBAction)goForward:(id)sender;
 - (IBAction)reload:(id)sender;
@@ -42,7 +42,7 @@
 @synthesize force_close = force_close_;
 
 - (id)initWithWindow:(NSWindow*)window
-       andRootWindow:(client::RootWindowMac*)root_window {
+       andRootWindow:(client::RootWindow*)root_window {
   if (self = [super init]) {
     window_ = window;
     [window_ setDelegate:self];
@@ -206,9 +206,6 @@
 @end
 
 namespace client {
-  
-  
-  
   RootWindowConfig::RootWindowConfig()
   : always_on_top(false),
   with_controls(true),
@@ -217,9 +214,6 @@ namespace client {
   initially_hidden(false),
   url(MainContext::Get()->GetMainURL()) {}
   
-  RootWindow::RootWindow() : delegate_(NULL) {}
-  
-  RootWindow::~RootWindow() {}
   
   // static
   scoped_refptr<RootWindow> RootWindow::GetForBrowser(int browser_id) {
@@ -269,7 +263,7 @@ namespace client {
     
   }  // namespace
   
-  RootWindowMac::RootWindowMac()
+  RootWindow::RootWindow()
   : with_controls_(false),
   with_osr_(false),
   is_popup_(false),
@@ -281,9 +275,10 @@ namespace client {
   stop_button_(nil),
   url_textfield_(nil),
   window_destroyed_(false),
-  browser_destroyed_(false) {}
+  browser_destroyed_(false),
+  delegate_(NULL) {}
   
-  RootWindowMac::~RootWindowMac() {
+  RootWindow::~RootWindow() {
     REQUIRE_MAIN_THREAD();
     
     // The window and browser should already have been destroyed.
@@ -291,7 +286,7 @@ namespace client {
     DCHECK(browser_destroyed_);
   }
   
-  void RootWindowMac::Init(RootWindow::Delegate* delegate,
+  void RootWindow::Init(RootWindow::Delegate* delegate,
                            const RootWindowConfig& config,
                            const CefBrowserSettings& settings) {
     DCHECK(delegate);
@@ -311,12 +306,12 @@ namespace client {
     if (CURRENTLY_ON_MAIN_THREAD()) {
       CreateRootWindow(settings, config.initially_hidden);
     } else {
-      MAIN_POST_CLOSURE(base::Bind(&RootWindowMac::CreateRootWindow, this,
+      MAIN_POST_CLOSURE(base::Bind(&RootWindow::CreateRootWindow, this,
                                    settings, config.initially_hidden));
     }
   }
   
-  void RootWindowMac::InitAsPopup(RootWindow::Delegate* delegate,
+  void RootWindow::InitAsPopup(RootWindow::Delegate* delegate,
                                   bool with_controls,
                                   bool with_osr,
                                   const CefPopupFeatures& popupFeatures,
@@ -351,7 +346,7 @@ namespace client {
                                     client, settings);
   }
   
-  void RootWindowMac::Show(ShowMode mode) {
+  void RootWindow::Show(ShowMode mode) {
     REQUIRE_MAIN_THREAD();
     
     if (!window_)
@@ -385,7 +380,7 @@ namespace client {
       [window_ performZoom:nil];
   }
   
-  void RootWindowMac::Hide() {
+  void RootWindow::Hide() {
     REQUIRE_MAIN_THREAD();
     
     if (!window_)
@@ -399,7 +394,7 @@ namespace client {
     [window_ orderOut:nil];
   }
   
-  void RootWindowMac::SetBounds(int x, int y, size_t width, size_t height) {
+  void RootWindow::SetBounds(int x, int y, size_t width, size_t height) {
     REQUIRE_MAIN_THREAD();
     
     if (!window_)
@@ -421,7 +416,7 @@ namespace client {
     [window_ setFrame:frame_rect display:YES];
   }
   
-  void RootWindowMac::Close(bool force) {
+  void RootWindow::Close(bool force) {
     REQUIRE_MAIN_THREAD();
     
     if (window_) {
@@ -430,14 +425,14 @@ namespace client {
     }
   }
   
-  void RootWindowMac::SetDeviceScaleFactor(float device_scale_factor) {
+  void RootWindow::SetDeviceScaleFactor(float device_scale_factor) {
     REQUIRE_MAIN_THREAD();
     
     if (browser_window_ && with_osr_)
       browser_window_->SetDeviceScaleFactor(device_scale_factor);
   }
   
-  float RootWindowMac::GetDeviceScaleFactor() const {
+  float RootWindow::GetDeviceScaleFactor() const {
     REQUIRE_MAIN_THREAD();
     
     if (browser_window_ && with_osr_)
@@ -447,7 +442,7 @@ namespace client {
     return 0.0f;
   }
   
-  CefRefPtr<CefBrowser> RootWindowMac::GetBrowser() const {
+  CefRefPtr<CefBrowser> RootWindow::GetBrowser() const {
     REQUIRE_MAIN_THREAD();
     
     if (browser_window_)
@@ -455,32 +450,32 @@ namespace client {
     return NULL;
   }
   
-  ClientWindowHandle RootWindowMac::GetWindowHandle() const {
+  ClientWindowHandle RootWindow::GetWindowHandle() const {
     REQUIRE_MAIN_THREAD();
     return [window_ contentView];
   }
   
-  bool RootWindowMac::WithWindowlessRendering() const {
+  bool RootWindow::WithWindowlessRendering() const {
     REQUIRE_MAIN_THREAD();
     return with_osr_;
   }
   
-  bool RootWindowMac::WithExtension() const {
+  bool RootWindow::WithExtension() const {
     REQUIRE_MAIN_THREAD();
     return with_extension_;
   }
   
-  void RootWindowMac::WindowDestroyed() {
+  void RootWindow::WindowDestroyed() {
     window_ = nil;
     window_destroyed_ = true;
     NotifyDestroyedIfDone();
   }
   
-  void RootWindowMac::CreateBrowserWindow(const std::string& startup_url) {
+  void RootWindow::CreateBrowserWindow(const std::string& startup_url) {
     browser_window_.reset(new BrowserWindow(this, startup_url));
   }
   
-  void RootWindowMac::CreateRootWindow(const CefBrowserSettings& settings,
+  void RootWindow::CreateRootWindow(const CefBrowserSettings& settings,
                                        bool initially_hidden) {
     REQUIRE_MAIN_THREAD();
     DCHECK(!window_);
@@ -605,7 +600,7 @@ namespace client {
     }
   }
   
-  void RootWindowMac::OnBrowserCreated(CefRefPtr<CefBrowser> browser) {
+  void RootWindow::OnBrowserCreated(CefRefPtr<CefBrowser> browser) {
     REQUIRE_MAIN_THREAD();
     
     // For popup browsers create the root window once the browser has been
@@ -616,7 +611,7 @@ namespace client {
     delegate_->OnBrowserCreated(this, browser);
   }
   
-  void RootWindowMac::OnBrowserWindowDestroyed() {
+  void RootWindow::OnBrowserWindowDestroyed() {
     REQUIRE_MAIN_THREAD();
     
     browser_window_.reset();
@@ -632,7 +627,7 @@ namespace client {
     NotifyDestroyedIfDone();
   }
   
-  void RootWindowMac::OnSetAddress(const std::string& url) {
+  void RootWindow::OnSetAddress(const std::string& url) {
     REQUIRE_MAIN_THREAD();
     
     if (url_textfield_) {
@@ -642,13 +637,13 @@ namespace client {
     }
   }
   
-  void RootWindowMac::OnSetDraggableRegions(
+  void RootWindow::OnSetDraggableRegions(
                                             const std::vector<CefDraggableRegion>& regions) {
     REQUIRE_MAIN_THREAD();
     // TODO(cef): Implement support for draggable regions on this platform.
   }
   
-  void RootWindowMac::OnSetTitle(const std::string& title) {
+  void RootWindow::OnSetTitle(const std::string& title) {
     REQUIRE_MAIN_THREAD();
     
     if (window_) {
@@ -658,7 +653,7 @@ namespace client {
     }
   }
   
-  void RootWindowMac::OnSetFullscreen(bool fullscreen) {
+  void RootWindow::OnSetFullscreen(bool fullscreen) {
     REQUIRE_MAIN_THREAD();
     
     CefRefPtr<CefBrowser> browser = GetBrowser();
@@ -672,7 +667,7 @@ namespace client {
     }
   }
   
-  void RootWindowMac::OnAutoResize(const CefSize& new_size) {
+  void RootWindow::OnAutoResize(const CefSize& new_size) {
     REQUIRE_MAIN_THREAD();
     
     if (!window_)
@@ -695,7 +690,7 @@ namespace client {
     Show(ShowNormal);
   }
   
-  void RootWindowMac::OnSetLoadingState(bool isLoading,
+  void RootWindow::OnSetLoadingState(bool isLoading,
                                         bool canGoBack,
                                         bool canGoForward) {
     REQUIRE_MAIN_THREAD();
@@ -722,7 +717,7 @@ namespace client {
     }
   }
   
-  void RootWindowMac::NotifyDestroyedIfDone() {
+  void RootWindow::NotifyDestroyedIfDone() {
     // Notify once both the window and the browser have been destroyed.
     if (window_destroyed_ && browser_destroyed_)
       delegate_->OnRootWindowDestroyed(this);
@@ -741,7 +736,7 @@ namespace client {
       LOG(FATAL) << "Views framework is not supported on this platform.";
     }
     
-    return new RootWindowMac();
+    return new RootWindow();
   }
 }  // namespace client
 
