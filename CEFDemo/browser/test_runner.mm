@@ -162,9 +162,7 @@ namespace client {
       return ss.str();
     }
     
-    CefRefPtr<CefStreamReader> GetDumpResponse(
-                                               CefRefPtr<CefRequest> request,
-                                               CefResponse::HeaderMap& response_headers) {
+    CefRefPtr<CefStreamReader> GetDumpResponse(CefRefPtr<CefRequest> request, CefResponse::HeaderMap& response_headers) {
       std::string origin;
       
       // Extract the origin request header, if any. It will be specified for
@@ -188,12 +186,10 @@ namespace client {
           (origin.find("http://" + std::string(kTestHost)) == 0 ||
            origin.find("http://" + std::string(kLocalHost)) == 0)) {
             // Allow cross-origin XMLHttpRequests from test origins.
-            response_headers.insert(
-                                    std::make_pair("Access-Control-Allow-Origin", origin));
+            response_headers.insert(std::make_pair("Access-Control-Allow-Origin", origin));
             
             // Allow the custom header from the xmlhttprequest.html example.
-            response_headers.insert(
-                                    std::make_pair("Access-Control-Allow-Headers", "My-Custom-Header"));
+            response_headers.insert(std::make_pair("Access-Control-Allow-Headers", "My-Custom-Header"));
           }
       
       const std::string& dump = DumpRequestContents(request);
@@ -285,9 +281,7 @@ return #code
       resource_manager->SetUrlFilter(base::Bind(RequestUrlFilter));
       
       // Add provider for resource dumps.
-      resource_manager->AddProvider(
-                                    new RequestDumpResourceProvider(test_origin + "request.html"), 0,
-                                    std::string());
+      resource_manager->AddProvider(new RequestDumpResourceProvider(test_origin + "request.html"), 0, std::string());
       
       // Read resources from a directory on disk.
       std::string resource_dir;
