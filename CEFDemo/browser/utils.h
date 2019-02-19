@@ -23,14 +23,9 @@
 
 #import "include/views/cef_window.h"
 
+#import "include/wrapper/cef_library_loader.h"
 #import "include/wrapper/cef_resource_manager.h"
 #import "include/wrapper/cef_stream_resource_handler.h"
-
-
-#import "include/cef_application_mac.h"
-#import "include/wrapper/cef_library_loader.h"
-
-
 
 #define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle
