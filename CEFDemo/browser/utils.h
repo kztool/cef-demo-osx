@@ -127,9 +127,7 @@ namespace client {
     
     // Returns the dump response as a stream. |request| is the request.
     // |response_headers| will be populated with extra response headers, if any.
-    CefRefPtr<CefStreamReader> GetDumpResponse(
-                                               CefRefPtr<CefRequest> request,
-                                               CefResponse::HeaderMap& response_headers);
+    CefRefPtr<CefStreamReader> GetDumpResponse(CefRefPtr<CefRequest> request, CefResponse::HeaderMap& response_headers);
     
     // Returns a data: URI with the specified contents.
     std::string GetDataURI(const std::string& data, const std::string& mime_type);
@@ -164,16 +162,14 @@ namespace client {
     // all platforms). Internal extensions must be on the hard-coded list enforced
     // by IsInternalExtension. If |internal| is non-NULL it will be set to true if
     // the extension is handled internally.
-    std::string GetExtensionResourcePath(const std::string& extension_path,
-                                         bool* internal);
+    std::string GetExtensionResourcePath(const std::string& extension_path, bool* internal);
     
     // Read the contents of |extension_path| into |contents|. For external
     // extensions this will read the file from disk. For internal extensions this
     // will call LoadBinaryResource. Internal extensions must be on the hard-coded
     // list enforced by IsInternalExtension. Returns true on success. Must be
     // called on the FILE thread.
-    bool GetExtensionResourceContents(const std::string& extension_path,
-                                      std::string& contents);
+    bool GetExtensionResourceContents(const std::string& extension_path, std::string& contents);
     
     // Load |extension_path| in |request_context|. May be an internal or external
     // extension. Internal extensions must be on the hard-coded list enforced by
@@ -184,8 +180,7 @@ namespace client {
     
     // Register an internal handler for extension resources. Internal extensions
     // must be on the hard-coded list enforced by IsInternalExtension.
-    void AddInternalExtensionToResourceManager(
-                                               CefRefPtr<CefExtension> extension,
+    void AddInternalExtensionToResourceManager(CefRefPtr<CefExtension> extension,
                                                CefRefPtr<CefResourceManager> resource_manager);
     
     // Returns the URL origin for |extension_id|.
@@ -200,10 +195,7 @@ namespace client {
     // Look for a browser_action.default_icon manifest value and return the resource
     // path. If |internal| is non-NULL it will be set to true if the extension is
     // handled internally.
-    std::string GetExtensionIconPath(CefRefPtr<CefExtension> extension,
-                                     bool* internal);
-    
-    
+    std::string GetExtensionIconPath(CefRefPtr<CefExtension> extension, bool* internal);
   }
 }
 
@@ -224,12 +216,10 @@ namespace client {
     
   private:
     size_t Grow(size_t size);
-    
     size_t grow_;
     void* data_;
     int64 datasize_;
     int64 offset_;
-    
     base::Lock lock_;
     
     IMPLEMENT_REFCOUNTING(BytesWriteHandler);
