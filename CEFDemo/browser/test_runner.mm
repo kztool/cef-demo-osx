@@ -2,21 +2,9 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "browser/test_runner.h"
-
-#include <sstream>
-
-#include "include/base/cef_bind.h"
-#include "include/cef_parser.h"
-#include "include/cef_task.h"
-#include "include/cef_trace.h"
-#include "include/cef_web_plugin.h"
-#include "include/wrapper/cef_closure_task.h"
-#include "include/wrapper/cef_stream_resource_handler.h"
-#include "browser/main_context.h"
-#include "browser/root_window_manager.h"
-
-#include "browser/utils.h"
+#import "test_runner.h"
+#import "main_context.h"
+#import "root_window_manager.h"
 
 namespace client {
   namespace test_runner {

@@ -5,14 +5,7 @@
 #ifndef CEF_TESTS_CEFCLIENT_BROWSER_TEST_RUNNER_H_
 #define CEF_TESTS_CEFCLIENT_BROWSER_TEST_RUNNER_H_
 #pragma once
-
-#include <set>
-#include <string>
-
-#include "include/cef_browser.h"
-#include "include/cef_request.h"
-#include "include/wrapper/cef_message_router.h"
-#include "include/wrapper/cef_resource_manager.h"
+#import "utils.h"
 
 namespace client {
   namespace test_runner {

@@ -22,15 +22,6 @@
 #include "browser/browser_window.h"
 #include "browser/utils.h"
 
-#ifdef __OBJC__
-@class NSWindow;
-@class NSButton;
-@class NSTextField;
-#else
-class NSWindow;
-class NSButton;
-class NSTextField;
-#endif
 
 namespace client {
   // Used to configure how a RootWindow is created.

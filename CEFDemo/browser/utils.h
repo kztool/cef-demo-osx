@@ -19,15 +19,37 @@
 #include "include/cef_path_util.h"
 #include "include/wrapper/cef_resource_manager.h"
 
+#include <set>
+#include <string>
+
+#include "include/cef_browser.h"
+#include "include/cef_request.h"
+#include "include/wrapper/cef_message_router.h"
+#include "include/wrapper/cef_resource_manager.h"
+
+#include <sstream>
+
+#include "include/base/cef_bind.h"
+#include "include/cef_parser.h"
+#include "include/cef_task.h"
+#include "include/cef_trace.h"
+#include "include/cef_web_plugin.h"
+#include "include/wrapper/cef_closure_task.h"
+#include "include/wrapper/cef_stream_resource_handler.h"
+
+#define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle
 #ifdef __cplusplus
 #ifdef __OBJC__
 @class NSWindow;
+@class NSButton;
+@class NSTextField;
 #else
 class NSWindow;
+class NSButton;
+class NSTextField;
 #endif
 #endif
-
 
 namespace client {
   namespace switches {

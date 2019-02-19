@@ -11,9 +11,6 @@
 #include "browser/utils.h"
 
 namespace client {
-  
-#define NEWLINE "\n"
-  
   namespace {
     // Custom menu command Ids.
     enum client_menu_ids {
