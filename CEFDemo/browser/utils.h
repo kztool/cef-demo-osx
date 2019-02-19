@@ -59,16 +59,9 @@ namespace client {
     const char kRequestContextPerBrowser[] = "request-context-per-browser";
     const char kRequestContextSharedCache[] = "request-context-shared-cache";
     const char kRequestContextBlockCookies[] = "request-context-block-cookies";
-    const char kBackgroundColor[] = "background-color";
-    const char kEnableGPU[] = "enable-gpu";
-    const char kFilterURL[] = "filter-url";
-    const char kHideFrame[] = "hide-frame";
     const char kHideControls[] = "hide-controls";
-    const char kAlwaysOnTop[] = "always-on-top";
-    const char kHideTopMenu[] = "hide-top-menu";
     const char kWidevineCdmPath[] = "widevine-cdm-path";
     const char kSslClientCertificate[] = "ssl-client-certificate";
-    const char kCRLSetsPath[] = "crl-sets-path";
     const char kLoadExtension[] = "load-extension";
     const char kNoActivate[] = "no-activate";
   }  // namespace switches
