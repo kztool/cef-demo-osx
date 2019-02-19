@@ -6,22 +6,10 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MAC_H_
 #pragma once
 
-#include <set>
-#include <string>
-
-#include "include/base/cef_scoped_ptr.h"
-#include "include/base/cef_ref_counted.h"
-#include "include/base/cef_callback_forward.h"
-
-
-#include "include/cef_browser.h"
-#include "include/views/cef_window.h"
-#include "browser/image_cache.h"
-#include "browser/main_message_loop.h"
-
-#include "browser/browser_window.h"
-#include "browser/utils.h"
-
+#import "utils.h"
+#import "image_cache.h"
+#import "main_message_loop.h"
+#import "browser_window.h"
 
 namespace client {
   // Used to configure how a RootWindow is created.

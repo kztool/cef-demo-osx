@@ -2,22 +2,12 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "browser/root_window_manager.h"
-
-#include <sstream>
-
-#include "include/base/cef_bind.h"
-#include "include/base/cef_logging.h"
-#include "include/wrapper/cef_helpers.h"
-#include "browser/main_context.h"
-#include "browser/test_runner.h"
-
-#include "browser/utils.h"
+#import "root_window_manager.h"
+#import "main_context.h"
+#import "test_runner.h"
 
 namespace client {
-  
   namespace {
-    
     class ClientRequestContextHandler : public CefRequestContextHandler,
     public CefExtensionHandler {
     public:

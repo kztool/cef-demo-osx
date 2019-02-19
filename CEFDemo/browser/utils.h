@@ -71,6 +71,35 @@
 
 #include "include/cef_app.h"
 
+#include <set>
+#include <string>
+
+#include "include/base/cef_scoped_ptr.h"
+#include "include/base/cef_ref_counted.h"
+#include "include/base/cef_callback_forward.h"
+
+
+#include "include/cef_browser.h"
+#include "include/views/cef_window.h"
+
+#include <Cocoa/Cocoa.h>
+
+#include "include/base/cef_bind.h"
+#include "include/cef_app.h"
+#include "include/cef_application_mac.h"
+
+
+#include <set>
+
+#include "include/base/cef_scoped_ptr.h"
+#include "include/cef_command_line.h"
+
+#include <sstream>
+
+#include "include/base/cef_bind.h"
+#include "include/base/cef_logging.h"
+#include "include/wrapper/cef_helpers.h"
+
 #define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle
 #ifdef __cplusplus

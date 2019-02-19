@@ -6,13 +6,10 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MANAGER_H_
 #pragma once
 
-#include <set>
-
-#include "include/base/cef_scoped_ptr.h"
-#include "include/cef_command_line.h"
-#include "browser/image_cache.h"
-#include "browser/root_window.h"
-#include "browser/temp_window.h"
+#import "utils.h"
+#import "image_cache.h"
+#import "root_window.h"
+#import "temp_window.h"
 
 namespace client {
   

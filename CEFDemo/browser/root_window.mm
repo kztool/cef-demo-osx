@@ -2,16 +2,9 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "browser/root_window.h"
-
-#include <Cocoa/Cocoa.h>
-
-#include "include/base/cef_bind.h"
-#include "include/cef_app.h"
-#include "include/cef_application_mac.h"
-#include "browser/main_context.h"
-#include "browser/temp_window.h"
-#include "browser/main_message_loop.h"
+#import "root_window.h"
+#import "main_context.h"
+#import "temp_window.h"
 
 // Receives notifications from controls and the browser window. Will delete
 // itself when done.
