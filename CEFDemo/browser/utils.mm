@@ -8,7 +8,6 @@
 
 #import "utils.h"
 #import "main_context.h"
-//#import "root_window_manager.h"
 
 namespace client {
   namespace utils {
