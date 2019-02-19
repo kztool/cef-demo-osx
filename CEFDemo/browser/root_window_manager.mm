@@ -63,7 +63,7 @@ namespace client {
             std::istringstream f(extension_path);
             while (getline(f, part, ';')) {
               if (!part.empty())
-                extension_util::LoadExtension(request_context, part, this);
+                utils::LoadExtension(request_context, part, this);
             }
           }
         }
@@ -169,7 +169,7 @@ namespace client {
                                                                            CefRefPtr<CefWindow> parent_window,
                                                                            const base::Closure& close_callback,
                                                                            bool with_controls) {
-    const std::string& extension_url = extension_util::GetExtensionURL(extension);
+    const std::string& extension_url = utils::GetExtensionURL(extension);
     if (extension_url.empty()) {
       NOTREACHED() << "Extension cannot be loaded directly.";
       return NULL;
@@ -265,7 +265,7 @@ namespace client {
     }
     
     // Don't track extensions that can't be loaded directly.
-    if (extension_util::GetExtensionURL(extension).empty())
+    if (utils::GetExtensionURL(extension).empty())
       return;
     
     // Don't add the same extension multiple times.

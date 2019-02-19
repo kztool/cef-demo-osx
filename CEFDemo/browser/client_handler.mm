@@ -530,9 +530,9 @@ return std::string(#def); \
                                                CefSize(1000, 1000));
       
       CefRefPtr<CefExtension> extension = browser->GetHost()->GetExtension();
-      if (extension_util::IsInternalExtension(extension->GetPath())) {
+      if (utils::IsInternalExtension(extension->GetPath())) {
         // Register the internal handler for extension resources.
-        extension_util::AddInternalExtensionToResourceManager(extension,
+        utils::AddInternalExtensionToResourceManager(extension,
                                                               resource_manager_);
       }
     }
