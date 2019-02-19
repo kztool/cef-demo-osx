@@ -188,12 +188,9 @@ namespace client {
     RootWindow::Delegate* delegate() const { return delegate_; }
     
   private:
-      // Allow deletion via scoped_refptr only.
-      friend struct DeleteOnMainThread;
-      friend class base::RefCountedThreadSafe<RootWindow, DeleteOnMainThread>;
-      
-      
-      Delegate* delegate_;
+    // Allow deletion via scoped_refptr only.
+    friend struct DeleteOnMainThread;
+    friend class base::RefCountedThreadSafe<RootWindow, DeleteOnMainThread>;
       
     void CreateBrowserWindow(const std::string& startup_url);
     void CreateRootWindow(const CefBrowserSettings& settings,
@@ -237,6 +234,8 @@ namespace client {
     
     bool window_destroyed_;
     bool browser_destroyed_;
+    
+    Delegate* delegate_;
     
     DISALLOW_COPY_AND_ASSIGN(RootWindow);
   };
