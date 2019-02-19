@@ -1,13 +1,8 @@
 // Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
-
-#include <Cocoa/Cocoa.h>
-
-#include "browser/browser_window.h"
-#include "browser/client_handler.h"
-#include "browser/main_message_loop.h"
-
+#import "browser_window.h"
+#import "main_message_loop.h"
 
 namespace client {
   BrowserWindow::BrowserWindow(Delegate* delegate, const std::string& startup_url)

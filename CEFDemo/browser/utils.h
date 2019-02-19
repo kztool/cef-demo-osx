@@ -56,6 +56,9 @@
 
 #include "include/cef_command_line.h"
 
+#include "include/base/cef_scoped_ptr.h"
+#include "include/cef_browser.h"
+
 #define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle
 #ifdef __cplusplus
