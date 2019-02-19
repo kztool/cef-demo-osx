@@ -6,7 +6,7 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_IMAGE_CACHE_H_
 #pragma once
 
-#include "browser/utils.h"
+#import "utils.h"
 
 namespace client {
   

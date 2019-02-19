@@ -2,14 +2,11 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "browser/image_cache.h"
+#import "image_cache.h"
 
 namespace client {
-  
   namespace {
-    
     const char kEmptyId[] = "__empty";
-    
   }  // namespace
   
   ImageCache::ImageCache() {}

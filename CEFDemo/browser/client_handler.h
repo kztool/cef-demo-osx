@@ -6,15 +6,7 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_CLIENT_HANDLER_H_
 #pragma once
 
-#include <set>
-#include <string>
-
-#include "include/cef_client.h"
-#include "include/wrapper/cef_helpers.h"
-#include "include/wrapper/cef_message_router.h"
-#include "include/wrapper/cef_resource_manager.h"
-
-#include "browser/utils.h"
+#import "utils.h"
 
 namespace client {
   

@@ -59,6 +59,14 @@
 #include "include/base/cef_scoped_ptr.h"
 #include "include/cef_browser.h"
 
+#include <set>
+#include <string>
+
+#include "include/cef_client.h"
+#include "include/wrapper/cef_helpers.h"
+#include "include/wrapper/cef_message_router.h"
+#include "include/wrapper/cef_resource_manager.h"
+
 #define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle
 #ifdef __cplusplus
