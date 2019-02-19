@@ -89,9 +89,6 @@ namespace client {
     delegate_->OnSetDraggableRegions(regions);
   }
   
-  
-  
-  
   void BrowserWindow::CreateBrowser(ClientWindowHandle parent_handle,
                                     const CefRect& rect,
                                     const CefBrowserSettings& settings,
