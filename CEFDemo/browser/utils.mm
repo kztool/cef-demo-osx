@@ -487,7 +487,7 @@ namespace client {
       path.append("/");
       path.append(resource_name);
       
-      return ReadFileToString(path, &resource_data, INT_MAX);
+      return ReadFileToString(path, &resource_data);
     }
     
     CefRefPtr<CefStreamReader> GetBinaryResourceReader(const char* resource_name) {
