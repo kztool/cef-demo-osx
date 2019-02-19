@@ -10,6 +10,7 @@
 
 namespace client {
   namespace utils {
+    const char kPathSep = '/';
     // namespace private functions
     namespace {
       bool AllowFileIO() {
@@ -106,7 +107,7 @@ namespace client {
       }
     }  // namespace
     
-    const char kPathSep = '/';
+
     
     bool ReadFileToString(const std::string& path,
                           std::string* contents,

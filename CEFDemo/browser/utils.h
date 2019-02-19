@@ -79,9 +79,6 @@ namespace client {
     // Retrieve a resource as a steam reader.
     CefRefPtr<CefStreamReader> GetBinaryResourceReader(const char* resource_name);
     
-    // Platform-specific path separator.
-    extern const char kPathSep;
-    
     // Reads the file at |path| into |contents| and returns true on success and
     // false on error.  In case of I/O error, |contents| holds the data that could
     // be read from the file before the error occurred.  When the file size exceeds
