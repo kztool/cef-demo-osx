@@ -7,7 +7,6 @@
 #pragma once
 
 #import "utils.h"
-#import "image_cache.h"
 #import "root_window.h"
 #import "temp_window.h"
 

@@ -27,7 +27,19 @@
 #import "include/wrapper/cef_stream_resource_handler.h"
 
 #define NEWLINE "\n"
+
 #define ClientWindowHandle CefWindowHandle
+
+#define CURRENTLY_ON_MAIN_THREAD() \
+client::MainMessageLoop::Get()->RunsTasksOnCurrentThread()
+
+#define REQUIRE_MAIN_THREAD() DCHECK(CURRENTLY_ON_MAIN_THREAD())
+
+#define MAIN_POST_TASK(task) client::MainMessageLoop::Get()->PostTask(task)
+
+#define MAIN_POST_CLOSURE(closure) \
+client::MainMessageLoop::Get()->PostClosure(closure)
+
 #ifdef __cplusplus
 #ifdef __OBJC__
 @class NSWindow;
@@ -192,6 +204,182 @@ namespace client {
     
     IMPLEMENT_REFCOUNTING(BytesWriteHandler);
     DISALLOW_COPY_AND_ASSIGN(BytesWriteHandler);
+  };
+}  // namespace client
+
+namespace client {
+  // Simple image caching implementation.
+  class ImageCache: public base::RefCountedThreadSafe<ImageCache, CefDeleteOnUIThread> {
+  public:
+    ImageCache();
+    
+    // Image representation at a specific scale factor.
+    struct ImageRep {
+      ImageRep(const std::string& path, float scale_factor);
+      
+      // Full file system path.
+      std::string path_;
+      
+      // Image scale factor (usually 1.0f or 2.0f).
+      float scale_factor_;
+    };
+    typedef std::vector<ImageRep> ImageRepSet;
+    
+    // Unique image that may have multiple representations.
+    struct ImageInfo {
+      ImageInfo(const std::string& id,
+                const ImageRepSet& reps,
+                bool internal,
+                bool force_reload);
+      
+      // Helper for returning an empty image.
+      static ImageInfo Empty();
+      
+      // Helpers for creating common representations.
+      static ImageInfo Create1x(const std::string& id,
+                                const std::string& path_1x,
+                                bool internal);
+      static ImageInfo Create2x(const std::string& id,
+                                const std::string& path_1x,
+                                const std::string& path_2x,
+                                bool internal);
+      static ImageInfo Create2x(const std::string& id);
+      
+      // Image unique ID.
+      std::string id_;
+      
+      // Image representations to load.
+      ImageRepSet reps_;
+      
+      // True if the image is internal (loaded via LoadBinaryResource).
+      bool internal_;
+      
+      // True to force reload.
+      bool force_reload_;
+    };
+    typedef std::vector<ImageInfo> ImageInfoSet;
+    
+    typedef std::vector<CefRefPtr<CefImage>> ImageSet;
+    
+    typedef base::Callback<void(const ImageSet& /*images*/)> LoadImagesCallback;
+    
+    // Loads the images represented by |image_info|. Executes |callback|
+    // either synchronously or asychronously on the UI thread after completion.
+    void LoadImages(const ImageInfoSet& image_info,
+                    const LoadImagesCallback& callback);
+    
+    // Returns an image that has already been cached. Must be called on the
+    // UI thread.
+    CefRefPtr<CefImage> GetCachedImage(const std::string& image_id);
+    
+  private:
+    // Only allow deletion via scoped_refptr.
+    friend struct CefDeleteOnThread<TID_UI>;
+    friend class base::RefCountedThreadSafe<ImageCache, CefDeleteOnUIThread>;
+    
+    ~ImageCache();
+    
+    enum ImageType {
+      TYPE_NONE,
+      TYPE_PNG,
+      TYPE_JPEG,
+    };
+    
+    static ImageType GetImageType(const std::string& path);
+    
+    struct ImageContent;
+    typedef std::vector<ImageContent> ImageContentSet;
+    
+    // Load missing image contents on the FILE thread.
+    void LoadMissing(const ImageInfoSet& image_info,
+                     const ImageSet& images,
+                     const LoadImagesCallback& callback);
+    static bool LoadImageContents(const ImageInfo& info, ImageContent* content);
+    static bool LoadImageContents(const std::string& path,
+                                  bool internal,
+                                  ImageType* type,
+                                  std::string* contents);
+    
+    // Create missing CefImage representations on the UI thread.
+    void UpdateCache(const ImageInfoSet& image_info,
+                     const ImageContentSet& contents,
+                     const LoadImagesCallback& callback);
+    static CefRefPtr<CefImage> CreateImage(const std::string& image_id,
+                                           const ImageContent& content);
+    
+    // Map image ID to image representation. Only accessed on the UI thread.
+    typedef std::map<std::string, CefRefPtr<CefImage>> ImageMap;
+    ImageMap image_map_;
+  };
+}
+
+
+namespace client {
+  
+  // Represents the message loop running on the main application thread in the
+  // browser process. This will be the same as the CEF UI thread on Linux, OS X
+  // and Windows when not using multi-threaded message loop mode. The methods of
+  // this class are thread-safe unless otherwise indicated.
+  class MainMessageLoop {
+  public:
+    MainMessageLoop();
+    // Returns the singleton instance of this object.
+    static MainMessageLoop* Get();
+    
+    // Run the message loop. The thread that this method is called on will be
+    // considered the main thread. This blocks until Quit() is called.
+    virtual int Run();
+    
+    // Quit the message loop.
+    virtual void Quit();
+    
+    // Post a task for execution on the main message loop.
+    virtual void PostTask(CefRefPtr<CefTask> task);
+    
+    // Returns true if this message loop runs tasks on the current thread.
+    virtual bool RunsTasksOnCurrentThread() const;
+    
+    // Post a closure for execution on the main message loop.
+    void PostClosure(const base::Closure& closure);
+    
+  protected:
+    // Only allow deletion via scoped_ptr.
+    friend struct base::DefaultDeleter<MainMessageLoop>;
+    virtual ~MainMessageLoop();
+    
+  private:
+    DISALLOW_COPY_AND_ASSIGN(MainMessageLoop);
+  };
+
+  // Use this struct in conjuction with RefCountedThreadSafe to ensure that an
+  // object is deleted on the main thread. For example:
+  //
+  // class Foo : public base::RefCountedThreadSafe<Foo, DeleteOnMainThread> {
+  //  public:
+  //   Foo();
+  //   void DoSomething();
+  //
+  //  private:
+  //   // Allow deletion via scoped_refptr only.
+  //   friend struct DeleteOnMainThread;
+  //   friend class base::RefCountedThreadSafe<Foo, DeleteOnMainThread>;
+  //
+  //   virtual ~Foo() {}
+  // };
+  //
+  // base::scoped_refptr<Foo> foo = new Foo();
+  // foo->DoSomething();
+  // foo = NULL;  // Deletion of |foo| will occur on the main thread.
+  //
+  struct DeleteOnMainThread {
+    template <typename T>
+    static void Destruct(const T* x) {
+      if (CURRENTLY_ON_MAIN_THREAD()) {
+        delete x;
+      } else {
+        client::MainMessageLoop::Get()->PostClosure(base::Bind(&DeleteOnMainThread::Destruct<T>, x));
+      }
+    }
   };
 }  // namespace client
 

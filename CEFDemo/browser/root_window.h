@@ -7,8 +7,6 @@
 #pragma once
 
 #import "utils.h"
-#import "image_cache.h"
-#import "main_message_loop.h"
 #import "browser_window.h"
 
 namespace client {
