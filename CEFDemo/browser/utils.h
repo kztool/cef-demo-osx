@@ -40,6 +40,10 @@ client::MainMessageLoop::Get()->RunsTasksOnCurrentThread()
 #define MAIN_POST_CLOSURE(closure) \
 client::MainMessageLoop::Get()->PostClosure(closure)
 
+#define CASE(code) \
+case code:       \
+return #code
+
 #ifdef __cplusplus
 #ifdef __OBJC__
 @class NSWindow;
@@ -116,6 +120,28 @@ namespace client {
     std::string GetFileExtension(const std::string& path);
     
     
+    // Returns the contents of the CefRequest as a string.
+    std::string DumpRequestContents(CefRefPtr<CefRequest> request);
+    
+    // Returns the dump response as a stream. |request| is the request.
+    // |response_headers| will be populated with extra response headers, if any.
+    CefRefPtr<CefStreamReader> GetDumpResponse(
+                                               CefRefPtr<CefRequest> request,
+                                               CefResponse::HeaderMap& response_headers);
+    
+    // Returns a data: URI with the specified contents.
+    std::string GetDataURI(const std::string& data, const std::string& mime_type);
+    
+    // Returns the string representation of the specified error code.
+    std::string GetErrorString(cef_errorcode_t code);
+    
+    // Set up the resource manager for tests.
+    void SetupResourceManager(CefRefPtr<CefResourceManager> resource_manager);
+    
+    // Show a JS alert message.
+    void Alert(CefRefPtr<CefBrowser> browser, const std::string& message);
+    
+    
     // Returns true if |extension_path| can be handled internally via
     // LoadBinaryResource. This checks a hard-coded list of allowed extension path
     // components.
@@ -174,6 +200,8 @@ namespace client {
     // handled internally.
     std::string GetExtensionIconPath(CefRefPtr<CefExtension> extension,
                                      bool* internal);
+    
+    
   }
 }
 

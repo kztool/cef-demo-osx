@@ -5,7 +5,6 @@
 #import "client_handler.h"
 #import "main_context.h"
 #import "root_window_manager.h"
-#import "test_runner.h"
 
 namespace client {
   namespace {
@@ -130,14 +129,14 @@ return std::string(#def); \
       "<h3>Page failed to load.</h3>"
       "URL: <a href=\""
       << failed_url << "\">" << failed_url
-      << "</a><br/>Error: " << test_runner::GetErrorString(error_code) << " ("
+      << "</a><br/>Error: " << utils::GetErrorString(error_code) << " ("
       << error_code << ")";
       
       if (!other_info.empty())
         ss << "<br/>" << other_info;
       
       ss << "</body></html>";
-      frame->LoadURL(test_runner::GetDataURI(ss.str(), "text/html"));
+      frame->LoadURL(utils::GetDataURI(ss.str(), "text/html"));
     }
     
     // Return HTML string with information about a certificate.
@@ -226,7 +225,7 @@ return std::string(#def); \
     DCHECK(!console_log_file_.empty());
     
     resource_manager_ = new CefResourceManager();
-    test_runner::SetupResourceManager(resource_manager_);
+    utils::SetupResourceManager(resource_manager_);
     
     // Read command line settings.
     CefRefPtr<CefCommandLine> command_line =
@@ -391,8 +390,7 @@ return std::string(#def); \
       fclose(file);
       
       if (first_console_message_) {
-        test_runner::Alert(
-                           browser, "Console messages written to \"" + console_log_file_ + "\"");
+        utils::Alert(browser, "Console messages written to \"" + console_log_file_ + "\"");
         first_console_message_ = false;
       }
     }
@@ -426,7 +424,7 @@ return std::string(#def); \
     CEF_REQUIRE_UI_THREAD();
     
     if (download_item->IsComplete()) {
-      test_runner::Alert(browser, "File \"" +
+      utils::Alert(browser, "File \"" +
                          download_item->GetFullPath().ToString() +
                          "\" downloaded successfully.");
     }
@@ -439,7 +437,7 @@ return std::string(#def); \
     
     // Forbid dragging of URLs and files.
     if ((mask & DRAG_OPERATION_LINK) && !dragData->IsFragment()) {
-      test_runner::Alert(browser, "cefclient blocks dragging of URLs and files");
+      utils::Alert(browser, "cefclient blocks dragging of URLs and files");
       return true;
     }
     
@@ -489,7 +487,7 @@ return std::string(#def); \
       // OnKeyEvent() method the space key would cause the window to scroll in
       // addition to showing the alert box.
       if (event.type == KEYEVENT_RAWKEYDOWN)
-        test_runner::Alert(browser, "You pressed the space bar!");
+        utils::Alert(browser, "You pressed the space bar!");
       return true;
     }
     
@@ -820,7 +818,7 @@ return std::string(#def); \
     
     RootWindowConfig config;
     config.with_controls = false;
-    config.url = test_runner::GetDataURI(ss.str(), "text/html");
+    config.url = utils::GetDataURI(ss.str(), "text/html");
     MainContext::Get()->GetRootWindowManager()->CreateRootWindow(config);
   }
   

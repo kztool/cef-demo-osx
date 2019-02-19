@@ -4,7 +4,6 @@
 
 #import "root_window_manager.h"
 #import "main_context.h"
-#import "test_runner.h"
 
 namespace client {
   namespace {
