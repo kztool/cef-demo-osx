@@ -2,10 +2,7 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "browser/client_app.h"
-
-#include "include/cef_command_line.h"
-#include "browser/utils.h"
+#import "client_app.h"
 
 namespace client {
   ClientApp::ClientApp() {}
@@ -13,7 +10,7 @@ namespace client {
   void ClientApp::OnBeforeCommandLineProcessing(const CefString& process_type,
                                                        CefRefPtr<CefCommandLine> command_line) {
     // Pass additional command-line flags to the browser process.
-    if (process_type.empty()) {            
+    if (process_type.empty()) {
       if (!command_line->HasSwitch(switches::kCachePath) &&
           !command_line->HasSwitch("disable-gpu-shader-disk-cache")) {
         // Don't create a "GPUCache" directory when cache-path is unspecified.

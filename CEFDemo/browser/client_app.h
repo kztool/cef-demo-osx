@@ -6,9 +6,7 @@
 #define CEF_TESTS_SHARED_COMMON_CLIENT_APP_H_
 #pragma once
 
-#include <vector>
-
-#include "include/cef_app.h"
+#import "utils.h"
 
 namespace client {
   

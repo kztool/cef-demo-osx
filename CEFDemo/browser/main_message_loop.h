@@ -6,9 +6,7 @@
 #define CEF_TESTS_SHARED_BROWSER_MAIN_MESSAGE_LOOP_H_
 #pragma once
 
-#include "include/base/cef_bind.h"
-#include "include/base/cef_scoped_ptr.h"
-#include "include/cef_task.h"
+#import "utils.h"
 
 namespace client {
   

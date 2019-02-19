@@ -2,11 +2,7 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "browser/main_message_loop.h"
-
-#include "include/cef_task.h"
-#include "include/wrapper/cef_closure_task.h"
-#include "include/cef_app.h"
+#import "main_message_loop.h"
 
 namespace client {
   namespace {

@@ -37,6 +37,25 @@
 #include "include/wrapper/cef_closure_task.h"
 #include "include/wrapper/cef_stream_resource_handler.h"
 
+#include <Cocoa/Cocoa.h>
+
+#include "include/base/cef_logging.h"
+#include "include/cef_app.h"
+
+#include "include/base/cef_bind.h"
+#include "include/base/cef_scoped_ptr.h"
+#include "include/cef_task.h"
+
+#include "include/cef_task.h"
+#include "include/wrapper/cef_closure_task.h"
+#include "include/cef_app.h"
+
+#include <vector>
+
+#include "include/cef_app.h"
+
+#include "include/cef_command_line.h"
+
 #define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle
 #ifdef __cplusplus

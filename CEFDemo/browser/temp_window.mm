@@ -2,12 +2,7 @@
 // reserved. Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-#include "browser/temp_window.h"
-
-#include <Cocoa/Cocoa.h>
-
-#include "include/base/cef_logging.h"
-#include "include/cef_app.h"
+#import "temp_window.h"
 
 namespace client {
   namespace {

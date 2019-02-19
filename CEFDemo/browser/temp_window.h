@@ -6,7 +6,7 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_TEMP_WINDOW_H_
 #pragma once
 
-#include "browser/utils.h"
+#import "utils.h"
 
 namespace client {
   // Represents a singleton hidden window that acts as a temporary parent for
