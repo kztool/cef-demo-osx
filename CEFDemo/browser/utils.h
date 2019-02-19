@@ -119,6 +119,8 @@ namespace client {
     // Extracts the file extension from |path|.
     std::string GetFileExtension(const std::string& path);
     
+    // Tell if the file exist
+    bool FileExists(const char* path);
     
     // Returns the contents of the CefRequest as a string.
     std::string DumpRequestContents(CefRefPtr<CefRequest> request);
@@ -343,7 +345,6 @@ namespace client {
 
 
 namespace client {
-  
   // Represents the message loop running on the main application thread in the
   // browser process. This will be the same as the CEF UI thread on Linux, OS X
   // and Windows when not using multi-threaded message loop mode. The methods of
