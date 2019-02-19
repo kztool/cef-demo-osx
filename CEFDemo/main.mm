@@ -3,14 +3,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import <Cocoa/Cocoa.h>
-#include "include/cef_app.h"
-#import "include/cef_application_mac.h"
-#import "include/wrapper/cef_library_loader.h"
-#include "browser/main_context.h"
-#include "browser/test_runner.h"
-#include "browser/client_app.h"
-#include "browser/main_message_loop.h"
+#import "browser/utils.h"
+
+#import "browser/main_context.h"
+#import "browser/client_app.h"
 
 // Receives notifications from the application. Will delete itself when done.
 @interface ClientAppDelegate : NSObject<NSApplicationDelegate> {

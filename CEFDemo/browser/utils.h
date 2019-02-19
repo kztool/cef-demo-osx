@@ -10,20 +10,26 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_UTILS_H_
 #pragma once
 
-#include <set>
-#include <mach-o/dyld.h>
-#include <iomanip>
+#import <Cocoa/Cocoa.h>
+#import <set>
+#import <mach-o/dyld.h>
+#import <iomanip>
 
-#include "include/cef_app.h"
-#include "include/cef_client.h"
-#include "include/cef_parser.h"
-#include "include/cef_path_util.h"
-#include "include/cef_application_mac.h"
+#import "include/cef_app.h"
+#import "include/cef_client.h"
+#import "include/cef_parser.h"
+#import "include/cef_path_util.h"
+#import "include/cef_application_mac.h"
 
-#include "include/views/cef_window.h"
+#import "include/views/cef_window.h"
 
-#include "include/wrapper/cef_resource_manager.h"
-#include "include/wrapper/cef_stream_resource_handler.h"
+#import "include/wrapper/cef_resource_manager.h"
+#import "include/wrapper/cef_stream_resource_handler.h"
+
+
+#import "include/cef_application_mac.h"
+#import "include/wrapper/cef_library_loader.h"
+
 
 
 #define NEWLINE "\n"
