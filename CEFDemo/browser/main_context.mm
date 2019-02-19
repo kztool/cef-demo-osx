@@ -10,27 +10,6 @@ namespace client {
     
     // The default URL to load in a browser window.
     const char kDefaultUrl[] = "http://www.google.com";
-    
-    // Returns the ARGB value for |color|.
-    cef_color_t ParseColor(const std::string& color) {
-      std::string colorToLower;
-      colorToLower.resize(color.size());
-      std::transform(color.begin(), color.end(), colorToLower.begin(), ::tolower);
-      
-      if (colorToLower == "black")
-        return CefColorSetARGB(255, 0, 0, 0);
-      else if (colorToLower == "blue")
-        return CefColorSetARGB(255, 0, 0, 255);
-      else if (colorToLower == "green")
-        return CefColorSetARGB(255, 0, 255, 0);
-      else if (colorToLower == "red")
-        return CefColorSetARGB(255, 255, 0, 0);
-      else if (colorToLower == "white")
-        return CefColorSetARGB(255, 255, 255, 255);
-      
-      // Use the default color.
-      return 0;
-    }
   }  // namespace
   
   // static
@@ -44,9 +23,7 @@ namespace client {
   : command_line_(command_line),
   terminate_when_all_windows_closed_(terminate_when_all_windows_closed),
   initialized_(false),
-  shutdown_(false),
-  background_color_(0),
-  browser_background_color_(0) {
+  shutdown_(false) {
     DCHECK(!g_main_context);
     DCHECK(command_line_.get());
     
@@ -58,18 +35,8 @@ namespace client {
     if (main_url_.empty())
       main_url_ = kDefaultUrl;
     
-  
-    if (command_line_->HasSwitch(switches::kBackgroundColor)) {
-      // Parse the background color value.
-      background_color_ =
-      ParseColor(command_line_->GetSwitchValue(switches::kBackgroundColor));
-    }
     
-    background_color_ = CefColorSetARGB(255, 255, 255, 255);
-    browser_background_color_ = background_color_;
-    
-    const std::string& cdm_path =
-    command_line_->GetSwitchValue(switches::kWidevineCdmPath);
+    const std::string& cdm_path = command_line_->GetSwitchValue(switches::kWidevineCdmPath);
     if (!cdm_path.empty()) {
       // Register the Widevine CDM at the specified path. See comments in
       // cef_web_plugin.h for details. It's safe to call this method before
@@ -94,21 +61,12 @@ namespace client {
     return main_url_;
   }
   
-  cef_color_t MainContext::GetBackgroundColor() {
-    return background_color_;
-  }
-  
   void MainContext::PopulateSettings(CefSettings* settings) {
-    CefString(&settings->cache_path) =
-    command_line_->GetSwitchValue(switches::kCachePath);
-    
-    if (browser_background_color_ != 0)
-      settings->background_color = browser_background_color_;
+    CefString(&settings->cache_path) = command_line_->GetSwitchValue(switches::kCachePath);
   }
   
   void MainContext::PopulateBrowserSettings(CefBrowserSettings* settings) {
-    if (browser_background_color_ != 0)
-      settings->background_color = browser_background_color_;
+
   }
   
   RootWindowManager* MainContext::GetRootWindowManager() {

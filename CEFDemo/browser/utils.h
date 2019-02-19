@@ -43,7 +43,6 @@ class NSTextField;
 
 namespace client {
   namespace switches {
-    
     // CEF and Chromium support a wide range of command-line switches. This file
     // only contains command-line switches specific to the cefclient application.
     // View CEF/Chromium documentation or search for *_switches.cc files in the
@@ -56,10 +55,6 @@ namespace client {
 
     const char kCachePath[] = "cache-path";
     const char kUrl[] = "url";
-    const char kTransparentPaintingEnabled[] = "transparent-painting-enabled";
-    const char kShowUpdateRect[] = "show-update-rect";
-    const char kSharedTextureEnabled[] = "shared-texture-enabled";
-    const char kExternalBeginFrameEnabled[] = "external-begin-frame-enabled";
     const char kMouseCursorChangeDisabled[] = "mouse-cursor-change-disabled";
     const char kRequestContextPerBrowser[] = "request-context-per-browser";
     const char kRequestContextSharedCache[] = "request-context-shared-cache";
@@ -76,7 +71,6 @@ namespace client {
     const char kCRLSetsPath[] = "crl-sets-path";
     const char kLoadExtension[] = "load-extension";
     const char kNoActivate[] = "no-activate";
-    
   }  // namespace switches
 }  // namespace client
 

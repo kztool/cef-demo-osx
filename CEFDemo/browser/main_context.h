@@ -25,7 +25,6 @@ namespace client {
     std::string GetDownloadPath(const std::string& file_name);
     std::string GetAppWorkingDirectory();
     std::string GetMainURL();
-    cef_color_t GetBackgroundColor();
     void PopulateSettings(CefSettings* settings);
     void PopulateBrowserSettings(CefBrowserSettings* settings);
     RootWindowManager* GetRootWindowManager();
@@ -59,8 +58,8 @@ namespace client {
     bool shutdown_;
     
     std::string main_url_;
-    cef_color_t background_color_;
-    cef_color_t browser_background_color_;
+//    cef_color_t background_color_;
+//    cef_color_t browser_background_color_;
     
     scoped_ptr<RootWindowManager> root_window_manager_;
 
