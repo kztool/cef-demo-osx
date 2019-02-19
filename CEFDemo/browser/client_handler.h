@@ -82,9 +82,7 @@ namespace client {
     void DetachDelegate();
     
     // CefClient methods
-    CefRefPtr<CefContextMenuHandler> GetContextMenuHandler() OVERRIDE {
-      return this;
-    }
+    CefRefPtr<CefContextMenuHandler> GetContextMenuHandler() OVERRIDE {return this;}
     CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE { return this; }
     CefRefPtr<CefDownloadHandler> GetDownloadHandler() OVERRIDE { return this; }
     CefRefPtr<CefDragHandler> GetDragHandler() OVERRIDE { return this; }
