@@ -58,8 +58,6 @@ namespace client {
     bool shutdown_;
     
     std::string main_url_;
-//    cef_color_t background_color_;
-//    cef_color_t browser_background_color_;
     
     scoped_ptr<RootWindowManager> root_window_manager_;
 
