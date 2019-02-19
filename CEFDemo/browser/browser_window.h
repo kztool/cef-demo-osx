@@ -113,8 +113,6 @@ namespace client {
     // Allow deletion via scoped_ptr only.
     friend struct base::DefaultDeleter<BrowserWindow>;
     
-
-    
     // ClientHandler::Delegate methods.
     void OnBrowserCreated(CefRefPtr<CefBrowser> browser) OVERRIDE;
     void OnBrowserClosing(CefRefPtr<CefBrowser> browser) OVERRIDE;
@@ -126,14 +124,12 @@ namespace client {
     void OnSetLoadingState(bool isLoading,
                            bool canGoBack,
                            bool canGoForward) OVERRIDE;
-    void OnSetDraggableRegions(
-                               const std::vector<CefDraggableRegion>& regions) OVERRIDE;
+    void OnSetDraggableRegions(const std::vector<CefDraggableRegion>& regions) OVERRIDE;
     
     Delegate* delegate_;
     CefRefPtr<CefBrowser> browser_;
     CefRefPtr<ClientHandler> client_handler_;
     bool is_closing_;
-    
   private:
     DISALLOW_COPY_AND_ASSIGN(BrowserWindow);
   };
