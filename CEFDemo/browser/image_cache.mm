@@ -145,7 +145,7 @@ namespace client {
   
   // static
   ImageCache::ImageType ImageCache::GetImageType(const std::string& path) {
-    std::string ext = file_util::GetFileExtension(path);
+    std::string ext = utils::GetFileExtension(path);
     if (ext.empty())
       return TYPE_NONE;
     
@@ -220,9 +220,9 @@ namespace client {
       return false;
     
     if (internal) {
-      if (!LoadBinaryResource(path.c_str(), *contents))
+      if (!utils::LoadBinaryResource(path.c_str(), *contents))
         return false;
-    } else if (!file_util::ReadFileToString(path, contents)) {
+    } else if (!utils::ReadFileToString(path, contents)) {
       return false;
     }
     

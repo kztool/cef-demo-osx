@@ -9,15 +9,107 @@
 #import "utils.h"
 
 namespace client {
-  namespace {
-    // Implementation adapted from Chromium's base/mac/foundation_util.mm
-    bool UncachedAmIBundled() {
-      return [[[NSBundle mainBundle] bundlePath] hasSuffix:@".app"];
+  namespace utils {
+    // namespace private functions
+    namespace {
+      bool AllowFileIO() {
+        if (CefCurrentlyOn(TID_UI) || CefCurrentlyOn(TID_IO)) {
+          NOTREACHED() << "file IO is not allowed on the current thread";
+          return false;
+        }
+        return true;
+      }
+      
+      bool AmIBundled() {
+        static bool am_i_bundled = [[[NSBundle mainBundle] bundlePath] hasSuffix:@".app"];
+        return am_i_bundled;
+      }
+    }  // namespace
+    
+    const char kPathSep = '/';
+    
+    bool ReadFileToString(const std::string& path,
+                          std::string* contents,
+                          size_t max_size) {
+      if (!AllowFileIO())
+        return false;
+      
+      if (contents)
+        contents->clear();
+      FILE* file = fopen(path.c_str(), "rb");
+      if (!file)
+        return false;
+      
+      const size_t kBufferSize = 1 << 16;
+      scoped_ptr<char[]> buf(new char[kBufferSize]);
+      size_t len;
+      size_t size = 0;
+      bool read_status = true;
+      
+      // Many files supplied in |path| have incorrect size (proc files etc).
+      // Hence, the file is read sequentially as opposed to a one-shot read.
+      while ((len = fread(buf.get(), 1, kBufferSize, file)) > 0) {
+        if (contents)
+          contents->append(buf.get(), std::min(len, max_size - size));
+        
+        if ((max_size - size) < len) {
+          read_status = false;
+          break;
+        }
+        
+        size += len;
+      }
+      read_status = read_status && !ferror(file);
+      fclose(file);
+      
+      return read_status;
     }
     
-    bool AmIBundled() {
-      static bool am_i_bundled = UncachedAmIBundled();
-      return am_i_bundled;
+    int WriteFile(const std::string& path, const char* data, int size) {
+      if (!AllowFileIO())
+        return -1;
+      
+      FILE* file = fopen(path.c_str(), "wb");
+      if (!file)
+        return -1;
+      
+      int written = 0;
+      
+      do {
+        size_t write = fwrite(data + written, 1, size - written, file);
+        if (write == 0)
+          break;
+        written += static_cast<int>(write);
+      } while (written < size);
+      
+      fclose(file);
+      
+      return written;
+    }
+    
+    std::string JoinPath(const std::string& path1, const std::string& path2) {
+      if (path1.empty() && path2.empty())
+        return std::string();
+      if (path1.empty())
+        return path2;
+      if (path2.empty())
+        return path1;
+      
+      std::string result = path1;
+      if (result[result.size() - 1] != kPathSep)
+        result += kPathSep;
+      if (path2[0] == kPathSep)
+        result += path2.substr(1);
+      else
+        result += path2;
+      return result;
+    }
+    
+    std::string GetFileExtension(const std::string& path) {
+      size_t sep = path.find_last_of(".");
+      if (sep != std::string::npos)
+        return path.substr(sep + 1);
+      return std::string();
     }
     
     bool FileExists(const char* path) {
@@ -29,68 +121,78 @@ namespace client {
       return false;
     }
     
-    bool ReadFileToString(const char* path, std::string& data) {
-      // Implementation adapted from base/file_util.cc
-      FILE* file = fopen(path, "rb");
-      if (!file)
+    bool LoadBinaryResource(const char* resource_name, std::string& resource_data) {
+      std::string path;
+      if (!GetResourceDir(path))
         return false;
       
-      char buf[1 << 16];
-      size_t len;
-      while ((len = fread(buf, 1, sizeof(buf), file)) > 0)
-        data.append(buf, len);
-      fclose(file);
+      path.append("/");
+      path.append(resource_name);
       
+      return ReadFileToString(path, &resource_data, INT_MAX);
+    }
+    
+    CefRefPtr<CefStreamReader> GetBinaryResourceReader(const char* resource_name) {
+      std::string path;
+      if (!GetResourceDir(path))
+        return NULL;
+      
+      path.append("/");
+      path.append(resource_name);
+      
+      if (!FileExists(path.c_str()))
+        return NULL;
+      
+      return CefStreamReader::CreateForFile(path);
+    }
+    
+    // Implementation adapted from Chromium's base/base_path_mac.mm
+    bool GetResourceDir(std::string& dir) {
+      // Retrieve the executable directory.
+      uint32_t pathSize = 0;
+      _NSGetExecutablePath(NULL, &pathSize);
+      if (pathSize > 0) {
+        dir.resize(pathSize);
+        _NSGetExecutablePath(const_cast<char*>(dir.c_str()), &pathSize);
+      }
+      
+      if (utils::AmIBundled()) {
+        // Trim executable name up to the last separator.
+        std::string::size_type last_separator = dir.find_last_of("/");
+        dir.resize(last_separator);
+        dir.append("/../Resources");
+        return true;
+      }
+      
+      dir.append("/Resources");
       return true;
     }
+  }
+}
+
+namespace client {
+  namespace {
+    // Implementation adapted from Chromium's base/mac/foundation_util.mm
+    
+
+    
+//    bool ReadFileToString(const char* path, std::string& data) {
+//      // Implementation adapted from base/file_util.cc
+//      FILE* file = fopen(path, "rb");
+//      if (!file)
+//        return false;
+//      
+//      char buf[1 << 16];
+//      size_t len;
+//      while ((len = fread(buf, 1, sizeof(buf), file)) > 0)
+//        data.append(buf, len);
+//      fclose(file);
+//      
+//      return true;
+//    }
   }  // namespace
   
-  bool LoadBinaryResource(const char* resource_name, std::string& resource_data) {
-    std::string path;
-    if (!GetResourceDir(path))
-      return false;
-    
-    path.append("/");
-    path.append(resource_name);
-    
-    return ReadFileToString(path.c_str(), resource_data);
-  }
-  
-  CefRefPtr<CefStreamReader> GetBinaryResourceReader(const char* resource_name) {
-    std::string path;
-    if (!GetResourceDir(path))
-      return NULL;
-    
-    path.append("/");
-    path.append(resource_name);
-    
-    if (!FileExists(path.c_str()))
-      return NULL;
-    
-    return CefStreamReader::CreateForFile(path);
-  }
-  
-  // Implementation adapted from Chromium's base/base_path_mac.mm
-  bool GetResourceDir(std::string& dir) {
-    // Retrieve the executable directory.
-    uint32_t pathSize = 0;
-    _NSGetExecutablePath(NULL, &pathSize);
-    if (pathSize > 0) {
-      dir.resize(pathSize);
-      _NSGetExecutablePath(const_cast<char*>(dir.c_str()), &pathSize);
-    }
-    
-    if (AmIBundled()) {
-      // Trim executable name up to the last separator.
-      std::string::size_type last_separator = dir.find_last_of("/");
-      dir.resize(last_separator);
-      dir.append("/../Resources");
-      return true;
-    }
-    
-    dir.append("/Resources");
-    return true;
-  }
+
 }  // namespace client
 
 
@@ -180,102 +282,7 @@ namespace client {
 
 namespace client {
   namespace file_util {
-    // namespace private functions
-    namespace {
-      bool AllowFileIO() {
-        if (CefCurrentlyOn(TID_UI) || CefCurrentlyOn(TID_IO)) {
-          NOTREACHED() << "file IO is not allowed on the current thread";
-          return false;
-        }
-        return true;
-      }
-    }  // namespace
-    
-    const char kPathSep = '/';
-    
-    bool ReadFileToString(const std::string& path,
-                          std::string* contents,
-                          size_t max_size) {
-      if (!AllowFileIO())
-        return false;
-      
-      if (contents)
-        contents->clear();
-      FILE* file = fopen(path.c_str(), "rb");
-      if (!file)
-        return false;
-      
-      const size_t kBufferSize = 1 << 16;
-      scoped_ptr<char[]> buf(new char[kBufferSize]);
-      size_t len;
-      size_t size = 0;
-      bool read_status = true;
-      
-      // Many files supplied in |path| have incorrect size (proc files etc).
-      // Hence, the file is read sequentially as opposed to a one-shot read.
-      while ((len = fread(buf.get(), 1, kBufferSize, file)) > 0) {
-        if (contents)
-          contents->append(buf.get(), std::min(len, max_size - size));
-        
-        if ((max_size - size) < len) {
-          read_status = false;
-          break;
-        }
-        
-        size += len;
-      }
-      read_status = read_status && !ferror(file);
-      fclose(file);
-      
-      return read_status;
-    }
-    
-    int WriteFile(const std::string& path, const char* data, int size) {
-      if (!AllowFileIO())
-        return -1;
-      
-      FILE* file = fopen(path.c_str(), "wb");
-      if (!file)
-        return -1;
-      
-      int written = 0;
-      
-      do {
-        size_t write = fwrite(data + written, 1, size - written, file);
-        if (write == 0)
-          break;
-        written += static_cast<int>(write);
-      } while (written < size);
-      
-      fclose(file);
-      
-      return written;
-    }
-    
-    std::string JoinPath(const std::string& path1, const std::string& path2) {
-      if (path1.empty() && path2.empty())
-        return std::string();
-      if (path1.empty())
-        return path2;
-      if (path2.empty())
-        return path1;
-      
-      std::string result = path1;
-      if (result[result.size() - 1] != kPathSep)
-        result += kPathSep;
-      if (path2[0] == kPathSep)
-        result += path2.substr(1);
-      else
-        result += path2;
-      return result;
-    }
-    
-    std::string GetFileExtension(const std::string& path) {
-      size_t sep = path.find_last_of(".");
-      if (sep != std::string::npos)
-        return path.substr(sep + 1);
-      return std::string();
-    }
+
   } // namespace file_util
 } // namespace client
 
@@ -287,7 +294,7 @@ namespace client {
       std::string GetResourcesPath() {
         CefString resources_dir;
         if (CefGetPath(PK_DIR_RESOURCES, resources_dir) && !resources_dir.empty()) {
-          return resources_dir.ToString() + file_util::kPathSep;
+          return resources_dir.ToString() + utils::kPathSep;
         }
         return std::string();
       }
@@ -329,9 +336,9 @@ namespace client {
         }
         
         const std::string& manifest_path = GetInternalExtensionResourcePath(
-                                                                            file_util::JoinPath(extension_path, "manifest.json"));
+                                                                            utils::JoinPath(extension_path, "manifest.json"));
         std::string manifest_contents;
-        if (!LoadBinaryResource(manifest_path.c_str(), manifest_contents) ||
+        if (!utils::LoadBinaryResource(manifest_path.c_str(), manifest_contents) ||
             manifest_contents.empty()) {
           LOG(ERROR) << "Failed to load manifest from " << manifest_path;
           RunManifestCallback(callback, NULL);
@@ -405,10 +412,10 @@ namespace client {
       if (IsInternalExtension(extension_path)) {
         const std::string& contents_path =
         GetInternalExtensionResourcePath(extension_path);
-        return LoadBinaryResource(contents_path.c_str(), contents);
+        return utils::LoadBinaryResource(contents_path.c_str(), contents);
       }
       
-      return file_util::ReadFileToString(extension_path, &contents);
+      return utils::ReadFileToString(extension_path, &contents);
     }
     
     void LoadExtension(CefRefPtr<CefRequestContext> request_context,
@@ -450,7 +457,7 @@ namespace client {
       
       // Read resources from a directory on disk.
       std::string resource_dir;
-      if (GetResourceDir(resource_dir)) {
+      if (utils::GetResourceDir(resource_dir)) {
         resource_dir += "/" + resource_path;
         resource_manager->AddDirectoryProvider(origin, resource_dir, 50,
                                                std::string());
@@ -481,8 +488,7 @@ namespace client {
       if (browser_action) {
         const std::string& default_icon = browser_action->GetString("default_icon");
         if (!default_icon.empty()) {
-          return GetExtensionResourcePath(
-                                          file_util::JoinPath(extension->GetPath(), default_icon), internal);
+          return GetExtensionResourcePath(utils::JoinPath(extension->GetPath(), default_icon), internal);
         }
       }
       
