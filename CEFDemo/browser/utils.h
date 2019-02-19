@@ -67,6 +67,10 @@
 #include "include/wrapper/cef_message_router.h"
 #include "include/wrapper/cef_resource_manager.h"
 
+#include <string>
+
+#include "include/cef_app.h"
+
 #define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle
 #ifdef __cplusplus

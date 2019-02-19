@@ -6,12 +6,8 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_MAIN_CONTEXT_H_
 #pragma once
 
-#include <string>
-
-#include "include/cef_app.h"
-
-#include "browser/main_context.h"
-#include "browser/root_window_manager.h"
+#import "utils.h"
+#import "root_window_manager.h"
 
 namespace client {  
   // Used to store global context in the browser process. The methods of this
