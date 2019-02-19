@@ -10,95 +10,21 @@
 #define CEF_TESTS_CEFCLIENT_BROWSER_UTILS_H_
 #pragma once
 
-#import <Foundation/Foundation.h>
-#include <string>
+#include <set>
 #include <mach-o/dyld.h>
 #include <iomanip>
 
+#include "include/cef_app.h"
+#include "include/cef_client.h"
 #include "include/cef_parser.h"
 #include "include/cef_path_util.h"
-#include "include/wrapper/cef_resource_manager.h"
-
-#include <set>
-#include <string>
-
-#include "include/cef_browser.h"
-#include "include/cef_request.h"
-#include "include/wrapper/cef_message_router.h"
-#include "include/wrapper/cef_resource_manager.h"
-
-#include <sstream>
-
-#include "include/base/cef_bind.h"
-#include "include/cef_parser.h"
-#include "include/cef_task.h"
-#include "include/cef_trace.h"
-#include "include/cef_web_plugin.h"
-#include "include/wrapper/cef_closure_task.h"
-#include "include/wrapper/cef_stream_resource_handler.h"
-
-#include <Cocoa/Cocoa.h>
-
-#include "include/base/cef_logging.h"
-#include "include/cef_app.h"
-
-#include "include/base/cef_bind.h"
-#include "include/base/cef_scoped_ptr.h"
-#include "include/cef_task.h"
-
-#include "include/cef_task.h"
-#include "include/wrapper/cef_closure_task.h"
-#include "include/cef_app.h"
-
-#include <vector>
-
-#include "include/cef_app.h"
-
-#include "include/cef_command_line.h"
-
-#include "include/base/cef_scoped_ptr.h"
-#include "include/cef_browser.h"
-
-#include <set>
-#include <string>
-
-#include "include/cef_client.h"
-#include "include/wrapper/cef_helpers.h"
-#include "include/wrapper/cef_message_router.h"
-#include "include/wrapper/cef_resource_manager.h"
-
-#include <string>
-
-#include "include/cef_app.h"
-
-#include <set>
-#include <string>
-
-#include "include/base/cef_scoped_ptr.h"
-#include "include/base/cef_ref_counted.h"
-#include "include/base/cef_callback_forward.h"
-
-
-#include "include/cef_browser.h"
-#include "include/views/cef_window.h"
-
-#include <Cocoa/Cocoa.h>
-
-#include "include/base/cef_bind.h"
-#include "include/cef_app.h"
 #include "include/cef_application_mac.h"
 
+#include "include/views/cef_window.h"
 
-#include <set>
+#include "include/wrapper/cef_resource_manager.h"
+#include "include/wrapper/cef_stream_resource_handler.h"
 
-#include "include/base/cef_scoped_ptr.h"
-#include "include/cef_command_line.h"
-
-#include <sstream>
-
-#include "include/base/cef_bind.h"
-#include "include/base/cef_logging.h"
-#include "include/wrapper/cef_helpers.h"
 
 #define NEWLINE "\n"
 #define ClientWindowHandle CefWindowHandle

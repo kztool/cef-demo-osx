@@ -72,9 +72,7 @@ namespace client {
     protected:
       virtual ~Delegate() {}
     };
-    
-    typedef std::set<CefMessageRouterBrowserSide::Handler*> MessageHandlerSet;
-    
+
     // Constructor may be called on any thread.
     // |delegate| must outlive this object or DetachDelegate() must be called.
     ClientHandler(Delegate* delegate, const std::string& startup_url);
