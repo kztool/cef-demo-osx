@@ -80,22 +80,9 @@
 // The standard |-applicationShouldTerminate:| is not supported, and code paths
 // leading to it must be redirected.
 - (void)terminate:(id)sender {
-  ClientAppDelegate* delegate = static_cast<ClientAppDelegate*>(
-                                                                [[NSApplication sharedApplication] delegate]);
+  ClientAppDelegate* delegate = static_cast<ClientAppDelegate*>([[NSApplication sharedApplication] delegate]);
   [delegate tryToTerminateApplication:self];
   // Return, don't exit. The application is responsible for exiting on its own.
-}
-
-// Detect dynamically if VoiceOver is running. Like Chromium, rely upon the
-// undocumented accessibility attribute @"AXEnhancedUserInterface" which is set
-// when VoiceOver is launched and unset when VoiceOver is closed.
-- (void)accessibilitySetValue:(id)value forAttribute:(NSString*)attribute {
-  if ([attribute isEqualToString:@"AXEnhancedUserInterface"]) {
-    ClientAppDelegate* delegate = static_cast<ClientAppDelegate*>(
-                                                                  [[NSApplication sharedApplication] delegate]);
-    [delegate enableAccessibility:([value intValue] == 1)];
-  }
-  return [super accessibilitySetValue:value forAttribute:attribute];
 }
 @end
 
