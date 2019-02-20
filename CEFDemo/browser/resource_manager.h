@@ -6,8 +6,8 @@
 //  Copyright © 2019 田硕. All rights reserved.
 //
 
-#ifndef CEF_RESOURCE_MANAGER_H
-#define CEF_RESOURCE_MANAGER_H
+#ifndef CEF_RESOURCE_MANAGER_H_
+#define CEF_RESOURCE_MANAGER_H_
 
 #import "utils.h"
 

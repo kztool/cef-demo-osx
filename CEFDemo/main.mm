@@ -6,7 +6,6 @@
 #import "browser/utils.h"
 
 #import "browser/main_context.h"
-#import "browser/client_app.h"
 
 // Receives notifications from the application. Will delete itself when done.
 @interface ClientAppDelegate : NSObject<NSApplicationDelegate> {
@@ -17,7 +16,6 @@
 - (id)initWithControls:(bool)with_controls;
 - (void)createApplication:(id)object;
 - (void)tryToTerminateApplication:(NSApplication*)app;
-- (void)enableAccessibility:(bool)bEnable;
 @end
 
 // Provide the CefAppProtocol implementation required by CEF.
@@ -28,7 +26,6 @@
 @end
 
 @implementation ClientApplication
-
 - (BOOL)isHandlingSendEvent {
   return handlingSendEvent_;
 }
@@ -87,7 +84,6 @@
 @end
 
 @implementation ClientAppDelegate
-
 - (id)initWithControls:(bool)with_controls {
   if (self = [super init]) {
     with_controls_ = with_controls;
@@ -99,43 +95,6 @@
 - (void)createApplication:(id)object {
   NSApplication* application = [NSApplication sharedApplication];
   
-  // The top menu is configured using Interface Builder (IB). To modify the menu
-  // start by loading MainMenu.xib in IB.
-  //
-  // To associate MainMenu.xib with ClientAppDelegate:
-  // 1. Select "File's Owner" from the "Placeholders" section in the left side
-  //    pane.
-  // 2. Load the "Identity inspector" tab in the top-right side pane.
-  // 3. In the "Custom Class" section set the "Class" value to
-  //    "ClientAppDelegate".
-  // 4. Pass an instance of ClientAppDelegate as the |owner| parameter to
-  //    loadNibNamed:.
-  //
-  // To create a new top menu:
-  // 1. Load the "Object library" tab in the bottom-right side pane.
-  // 2. Drag a "Submenu Menu Item" widget from the Object library to the desired
-  //    location in the menu bar shown in the center pane.
-  // 3. Select the newly created top menu by left clicking on it.
-  // 4. Load the "Attributes inspector" tab in the top-right side pane.
-  // 5. Under the "Menu Item" section set the "Tag" value to a unique integer.
-  //    This is necessary for the GetMenuBarMenuWithTag function to work
-  //    properly.
-  //
-  // To create a new menu item in a top menu:
-  // 1. Add a new receiver method in ClientAppDelegate (e.g. menuTestsDoStuff:).
-  // 2. Load the "Object library" tab in the bottom-right side pane.
-  // 3. Drag a "Menu Item" widget from the Object library to the desired
-  //    location in the menu bar shown in the center pane.
-  // 4. Double-click on the new menu item to set the label.
-  // 5. Right click on the new menu item to show the "Get Source" dialog.
-  // 6. In the "Sent Actions" section drag from the circle icon and drop on the
-  //    new receiver method in the ClientAppDelegate source code file.
-  //
-  // Load the top menu from MainMenu.xib.
-  [[NSBundle mainBundle] loadNibNamed:@"MainMenu"
-                                owner:self
-                      topLevelObjects:nil];
-  
   // Set the delegate for application events.
   [application setDelegate:self];
   
@@ -143,8 +102,7 @@
   window_config.with_controls = with_controls_;
   
   // Create the first window.
-  client::MainContext::Get()->GetRootWindowManager()->CreateRootWindow(
-                                                                       window_config);
+  client::MainContext::Get()->GetRootWindowManager()->CreateRootWindow(window_config);
 }
 
 - (void)tryToTerminateApplication:(NSApplication*)app {
@@ -155,32 +113,47 @@
   [[NSApplication sharedApplication] orderFrontStandardAboutPanel:nil];
 }
 
-- (void)enableAccessibility:(bool)bEnable {
-  // Retrieve the active RootWindow.
-  NSWindow* key_window = [[NSApplication sharedApplication] keyWindow];
-  if (!key_window)
-    return;
-  
-  scoped_refptr<client::RootWindow> root_window =
-  client::RootWindow::GetForNSWindow(key_window);
-  
-  CefRefPtr<CefBrowser> browser = root_window->GetBrowser();
-  if (browser.get()) {
-    browser->GetHost()->SetAccessibilityState(bEnable ? STATE_ENABLED
-                                              : STATE_DISABLED);
-  }
-}
-
-- (NSApplicationTerminateReply)applicationShouldTerminate:
-(NSApplication*)sender {
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender {
   return NSTerminateNow;
 }
-
 @end
 
 namespace client {
-  namespace {
+  // Base class for customizing process-type-based behavior.
+  class ClientApp : public CefApp, public CefBrowserProcessHandler  {
+  public:
+    ClientApp() {}
     
+    // CefApp methods.
+    CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() OVERRIDE { return this; }
+    
+    void OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) OVERRIDE {
+      // Pass additional command-line flags to the browser process.
+      if (process_type.empty()) {
+        if (!command_line->HasSwitch(switches::kCachePath) &&
+            !command_line->HasSwitch("disable-gpu-shader-disk-cache")) {
+          // Don't create a "GPUCache" directory when cache-path is unspecified.
+          command_line->AppendSwitch("disable-gpu-shader-disk-cache");
+        }
+      }
+    }
+
+    void OnContextInitialized() OVERRIDE {
+      // Register cookieable schemes with the global cookie manager.
+      CefRefPtr<CefCookieManager> manager =CefCookieManager::GetGlobalManager(NULL);
+      DCHECK(manager.get());
+      manager->SetSupportedSchemes(cookieable_schemes_, NULL);
+    }
+  protected:
+    // Schemes that will be registered with the global cookie manager.
+    std::vector<CefString> cookieable_schemes_;
+    
+  private:
+    DISALLOW_COPY_AND_ASSIGN(ClientApp);
+    IMPLEMENT_REFCOUNTING(ClientApp);
+  };
+  
+  namespace {
     int RunMain(int argc, char* argv[]) {
       // Load the CEF framework library at runtime instead of linking directly
       // as required by the macOS sandbox implementation.
@@ -238,7 +211,6 @@ namespace client {
       
       return result;
     }
-    
   }  // namespace
 }  // namespace client
 
@@ -246,4 +218,3 @@ namespace client {
 int main(int argc, char* argv[]) {
   return client::RunMain(argc, argv);
 }
-
