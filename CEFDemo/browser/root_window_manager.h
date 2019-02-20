@@ -33,7 +33,6 @@ namespace client {
     // This method can be called from anywhere.
     CefRefPtr<RootWindow> CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension,
                                                       const CefRect& source_bounds,
-                                                      CefRefPtr<CefWindow> parent_window,
                                                       const base::Closure& close_callback,
                                                       bool with_controls);
     
@@ -83,7 +82,6 @@ namespace client {
                           CefRefPtr<CefBrowser> browser) OVERRIDE;
     void CreateExtensionWindow(CefRefPtr<CefExtension> extension,
                                const CefRect& source_bounds,
-                               CefRefPtr<CefWindow> parent_window,
                                const base::Closure& close_callback) OVERRIDE;
     
     void CleanupOnUIThread();

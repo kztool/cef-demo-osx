@@ -221,7 +221,7 @@ namespace client {
     
     ExtensionSet::const_iterator it = extensions.begin();
     for (; it != extensions.end(); ++it) {
-      delegate_->CreateExtensionWindow(*it, CefRect(), NULL, base::Closure());
+      delegate_->CreateExtensionWindow(*it, CefRect(), base::Closure());
     }
   }
   

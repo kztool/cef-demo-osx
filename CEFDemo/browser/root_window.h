@@ -1,11 +1,6 @@
-// Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
-#ifndef CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MAC_H_
-#define CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MAC_H_
+#ifndef CEF_ROOT_WINDOW_MAC_H_
+#define CEF_ROOT_WINDOW_MAC_H_
 #pragma once
-
 #import "utils.h"
 #import "browser_window.h"
 
@@ -35,10 +30,7 @@ namespace client {
     // relative to |source_bounds|. This is currently only implemented for Views-
     // based windows when |initially_hidden| is also true.
     CefRect source_bounds;
-    
-    // Parent window. Only used for Views-based windows.
-    CefRefPtr<CefWindow> parent_window;
-    
+        
     // Callback to be executed when the window is closed. Will be executed on the
     // main thread. This is currently only implemented for Views-based windows.
     base::Closure close_callback;
@@ -91,7 +83,6 @@ namespace client {
         // UI element, like a button, that triggered the extension.
         virtual void CreateExtensionWindow(CefRefPtr<CefExtension> extension,
                                            const CefRect& source_bounds,
-                                           CefRefPtr<CefWindow> parent_window,
                                            const base::Closure& close_callback) = 0;
         
       protected:
@@ -241,5 +232,5 @@ namespace client {
   
 }  // namespace client
 
-#endif  // CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MAC_H_
+#endif  // CEF_ROOT_WINDOW_MAC_H_
 
