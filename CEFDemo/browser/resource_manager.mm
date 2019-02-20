@@ -1,16 +1,7 @@
-//
-//  resource_manager.mm
-//  CEFDemo
-//
-//  Created by 田硕 on 2019/2/20.
-//  Copyright © 2019 田硕. All rights reserved.
-//
-
 #include "resource_manager.h"
 
 namespace client {
   namespace resource_manager {
-    
     const char kTestHost[] = "tests";
     const char kLocalHost[] = "localhost";
     const char kTestOrigin[] = "http://tests/";
@@ -25,8 +16,9 @@ namespace client {
         
         // Identify where the query or fragment component, if any, begins.
         size_t suffix_pos = url.find('?');
-        if (suffix_pos == std::string::npos)
+        if (suffix_pos == std::string::npos) {
           suffix_pos = url.find('#');
+        }
         
         std::string url_base, url_suffix;
         if (suffix_pos == std::string::npos) {
@@ -38,25 +30,22 @@ namespace client {
         
         // Identify the last path component.
         size_t path_pos = url_base.rfind('/');
-        if (path_pos == std::string::npos)
+        if (path_pos == std::string::npos) {
           return url;
+        }
         
         const std::string& path_component = url_base.substr(path_pos);
         
         // Identify if a file extension is currently specified.
         size_t ext_pos = path_component.rfind(".");
-        if (ext_pos != std::string::npos)
+        if (ext_pos != std::string::npos) {
           return url;
+        }
         
         // Rebuild the URL with a file extension.
         return url_base + ".html" + url_suffix;
       }
-      
-
-      // Returns the dump response as a stream. |request| is the request.
-      // |response_headers| will be populated with extra response headers, if any.
-      CefRefPtr<CefStreamReader> GetDumpResponse(CefRefPtr<CefRequest> request, CefResponse::HeaderMap& response_headers);
-      
+    
       // Returns the contents of the CefRequest as a string.
       std::string DumpRequestContents(CefRefPtr<CefRequest> request) {
         std::stringstream ss;
@@ -108,6 +97,8 @@ namespace client {
         return ss.str();
       }
       
+      // Returns the dump response as a stream. |request| is the request.
+      // |response_headers| will be populated with extra response headers, if any.
       CefRefPtr<CefStreamReader> GetDumpResponse(CefRefPtr<CefRequest> request, CefResponse::HeaderMap& response_headers) {
         std::string origin;
         
@@ -126,15 +117,13 @@ namespace client {
           }
         }
         
-        if (!origin.empty() &&
-            (origin.find("http://" + std::string(kTestHost)) == 0 ||
-             origin.find("http://" + std::string(kLocalHost)) == 0)) {
-              // Allow cross-origin XMLHttpRequests from test origins.
-              response_headers.insert(std::make_pair("Access-Control-Allow-Origin", origin));
-              
-              // Allow the custom header from the xmlhttprequest.html example.
-              response_headers.insert(std::make_pair("Access-Control-Allow-Headers", "My-Custom-Header"));
-            }
+        if (!origin.empty() && (origin.find("http://" + std::string(kTestHost)) == 0 || origin.find("http://" + std::string(kLocalHost)) == 0)) {
+          // Allow cross-origin XMLHttpRequests from test origins.
+          response_headers.insert(std::make_pair("Access-Control-Allow-Origin", origin));
+          
+          // Allow the custom header from the xmlhttprequest.html example.
+          response_headers.insert(std::make_pair("Access-Control-Allow-Headers", "My-Custom-Header"));
+        }
         
         const std::string& dump = DumpRequestContents(request);
         std::string str = "<html><body bgcolor=\"white\"><pre>" + dump + "</pre></body></html>";
@@ -166,7 +155,6 @@ namespace client {
         }
       private:
         std::string url_;
-        
         DISALLOW_COPY_AND_ASSIGN(RequestDumpResourceProvider);
       };
     }
