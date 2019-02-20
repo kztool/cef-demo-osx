@@ -5,6 +5,7 @@
 #import "client_handler.h"
 #import "main_context.h"
 #import "root_window_manager.h"
+#import "resource_manager.h"
 
 namespace client {
   namespace {
@@ -225,7 +226,7 @@ return std::string(#def); \
     DCHECK(!console_log_file_.empty());
     
     resource_manager_ = new CefResourceManager();
-    utils::SetupResourceManager(resource_manager_);
+    resource_manager::SetupResourceManager(resource_manager_);
     
     // Read command line settings.
     CefRefPtr<CefCommandLine> command_line =
