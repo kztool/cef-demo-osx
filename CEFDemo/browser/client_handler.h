@@ -248,7 +248,6 @@ namespace client {
     void NotifyTakeFocus(bool next);
     
     // Test context menu creation.
-    void BuildTestMenu(CefRefPtr<CefMenuModel> model);
     bool ExecuteTestMenu(int command_id);
     
     // THREAD SAFE MEMBERS

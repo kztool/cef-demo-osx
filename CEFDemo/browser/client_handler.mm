@@ -270,11 +270,28 @@ namespace client {
       }
       
       // Test context menu features.
-      BuildTestMenu(model);
+      if (model->GetCount() > 0)
+        model->AddSeparator();
+      
+      // Build the sub menu.
+      CefRefPtr<CefMenuModel> submenu = model->AddSubMenu(CLIENT_ID_TESTMENU_SUBMENU, "Context Menu Test");
+      submenu->AddCheckItem(CLIENT_ID_TESTMENU_CHECKITEM, "Check Item");
+      submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM1, "Radio Item 1", 0);
+      submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM2, "Radio Item 2", 0);
+      submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM3, "Radio Item 3", 0);
+      
+      // Check the check item.
+      if (test_menu_state_.check_item) {
+        submenu->SetChecked(CLIENT_ID_TESTMENU_CHECKITEM, true);
+      }
+      
+      // Check the selected radio item.
+      submenu->SetChecked(CLIENT_ID_TESTMENU_RADIOITEM1 + test_menu_state_.radio_item, true);
     }
     
-    if (delegate_)
+    if (delegate_) {
       delegate_->OnBeforeContextMenu(model);
+    }
   }
   
   bool ClientHandler::OnContextMenuCommand(CefRefPtr<CefBrowser> browser,
@@ -947,26 +964,6 @@ namespace client {
     if (delegate_) {
       delegate_->OnTakeFocus(next);
     }
-  }
-  
-  void ClientHandler::BuildTestMenu(CefRefPtr<CefMenuModel> model) {
-    if (model->GetCount() > 0)
-      model->AddSeparator();
-    
-    // Build the sub menu.
-    CefRefPtr<CefMenuModel> submenu = model->AddSubMenu(CLIENT_ID_TESTMENU_SUBMENU, "Context Menu Test");
-    submenu->AddCheckItem(CLIENT_ID_TESTMENU_CHECKITEM, "Check Item");
-    submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM1, "Radio Item 1", 0);
-    submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM2, "Radio Item 2", 0);
-    submenu->AddRadioItem(CLIENT_ID_TESTMENU_RADIOITEM3, "Radio Item 3", 0);
-    
-    // Check the check item.
-    if (test_menu_state_.check_item) {
-       submenu->SetChecked(CLIENT_ID_TESTMENU_CHECKITEM, true);
-    }
-    
-    // Check the selected radio item.
-    submenu->SetChecked(CLIENT_ID_TESTMENU_RADIOITEM1 + test_menu_state_.radio_item, true);
   }
   
   bool ClientHandler::ExecuteTestMenu(int command_id) {
