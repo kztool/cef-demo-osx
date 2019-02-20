@@ -191,12 +191,12 @@
 				CEE2F549221538BC007FF9A6 /* root_window.mm */,
 				CEE2F579221538BC007FF9A6 /* root_window_manager.h */,
 				CEE2F57A221538BC007FF9A6 /* root_window_manager.mm */,
+				CEE0A3BF221D001D00C0C395 /* resource_manager.h */,
+				CEE0A3C0221D001D00C0C395 /* resource_manager.mm */,
 				CEE2F55B221538BC007FF9A6 /* temp_window.mm */,
 				CEE2F53A221538BC007FF9A6 /* temp_window.h */,
 				CEF4E9892216A8B500F5E8E7 /* utils.h */,
 				CEF4E9882216A8B500F5E8E7 /* utils.mm */,
-				CEE0A3BF221D001D00C0C395 /* resource_manager.h */,
-				CEE0A3C0221D001D00C0C395 /* resource_manager.mm */,
 			);
 			path = browser;
 			sourceTree = "<group>";
