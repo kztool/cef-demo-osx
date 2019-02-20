@@ -6,10 +6,10 @@
 
 namespace client {
   namespace {
-    MainContext* g_main_context = NULL;
-    
     // The default URL to load in a browser window.
     const char kDefaultUrl[] = "http://www.google.com";
+    
+    MainContext* g_main_context = NULL;
   }  // namespace
   
   // static
@@ -18,8 +18,7 @@ namespace client {
     return g_main_context;
   }
   
-  MainContext::MainContext(CefRefPtr<CefCommandLine> command_line,
-                                   bool terminate_when_all_windows_closed)
+  MainContext::MainContext(CefRefPtr<CefCommandLine> command_line, bool terminate_when_all_windows_closed)
   : command_line_(command_line),
   terminate_when_all_windows_closed_(terminate_when_all_windows_closed),
   initialized_(false),
@@ -28,13 +27,15 @@ namespace client {
     DCHECK(command_line_.get());
     
     g_main_context = this;
-
-    // Set the main URL.
-    if (command_line_->HasSwitch(switches::kUrl))
-      main_url_ = command_line_->GetSwitchValue(switches::kUrl);
-    if (main_url_.empty())
-      main_url_ = kDefaultUrl;
     
+    // Set the main URL.
+    if (command_line_->HasSwitch(switches::kUrl)) {
+      main_url_ = command_line_->GetSwitchValue(switches::kUrl);
+    }
+    
+    if (main_url_.empty()) {
+      main_url_ = kDefaultUrl;
+    }
     
     const std::string& cdm_path = command_line_->GetSwitchValue(switches::kWidevineCdmPath);
     if (!cdm_path.empty()) {
@@ -66,7 +67,7 @@ namespace client {
   }
   
   void MainContext::PopulateBrowserSettings(CefBrowserSettings* settings) {
-
+    // empty
   }
   
   RootWindowManager* MainContext::GetRootWindowManager() {
@@ -75,22 +76,21 @@ namespace client {
   }
   
   bool MainContext::Initialize(const CefMainArgs& args,
-                                   const CefSettings& settings,
-                                   CefRefPtr<CefApp> application,
-                                   void* windows_sandbox_info) {
+                               const CefSettings& settings,
+                               CefRefPtr<CefApp> application,
+                               void* windows_sandbox_info) {
     DCHECK(thread_checker_.CalledOnValidThread());
     DCHECK(!initialized_);
     DCHECK(!shutdown_);
     
-    if (!CefInitialize(args, settings, application, windows_sandbox_info))
+    if (!CefInitialize(args, settings, application, windows_sandbox_info)) {
       return false;
+    }
     
     // Need to create the RootWindowManager after calling CefInitialize because
     // TempWindowX11 uses cef_get_xdisplay().
     root_window_manager_.reset(new RootWindowManager(terminate_when_all_windows_closed_));
-    
     initialized_ = true;
-    
     return true;
   }
   
@@ -100,9 +100,7 @@ namespace client {
     DCHECK(!shutdown_);
     
     root_window_manager_.reset();
-    
     CefShutdown();
-    
     shutdown_ = true;
   }
   
@@ -123,3 +121,4 @@ namespace client {
     return szWorkingDir;
   }
 }  // namespace client
+

@@ -1,11 +1,6 @@
-// Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
-#ifndef CEF_TESTS_CEFCLIENT_BROWSER_MAIN_CONTEXT_H_
-#define CEF_TESTS_CEFCLIENT_BROWSER_MAIN_CONTEXT_H_
+#ifndef CEF_MAIN_CONTEXT_H_
+#define CEF_MAIN_CONTEXT_H_
 #pragma once
-
 #import "utils.h"
 #import "root_window_manager.h"
 
@@ -17,8 +12,7 @@ namespace client {
     // Returns the singleton instance of this object.
     static MainContext* Get();
     
-    MainContext(CefRefPtr<CefCommandLine> command_line,
-                    bool terminate_when_all_windows_closed);
+    MainContext(CefRefPtr<CefCommandLine> command_line, bool terminate_when_all_windows_closed);
     
     // MainContext members.
     std::string GetConsoleLogPath();
@@ -39,13 +33,11 @@ namespace client {
     // Shut down CEF and associated context state. This method must be called on
     // the same thread that created this object.
     void Shutdown();
-    
   private:
     // Allow deletion via scoped_ptr only.
     friend struct base::DefaultDeleter<MainContext>;
     
-    // Returns true if the context is in a valid state (initialized and not yet
-    // shut down).
+    // Returns true if the context is in a valid state (initialized and not yet shut down.
     bool InValidState() const { return initialized_ && !shutdown_; }
     
     CefRefPtr<CefCommandLine> command_line_;
@@ -65,12 +57,10 @@ namespace client {
     base::ThreadChecker thread_checker_;
     
     DISALLOW_COPY_AND_ASSIGN(MainContext);
-    
   protected:
     MainContext();
     virtual ~MainContext();
   };
 }  // namespace client
 
-#endif  // CEF_TESTS_CEFCLIENT_BROWSER_MAIN_CONTEXT_H_
-
+#endif  // CEF_MAIN_CONTEXT_H_

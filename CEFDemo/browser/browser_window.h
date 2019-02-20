@@ -1,7 +1,6 @@
 #ifndef CEF_BROWSER_WINDOW_H_
 #define CEF_BROWSER_WINDOW_H_
 #pragma once
-
 #import "utils.h"
 #import "client_handler.h"
 
