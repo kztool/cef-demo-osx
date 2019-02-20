@@ -1,9 +1,5 @@
-// Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
-#ifndef CEF_TESTS_CEFCLIENT_BROWSER_BROWSER_WINDOW_H_
-#define CEF_TESTS_CEFCLIENT_BROWSER_BROWSER_WINDOW_H_
+#ifndef CEF_BROWSER_WINDOW_H_
+#define CEF_BROWSER_WINDOW_H_
 #pragma once
 
 #import "utils.h"
@@ -46,9 +42,7 @@ namespace client {
                                      bool canGoForward) = 0;
       
       // Set the draggable regions.
-      virtual void OnSetDraggableRegions(
-                                         const std::vector<CefDraggableRegion>& regions) = 0;
-      
+      virtual void OnSetDraggableRegions(const std::vector<CefDraggableRegion>& regions) = 0;
     protected:
       virtual ~Delegate() {}
     };
@@ -108,7 +102,6 @@ namespace client {
     
     // Returns true if the browser is closing.
     bool IsClosing() const;
-    
   protected:
     // Allow deletion via scoped_ptr only.
     friend struct base::DefaultDeleter<BrowserWindow>;
