@@ -246,10 +246,7 @@ namespace client {
     // Set/get whether the client should download favicon images. Only safe to
     // call immediately after client creation or on the browser process UI thread.
     bool download_favicon_images() const { return download_favicon_images_; }
-    void set_download_favicon_images(bool allow) {
-      download_favicon_images_ = allow;
-    }
-    
+    void set_download_favicon_images(bool allow) { download_favicon_images_ = allow; }
   private:
     friend class ClientDownloadImageCallback;
     
