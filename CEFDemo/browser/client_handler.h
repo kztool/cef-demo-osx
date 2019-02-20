@@ -247,9 +247,6 @@ namespace client {
     void NotifyDraggableRegions(const std::vector<CefDraggableRegion>& regions);
     void NotifyTakeFocus(bool next);
     
-    // Test context menu creation.
-    bool ExecuteTestMenu(int command_id);
-    
     // THREAD SAFE MEMBERS
     // The following members may be accessed from any thread.
     

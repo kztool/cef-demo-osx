@@ -314,8 +314,20 @@ namespace client {
       case CLIENT_ID_SHOW_SSL_INFO:
         ShowSSLInformation(browser);
         return true;
-      default:  // Allow default handling, if any.
-        return ExecuteTestMenu(command_id);
+      case CLIENT_ID_TESTMENU_CHECKITEM:
+        // Toggle the check item.
+        test_menu_state_.check_item ^= 1;
+        return true;
+      default: 
+        if (command_id >= CLIENT_ID_TESTMENU_RADIOITEM1 &&
+            command_id <= CLIENT_ID_TESTMENU_RADIOITEM3) {
+          // Store the selected radio item.
+          test_menu_state_.radio_item = (command_id - CLIENT_ID_TESTMENU_RADIOITEM1);
+          return true;
+        }
+        
+        // Allow default handling to proceed.
+        return false;
     }
   }
   
@@ -965,22 +977,5 @@ namespace client {
       delegate_->OnTakeFocus(next);
     }
   }
-  
-  bool ClientHandler::ExecuteTestMenu(int command_id) {
-    if (command_id == CLIENT_ID_TESTMENU_CHECKITEM) {
-      // Toggle the check item.
-      test_menu_state_.check_item ^= 1;
-      return true;
-    } else if (command_id >= CLIENT_ID_TESTMENU_RADIOITEM1 &&
-               command_id <= CLIENT_ID_TESTMENU_RADIOITEM3) {
-      // Store the selected radio item.
-      test_menu_state_.radio_item = (command_id - CLIENT_ID_TESTMENU_RADIOITEM1);
-      return true;
-    }
-    
-    // Allow default handling to proceed.
-    return false;
-  }
-  
 }  // namespace client
 
