@@ -121,5 +121,3 @@ namespace client {
 }  // namespace client
 
 #endif  // CEF_BROWSER_WINDOW_H_
-
-
