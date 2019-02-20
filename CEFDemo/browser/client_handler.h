@@ -1,15 +1,9 @@
-// Copyright (c) 2011 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
-#ifndef CEF_TESTS_CEFCLIENT_BROWSER_CLIENT_HANDLER_H_
-#define CEF_TESTS_CEFCLIENT_BROWSER_CLIENT_HANDLER_H_
+#ifndef CEF_CLIENT_HANDLER_H_
+#define CEF_CLIENT_HANDLER_H_
 #pragma once
-
 #import "utils.h"
 
 namespace client {
-  
   class ClientDownloadImageCallback;
   
   // Client handler abstract base class. Provides common functionality shared by
@@ -301,8 +295,6 @@ namespace client {
     IMPLEMENT_REFCOUNTING(ClientHandler);
     DISALLOW_COPY_AND_ASSIGN(ClientHandler);
   };
-  
 }  // namespace client
 
-#endif  // CEF_TESTS_CEFCLIENT_BROWSER_CLIENT_HANDLER_H_
-
+#endif  // CEF_CLIENT_HANDLER_H_

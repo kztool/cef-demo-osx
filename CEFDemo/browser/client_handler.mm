@@ -1,7 +1,3 @@
-// Copyright (c) 2013 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
 #import "client_handler.h"
 #import "main_context.h"
 #import "root_window_manager.h"
@@ -182,7 +178,6 @@ namespace client {
       ss << "</table> * Displayed value is base64 encoded.";
       return ss.str();
     }
-    
   }  // namespace
   
   class ClientDownloadImageCallback : public CefDownloadImageCallback {
@@ -193,13 +188,12 @@ namespace client {
     void OnDownloadImageFinished(const CefString& image_url,
                                  int http_status_code,
                                  CefRefPtr<CefImage> image) OVERRIDE {
-      if (image)
+      if (image) {
         client_handler_->NotifyFavicon(image);
+      }
     }
-    
   private:
     CefRefPtr<ClientHandler> client_handler_;
-    
     IMPLEMENT_REFCOUNTING(ClientDownloadImageCallback);
     DISALLOW_COPY_AND_ASSIGN(ClientDownloadImageCallback);
   };
@@ -214,12 +208,12 @@ namespace client {
   initial_navigation_(true) {
     DCHECK(!console_log_file_.empty());
     
+    // Setup Resource Manager
     resource_manager_ = new CefResourceManager();
     resource_manager::SetupResourceManager(resource_manager_);
     
     // Read command line settings.
-    CefRefPtr<CefCommandLine> command_line =
-    CefCommandLine::GetGlobalCommandLine();
+    CefRefPtr<CefCommandLine> command_line = CefCommandLine::GetGlobalCommandLine();
     mouse_cursor_change_disabled_ = command_line->HasSwitch(switches::kMouseCursorChangeDisabled);
   }
   
