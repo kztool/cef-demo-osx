@@ -60,15 +60,13 @@ namespace client {
                                      bool canGoForward) = 0;
       
       // Set the draggable regions.
-      virtual void OnSetDraggableRegions(
-                                         const std::vector<CefDraggableRegion>& regions) = 0;
+      virtual void OnSetDraggableRegions(const std::vector<CefDraggableRegion>& regions) = 0;
       
       // Set focus to the next/previous control.
       virtual void OnTakeFocus(bool next) {}
       
       // Called on the UI thread before a context menu is displayed.
       virtual void OnBeforeContextMenu(CefRefPtr<CefMenuModel> model) {}
-      
     protected:
       virtual ~Delegate() {}
     };
@@ -91,6 +89,8 @@ namespace client {
     CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() OVERRIDE { return this; }
     CefRefPtr<CefLoadHandler> GetLoadHandler() OVERRIDE { return this; }
     CefRefPtr<CefRequestHandler> GetRequestHandler() OVERRIDE { return this; }
+    
+    
     bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
                                   CefProcessId source_process,
                                   CefRefPtr<CefProcessMessage> message) OVERRIDE;
