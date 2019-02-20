@@ -6,8 +6,8 @@
 //  Copyright © 2019 田硕. All rights reserved.
 //
 
-#ifndef CEF_TESTS_CEFCLIENT_BROWSER_UTILS_H_
-#define CEF_TESTS_CEFCLIENT_BROWSER_UTILS_H_
+#ifndef CEF_UTILS_H_
+#define CEF_UTILS_H_
 #pragma once
 
 #import <set>
@@ -401,4 +401,4 @@ namespace client {
   };
 }  // namespace client
 
-#endif /* utils_h */
+#endif // CEF_UTILS_H_
