@@ -55,6 +55,11 @@ namespace client {
     delegate_->OnSetTitle(title);
   }
   
+  void BrowserWindow::OnSetFavicon(CefRefPtr<CefImage> image) {
+    REQUIRE_MAIN_THREAD();
+    delegate_->OnSetFavicon(image);
+  }
+  
   void BrowserWindow::OnSetFullscreen(bool fullscreen) {
     REQUIRE_MAIN_THREAD();
     delegate_->OnSetFullscreen(fullscreen);

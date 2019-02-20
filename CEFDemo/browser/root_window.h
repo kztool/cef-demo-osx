@@ -199,6 +199,7 @@ namespace client {
     void OnBrowserWindowDestroyed() OVERRIDE;
     void OnSetAddress(const std::string& url) OVERRIDE;
     void OnSetTitle(const std::string& title) OVERRIDE;
+    void OnSetFavicon(CefRefPtr<CefImage> image) OVERRIDE;
     void OnSetFullscreen(bool fullscreen) OVERRIDE;
     void OnAutoResize(const CefSize& new_size) OVERRIDE;
     void OnSetLoadingState(bool isLoading,

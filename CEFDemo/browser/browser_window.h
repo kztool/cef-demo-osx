@@ -30,6 +30,9 @@ namespace client {
       // Set the window title.
       virtual void OnSetTitle(const std::string& title) = 0;
       
+      // Set the Favicon image.
+      virtual void OnSetFavicon(CefRefPtr<CefImage> image) = 0;
+      
       // Set fullscreen mode.
       virtual void OnSetFullscreen(bool fullscreen) = 0;
       
@@ -104,6 +107,7 @@ namespace client {
     void OnBrowserClosed(CefRefPtr<CefBrowser> browser) OVERRIDE;
     void OnSetAddress(const std::string& url) OVERRIDE;
     void OnSetTitle(const std::string& title) OVERRIDE;
+    void OnSetFavicon(CefRefPtr<CefImage> image) OVERRIDE;
     void OnSetFullscreen(bool fullscreen) OVERRIDE;
     void OnAutoResize(const CefSize& new_size) OVERRIDE;
     void OnSetLoadingState(bool isLoading,

@@ -626,6 +626,10 @@ namespace client {
     }
   }
   
+  void RootWindow::OnSetFavicon(CefRefPtr<CefImage> image) {
+    REQUIRE_MAIN_THREAD();
+  }
+  
   void RootWindow::OnSetFullscreen(bool fullscreen) {
     CEF_REQUIRE_UI_THREAD();
     REQUIRE_MAIN_THREAD();

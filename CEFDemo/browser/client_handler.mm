@@ -206,7 +206,6 @@ namespace client {
   
   ClientHandler::ClientHandler(Delegate* delegate, const std::string& startup_url)
   : startup_url_(startup_url),
-  download_favicon_images_(false),
   delegate_(delegate),
   browser_count_(0),
   console_log_file_(MainContext::Get()->GetConsoleLogPath()),
@@ -333,7 +332,7 @@ namespace client {
                                          const std::vector<CefString>& icon_urls) {
     CEF_REQUIRE_UI_THREAD();
     
-    if (!icon_urls.empty() && download_favicon_images_) {
+    if (!icon_urls.empty()) {
       browser->GetHost()->DownloadImage(icon_urls[0], true, 16, false,
                                         new ClientDownloadImageCallback(this));
     }

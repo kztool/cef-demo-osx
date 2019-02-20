@@ -46,7 +46,7 @@ namespace client {
       virtual void OnSetTitle(const std::string& title) = 0;
       
       // Set the Favicon image.
-      virtual void OnSetFavicon(CefRefPtr<CefImage> image) {}
+      virtual void OnSetFavicon(CefRefPtr<CefImage> image) = 0;
       
       // Set fullscreen mode.
       virtual void OnSetFullscreen(bool fullscreen) = 0;
@@ -242,11 +242,6 @@ namespace client {
     
     // Returns the startup URL.
     std::string startup_url() const { return startup_url_; }
-    
-    // Set/get whether the client should download favicon images. Only safe to
-    // call immediately after client creation or on the browser process UI thread.
-    bool download_favicon_images() const { return download_favicon_images_; }
-    void set_download_favicon_images(bool allow) { download_favicon_images_ = allow; }
   private:
     friend class ClientDownloadImageCallback;
     
@@ -286,9 +281,6 @@ namespace client {
     
     // True if mouse cursor change is disabled.
     bool mouse_cursor_change_disabled_;
-    
-    // True if Favicon images should be downloaded.
-    bool download_favicon_images_;
     
     // Manages the registration and delivery of resources.
     CefRefPtr<CefResourceManager> resource_manager_;
