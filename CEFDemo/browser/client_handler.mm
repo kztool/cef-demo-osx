@@ -59,17 +59,7 @@ namespace client {
       // Encode the value.
       return CefBase64Encode(src.data(), src.size());
     }
-    
-#define FLAG(flag)                          \
-if (status & flag) {                      \
-result += std::string(#flag) + "<br/>"; \
-}
-    
-#define VALUE(val, def)       \
-if (val == def) {           \
-return std::string(#def); \
-}
-    
+        
     std::string GetCertStatusString(cef_cert_status_t status) {
       std::string result;
       

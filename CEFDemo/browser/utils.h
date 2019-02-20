@@ -40,8 +40,18 @@ client::MainMessageLoop::Get()->RunsTasksOnCurrentThread()
 #define MAIN_POST_CLOSURE(closure) \
 client::MainMessageLoop::Get()->PostClosure(closure)
 
-#define CASE(code) \
-case code:       \
+#define FLAG(flag)                      \
+if (status & flag) {                    \
+result += std::string(#flag) + "<br/>"; \
+}
+
+#define VALUE(val, def)   \
+if (val == def) {         \
+return std::string(#def); \
+}
+
+#define CASE(code)  \
+case code:          \
 return #code
 
 #ifdef __cplusplus
