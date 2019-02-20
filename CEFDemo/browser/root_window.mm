@@ -2,6 +2,31 @@
 #import "main_context.h"
 #import "temp_window.h"
 
+
+@interface NSBorderlessWindow: NSWindow
+- (void)performClose:(id)sender;
+- (BOOL)windowShouldClose:(id)sender;
+@end
+
+@implementation NSBorderlessWindow: NSWindow
+- (BOOL)windowShouldClose:(id)sender {
+  return YES;
+}
+
+- (void)performClose:(id)sender {
+  if([[self delegate] respondsToSelector:@selector(windowShouldClose:)])
+  {
+    if(![[self delegate] windowShouldClose:self]) return;
+  }
+  else if([self respondsToSelector:@selector(windowShouldClose:)])
+  {
+    if(![self windowShouldClose:self]) return;
+  }
+  
+  [self close];
+}
+@end
+
 // Receives notifications from controls and the browser window. Will delete
 // itself when done.
 @interface RootWindowDelegate : NSObject<NSWindowDelegate> {
@@ -77,6 +102,8 @@
   CefRefPtr<CefBrowser> browser = root_window_->GetBrowser();
   if (browser.get())
     browser->StopLoad();
+  
+  [window_ performClose:nil];
 }
 
 - (IBAction)takeURLStringValueFrom:(NSTextField*)sender {
@@ -455,14 +482,12 @@ namespace client {
     
     // The CEF framework library is loaded at runtime so we need to use this
     // mechanism for retrieving the class.
-    Class window_class = NSClassFromString(@"UnderlayOpenGLHostingWindow");
+    Class window_class = NSClassFromString(@"NSBorderlessWindow");
     CHECK(window_class);
     
     window_ = [[window_class alloc]
                initWithContentRect:window_rect
-               styleMask:(NSTitledWindowMask | NSClosableWindowMask |
-                          NSMiniaturizableWindowMask | NSResizableWindowMask |
-                          NSUnifiedTitleAndToolbarWindowMask)
+               styleMask:(NSClosableWindowMask |  NSResizableWindowMask)
                backing:NSBackingStoreBuffered
                defer:NO];
     [window_ setTitle:@"cefclient"];
