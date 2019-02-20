@@ -1,7 +1,3 @@
-// Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
 #import "root_window_manager.h"
 #import "main_context.h"
 
@@ -11,8 +7,7 @@ namespace client {
     public CefExtensionHandler {
     public:
       ClientRequestContextHandler() {
-        CefRefPtr<CefCommandLine> command_line =
-        CefCommandLine::GetGlobalCommandLine();
+        CefRefPtr<CefCommandLine> command_line = CefCommandLine::GetGlobalCommandLine();
         if (command_line->HasSwitch(switches::kRequestContextBlockCookies)) {
           // Use a cookie manager that neither stores nor retrieves cookies.
           cookie_manager_ = CefCookieManager::GetBlockingManager();
@@ -27,8 +22,7 @@ namespace client {
                               CefRefPtr<CefWebPluginInfo> plugin_info,
                               PluginPolicy* plugin_policy) OVERRIDE {
         // Always allow the PDF plugin to load.
-        if (*plugin_policy != PLUGIN_POLICY_ALLOW &&
-            mime_type == "application/pdf") {
+        if (*plugin_policy != PLUGIN_POLICY_ALLOW && mime_type == "application/pdf") {
           *plugin_policy = PLUGIN_POLICY_ALLOW;
           return true;
         }
@@ -36,33 +30,28 @@ namespace client {
         return false;
       }
       
-      void OnRequestContextInitialized(
-                                       CefRefPtr<CefRequestContext> request_context) OVERRIDE {
+      void OnRequestContextInitialized(CefRefPtr<CefRequestContext> request_context) OVERRIDE {
         CEF_REQUIRE_UI_THREAD();
         
-        CefRefPtr<CefCommandLine> command_line =
-        CefCommandLine::GetGlobalCommandLine();
+        CefRefPtr<CefCommandLine> command_line = CefCommandLine::GetGlobalCommandLine();
         if (command_line->HasSwitch(switches::kLoadExtension)) {
-          if (MainContext::Get()
-              ->GetRootWindowManager()
-              ->request_context_per_browser()) {
+          if (MainContext::Get()->GetRootWindowManager()->request_context_per_browser()) {
             // The example extension loading implementation requires all browsers to
             // share the same request context.
-            LOG(ERROR)
-            << "Cannot mix --load-extension and --request-context-per-browser";
+            LOG(ERROR) << "Cannot mix --load-extension and --request-context-per-browser";
             return;
           }
           
           // Load one or more extension paths specified on the command-line and
           // delimited with semicolon.
-          const std::string& extension_path =
-          command_line->GetSwitchValue(switches::kLoadExtension);
+          const std::string& extension_path = command_line->GetSwitchValue(switches::kLoadExtension);
           if (!extension_path.empty()) {
             std::string part;
             std::istringstream f(extension_path);
             while (getline(f, part, ';')) {
-              if (!part.empty())
+              if (!part.empty()) {
                 utils::LoadExtension(request_context, part, this);
+              }
             }
           }
         }
@@ -84,38 +73,30 @@ namespace client {
         CEF_REQUIRE_UI_THREAD();
         
         // Return the browser for the active/foreground window.
-        CefRefPtr<CefBrowser> active_browser =
-        MainContext::Get()->GetRootWindowManager()->GetActiveBrowser();
+        CefRefPtr<CefBrowser> active_browser = MainContext::Get()->GetRootWindowManager()->GetActiveBrowser();
         if (!active_browser) {
-          LOG(WARNING)
-          << "No active browser available for extension "
-          << browser->GetHost()->GetExtension()->GetIdentifier().ToString();
+          LOG(WARNING) << "No active browser available for extension " << browser->GetHost()->GetExtension()->GetIdentifier().ToString();
         } else {
           // The active browser should not be hosting an extension.
           DCHECK(!active_browser->GetHost()->GetExtension());
         }
         return active_browser;
       }
-      
     private:
       CefRefPtr<CefCookieManager> cookie_manager_;
       
       IMPLEMENT_REFCOUNTING(ClientRequestContextHandler);
       DISALLOW_COPY_AND_ASSIGN(ClientRequestContextHandler);
     };
-    
   }  // namespace
   
   RootWindowManager::RootWindowManager(bool terminate_when_all_windows_closed)
   : terminate_when_all_windows_closed_(terminate_when_all_windows_closed),
   image_cache_(new ImageCache) {
-    CefRefPtr<CefCommandLine> command_line =
-    CefCommandLine::GetGlobalCommandLine();
+    CefRefPtr<CefCommandLine> command_line = CefCommandLine::GetGlobalCommandLine();
     DCHECK(command_line.get());
-    request_context_per_browser_ =
-    command_line->HasSwitch(switches::kRequestContextPerBrowser);
-    request_context_shared_cache_ =
-    command_line->HasSwitch(switches::kRequestContextSharedCache);
+    request_context_per_browser_ = command_line->HasSwitch(switches::kRequestContextPerBrowser);
+    request_context_shared_cache_ = command_line->HasSwitch(switches::kRequestContextSharedCache);
   }
   
   RootWindowManager::~RootWindowManager() {
@@ -136,8 +117,7 @@ namespace client {
     return root_window;
   }
   
-  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsPopup(
-                                                                       bool with_controls,
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsPopup(bool with_controls,
                                                                        const CefPopupFeatures& popupFeatures,
                                                                        CefWindowInfo& windowInfo,
                                                                        CefRefPtr<CefClient>& client,
@@ -160,8 +140,7 @@ namespace client {
     return root_window;
   }
   
-  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsExtension(
-                                                                           CefRefPtr<CefExtension> extension,
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension,
                                                                            const CefRect& source_bounds,
                                                                            CefRefPtr<CefWindow> parent_window,
                                                                            const base::Closure& close_callback,
@@ -186,39 +165,40 @@ namespace client {
     return CreateRootWindow(config);
   }
   
-  bool RootWindowManager::HasRootWindowAsExtension(
-                                                   CefRefPtr<CefExtension> extension) {
+  bool RootWindowManager::HasRootWindowAsExtension(CefRefPtr<CefExtension> extension) {
     REQUIRE_MAIN_THREAD();
     
     RootWindowSet::const_iterator it = root_windows_.begin();
     for (; it != root_windows_.end(); ++it) {
       const RootWindow* root_window = (*it);
-      if (!root_window->WithExtension())
+      if (!root_window->WithExtension()) {
         continue;
+      }
       
       CefRefPtr<CefBrowser> browser = root_window->GetBrowser();
-      if (!browser)
+      if (!browser) {
         continue;
+      }
       
-      CefRefPtr<CefExtension> browser_extension =
-      browser->GetHost()->GetExtension();
+      CefRefPtr<CefExtension> browser_extension = browser->GetHost()->GetExtension();
       DCHECK(browser_extension);
-      if (browser_extension->GetIdentifier() == extension->GetIdentifier())
+      if (browser_extension->GetIdentifier() == extension->GetIdentifier()) {
         return true;
+      }
     }
     
     return false;
   }
   
-  CefRefPtr<RootWindow> RootWindowManager::GetWindowForBrowser(
-                                                                   int browser_id) const {
+  CefRefPtr<RootWindow> RootWindowManager::GetWindowForBrowser(int browser_id) const {
     REQUIRE_MAIN_THREAD();
     
     RootWindowSet::const_iterator it = root_windows_.begin();
     for (; it != root_windows_.end(); ++it) {
       CefRefPtr<CefBrowser> browser = (*it)->GetBrowser();
-      if (browser.get() && browser->GetIdentifier() == browser_id)
+      if (browser.get() && browser->GetIdentifier() == browser_id) {
         return *it;
+      }
     }
     return NULL;
   }
@@ -236,40 +216,42 @@ namespace client {
   void RootWindowManager::CloseAllWindows(bool force) {
     if (!CURRENTLY_ON_MAIN_THREAD()) {
       // Execute this method on the main thread.
-      MAIN_POST_CLOSURE(base::Bind(&RootWindowManager::CloseAllWindows,
-                                   base::Unretained(this), force));
+      MAIN_POST_CLOSURE(base::Bind(&RootWindowManager::CloseAllWindows, base::Unretained(this), force));
       return;
     }
     
-    if (root_windows_.empty())
+    if (root_windows_.empty()) {
       return;
+    }
     
     // Use a copy of |root_windows_| because the original set may be modified
     // in OnRootWindowDestroyed while iterating.
     RootWindowSet root_windows = root_windows_;
     
     RootWindowSet::const_iterator it = root_windows.begin();
-    for (; it != root_windows.end(); ++it)
+    for (; it != root_windows.end(); ++it) {
       (*it)->Close(force);
+    }
   }
   
   void RootWindowManager::AddExtension(CefRefPtr<CefExtension> extension) {
     if (!CURRENTLY_ON_MAIN_THREAD()) {
       // Execute this method on the main thread.
-      MAIN_POST_CLOSURE(base::Bind(&RootWindowManager::AddExtension,
-                                   base::Unretained(this), extension));
+      MAIN_POST_CLOSURE(base::Bind(&RootWindowManager::AddExtension,  base::Unretained(this), extension));
       return;
     }
     
     // Don't track extensions that can't be loaded directly.
-    if (utils::GetExtensionURL(extension).empty())
+    if (utils::GetExtensionURL(extension).empty()) {
       return;
+    }
     
     // Don't add the same extension multiple times.
     ExtensionSet::const_iterator it = extensions_.begin();
     for (; it != extensions_.end(); ++it) {
-      if ((*it)->GetIdentifier() == extension->GetIdentifier())
+      if ((*it)->GetIdentifier() == extension->GetIdentifier()) {
         return;
+      }
     }
     
     extensions_.insert(extension);
@@ -279,8 +261,7 @@ namespace client {
   void RootWindowManager::OnRootWindowCreated(CefRefPtr<RootWindow> root_window) {
     if (!CURRENTLY_ON_MAIN_THREAD()) {
       // Execute this method on the main thread.
-      MAIN_POST_CLOSURE(base::Bind(&RootWindowManager::OnRootWindowCreated,
-                                   base::Unretained(this), root_window));
+      MAIN_POST_CLOSURE(base::Bind(&RootWindowManager::OnRootWindowCreated, base::Unretained(this), root_window));
       return;
     }
     
@@ -302,58 +283,51 @@ namespace client {
     RootWindowSet::const_iterator it = root_windows_.begin();
     for (; it != root_windows_.end(); ++it) {
       RootWindow* root_window = *it;
-      if (!root_window->WithExtension())
+      if (!root_window->WithExtension()) {
         root_window->OnExtensionsChanged(extensions_);
+      }
     }
   }
   
-  CefRefPtr<CefRequestContext> RootWindowManager::GetRequestContext(
-                                                                    RootWindow* root_window) {
+  CefRefPtr<CefRequestContext> RootWindowManager::GetRequestContext(RootWindow* root_window) {
     REQUIRE_MAIN_THREAD();
     
     if (request_context_per_browser_) {
       // Create a new request context for each browser.
       CefRequestContextSettings settings;
       
-      CefRefPtr<CefCommandLine> command_line =
-      CefCommandLine::GetGlobalCommandLine();
+      CefRefPtr<CefCommandLine> command_line = CefCommandLine::GetGlobalCommandLine();
       if (command_line->HasSwitch(switches::kCachePath)) {
         if (request_context_shared_cache_) {
           // Give each browser the same cache path. The resulting context objects
           // will share the same storage internally.
-          CefString(&settings.cache_path) =
-          command_line->GetSwitchValue(switches::kCachePath);
+          CefString(&settings.cache_path) = command_line->GetSwitchValue(switches::kCachePath);
         } else {
           // Give each browser a unique cache path. This will create completely
           // isolated context objects.
           std::stringstream ss;
-          ss << command_line->GetSwitchValue(switches::kCachePath).ToString()
-          << time(NULL);
+          ss << command_line->GetSwitchValue(switches::kCachePath).ToString() << time(NULL);
           CefString(&settings.cache_path) = ss.str();
         }
       }
       
-      return CefRequestContext::CreateContext(settings,
-                                              new ClientRequestContextHandler);
+      return CefRequestContext::CreateContext(settings, new ClientRequestContextHandler);
     }
     
     // All browsers will share the global request context.
     if (!shared_request_context_.get()) {
-      shared_request_context_ = CefRequestContext::CreateContext(
-                                                                 CefRequestContext::GetGlobalContext(), new ClientRequestContextHandler);
+      shared_request_context_ = CefRequestContext::CreateContext(CefRequestContext::GetGlobalContext(), new ClientRequestContextHandler);
     }
     return shared_request_context_;
   }
   
   CefRefPtr<ImageCache> RootWindowManager::GetImageCache() {
     REQUIRE_MAIN_THREAD();
-    
     return image_cache_;
   }
   
   void RootWindowManager::OnExit(RootWindow* root_window) {
     REQUIRE_MAIN_THREAD();
-    
     CloseAllWindows(false);
   }
   
@@ -362,8 +336,9 @@ namespace client {
     
     RootWindowSet::iterator it = root_windows_.find(root_window);
     DCHECK(it != root_windows_.end());
-    if (it != root_windows_.end())
+    if (it != root_windows_.end()) {
       root_windows_.erase(it);
+    }
     
     if (root_window == active_root_window_) {
       active_root_window_ = NULL;
@@ -374,8 +349,7 @@ namespace client {
     
     if (terminate_when_all_windows_closed_ && root_windows_.empty()) {
       // All windows have closed. Clean up on the UI thread.
-      CefPostTask(TID_UI, base::Bind(&RootWindowManager::CleanupOnUIThread,
-                                     base::Unretained(this)));
+      CefPostTask(TID_UI, base::Bind(&RootWindowManager::CleanupOnUIThread, base::Unretained(this)));
     }
   }
   
@@ -387,17 +361,16 @@ namespace client {
       return;
     }
     
-    if (root_window == active_root_window_)
+    if (root_window == active_root_window_) {
       return;
+    }
     
     active_root_window_ = root_window;
     
-    {
-      base::AutoLock lock_scope(active_browser_lock_);
-      // May be NULL at this point, in which case we'll make the association in
-      // OnBrowserCreated.
-      active_browser_ = active_root_window_->GetBrowser();
-    }
+    base::AutoLock lock_scope(active_browser_lock_);
+    // May be NULL at this point, in which case we'll make the association in
+    // OnBrowserCreated.
+    active_browser_ = active_root_window_->GetBrowser();
   }
   
   void RootWindowManager::OnBrowserCreated(RootWindow* root_window,
@@ -410,8 +383,7 @@ namespace client {
     }
   }
   
-  void RootWindowManager::CreateExtensionWindow(
-                                                CefRefPtr<CefExtension> extension,
+  void RootWindowManager::CreateExtensionWindow(CefRefPtr<CefExtension> extension,
                                                 const CefRect& source_bounds,
                                                 CefRefPtr<CefWindow> parent_window,
                                                 const base::Closure& close_callback) {
@@ -433,6 +405,4 @@ namespace client {
     // Quit the main message loop.
     MainMessageLoop::Get()->Quit();
   }
-  
 }  // namespace client
-

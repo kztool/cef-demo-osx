@@ -1,11 +1,6 @@
-// Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
-#ifndef CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MANAGER_H_
-#define CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MANAGER_H_
+#ifndef CEF_ROOT_WINDOW_MANAGER_H_
+#define CEF_ROOT_WINDOW_MANAGER_H_
 #pragma once
-
 #import "utils.h"
 #import "root_window.h"
 #import "temp_window.h"
@@ -27,8 +22,7 @@ namespace client {
     // If |with_controls| is true the window will show controls.
     // This method is called from ClientHandler::CreatePopupWindow() to
     // create a new popup or DevTools window. Must be called on the UI thread.
-    CefRefPtr<RootWindow> CreateRootWindowAsPopup(
-                                                  bool with_controls,
+    CefRefPtr<RootWindow> CreateRootWindowAsPopup(bool with_controls,
                                                   const CefPopupFeatures& popupFeatures,
                                                   CefWindowInfo& windowInfo,
                                                   CefRefPtr<CefClient>& client,
@@ -37,8 +31,7 @@ namespace client {
     // Create a new top-level native window to host |extension|.
     // If |with_controls| is true the window will show controls.
     // This method can be called from anywhere.
-    CefRefPtr<RootWindow> CreateRootWindowAsExtension(
-                                                      CefRefPtr<CefExtension> extension,
+    CefRefPtr<RootWindow> CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension,
                                                       const CefRect& source_bounds,
                                                       CefRefPtr<CefWindow> parent_window,
                                                       const base::Closure& close_callback,
@@ -71,7 +64,6 @@ namespace client {
     bool request_context_per_browser() const {
       return request_context_per_browser_;
     }
-    
   private:
     // Allow deletion via scoped_ptr only.
     friend struct base::DefaultDeleter<RootWindowManager>;
@@ -127,4 +119,4 @@ namespace client {
   };
 }  // namespace client
 
-#endif  // CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MANAGER_H_
+#endif  // CEF_ROOT_WINDOW_MANAGER_H_
