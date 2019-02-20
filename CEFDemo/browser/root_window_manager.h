@@ -11,7 +11,6 @@
 #import "temp_window.h"
 
 namespace client {
-  
   // Used to create/manage RootWindow instances. The methods of this class can be
   // called from any browser process thread unless otherwise indicated.
   class RootWindowManager : public RootWindow::Delegate {
@@ -127,7 +126,6 @@ namespace client {
     
     DISALLOW_COPY_AND_ASSIGN(RootWindowManager);
   };
-  
 }  // namespace client
 
 #endif  // CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MANAGER_H_
