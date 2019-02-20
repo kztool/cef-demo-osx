@@ -430,8 +430,7 @@ namespace client {
     browser_window_.reset(new BrowserWindow(this, startup_url));
   }
   
-  void RootWindow::CreateRootWindow(const CefBrowserSettings& settings,
-                                    bool initially_hidden) {
+  void RootWindow::CreateRootWindow(const CefBrowserSettings& settings, bool initially_hidden) {
     REQUIRE_MAIN_THREAD();
     DCHECK(!window_);
     
@@ -590,8 +589,7 @@ namespace client {
     }
   }
   
-  void RootWindow::OnSetDraggableRegions(
-                                         const std::vector<CefDraggableRegion>& regions) {
+  void RootWindow::OnSetDraggableRegions(const std::vector<CefDraggableRegion>& regions) {
     REQUIRE_MAIN_THREAD();
     // TODO(cef): Implement support for draggable regions on this platform.
   }
