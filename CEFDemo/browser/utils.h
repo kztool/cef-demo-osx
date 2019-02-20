@@ -40,17 +40,17 @@ client::MainMessageLoop::Get()->RunsTasksOnCurrentThread()
 #define MAIN_POST_CLOSURE(closure) \
 client::MainMessageLoop::Get()->PostClosure(closure)
 
-#define FLAG(flag)                      \
+#define CEFM_FLAG(flag)                      \
 if (status & flag) {                    \
 result += std::string(#flag) + "<br/>"; \
 }
 
-#define VALUE(val, def)   \
+#define CEFM_VALUE(val, def)   \
 if (val == def) {         \
 return std::string(#def); \
 }
 
-#define CASE(code)  \
+#define CEFM_CASE(code)  \
 case code:          \
 return #code
 
