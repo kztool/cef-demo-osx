@@ -89,8 +89,6 @@ namespace client {
     CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() OVERRIDE { return this; }
     CefRefPtr<CefLoadHandler> GetLoadHandler() OVERRIDE { return this; }
     CefRefPtr<CefRequestHandler> GetRequestHandler() OVERRIDE { return this; }
-    
-    
     bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
                                   CefProcessId source_process,
                                   CefRefPtr<CefProcessMessage> message) OVERRIDE;
@@ -107,22 +105,16 @@ namespace client {
                               EventFlags event_flags) OVERRIDE;
     
     // CefDisplayHandler methods
-    void OnAddressChange(CefRefPtr<CefBrowser> browser,
-                         CefRefPtr<CefFrame> frame,
-                         const CefString& url) OVERRIDE;
-    void OnTitleChange(CefRefPtr<CefBrowser> browser,
-                       const CefString& title) OVERRIDE;
-    void OnFaviconURLChange(CefRefPtr<CefBrowser> browser,
-                            const std::vector<CefString>& icon_urls) OVERRIDE;
-    void OnFullscreenModeChange(CefRefPtr<CefBrowser> browser,
-                                bool fullscreen) OVERRIDE;
+    void OnAddressChange(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& url) OVERRIDE;
+    void OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) OVERRIDE;
+    void OnFaviconURLChange(CefRefPtr<CefBrowser> browser, const std::vector<CefString>& icon_urls) OVERRIDE;
+    void OnFullscreenModeChange(CefRefPtr<CefBrowser> browser, bool fullscreen) OVERRIDE;
     bool OnConsoleMessage(CefRefPtr<CefBrowser> browser,
                           cef_log_severity_t level,
                           const CefString& message,
                           const CefString& source,
                           int line) OVERRIDE;
-    bool OnAutoResize(CefRefPtr<CefBrowser> browser,
-                      const CefSize& new_size) OVERRIDE;
+    bool OnAutoResize(CefRefPtr<CefBrowser> browser, const CefSize& new_size) OVERRIDE;
     
     // CefDownloadHandler methods
     void OnBeforeDownload(CefRefPtr<CefBrowser> browser,
@@ -137,9 +129,7 @@ namespace client {
     bool OnDragEnter(CefRefPtr<CefBrowser> browser,
                      CefRefPtr<CefDragData> dragData,
                      CefDragHandler::DragOperationsMask mask) OVERRIDE;
-    void OnDraggableRegionsChanged(
-                                   CefRefPtr<CefBrowser> browser,
-                                   const std::vector<CefDraggableRegion>& regions) OVERRIDE;
+    void OnDraggableRegionsChanged(CefRefPtr<CefBrowser> browser, const std::vector<CefDraggableRegion>& regions) OVERRIDE;
     
     // CefFocusHandler methods
     void OnTakeFocus(CefRefPtr<CefBrowser> browser, bool next) OVERRIDE;
@@ -152,8 +142,7 @@ namespace client {
                        bool* is_keyboard_shortcut) OVERRIDE;
     
     // CefLifeSpanHandler methods
-    bool OnBeforePopup(
-                       CefRefPtr<CefBrowser> browser,
+    bool OnBeforePopup(CefRefPtr<CefBrowser> browser,
                        CefRefPtr<CefFrame> frame,
                        const CefString& target_url,
                        const CefString& target_frame_name,
@@ -185,19 +174,16 @@ namespace client {
                         CefRefPtr<CefRequest> request,
                         bool user_gesture,
                         bool is_redirect) OVERRIDE;
-    bool OnOpenURLFromTab(
-                          CefRefPtr<CefBrowser> browser,
+    bool OnOpenURLFromTab(CefRefPtr<CefBrowser> browser,
                           CefRefPtr<CefFrame> frame,
                           const CefString& target_url,
                           CefRequestHandler::WindowOpenDisposition target_disposition,
                           bool user_gesture) OVERRIDE;
-    cef_return_value_t OnBeforeResourceLoad(
-                                            CefRefPtr<CefBrowser> browser,
+    cef_return_value_t OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser,
                                             CefRefPtr<CefFrame> frame,
                                             CefRefPtr<CefRequest> request,
                                             CefRefPtr<CefRequestCallback> callback) OVERRIDE;
-    CefRefPtr<CefResourceHandler> GetResourceHandler(
-                                                     CefRefPtr<CefBrowser> browser,
+    CefRefPtr<CefResourceHandler> GetResourceHandler(CefRefPtr<CefBrowser> browser,
                                                      CefRefPtr<CefFrame> frame,
                                                      CefRefPtr<CefRequest> request) OVERRIDE;
     bool OnQuotaRequest(CefRefPtr<CefBrowser> browser,
@@ -212,8 +198,7 @@ namespace client {
                             const CefString& request_url,
                             CefRefPtr<CefSSLInfo> ssl_info,
                             CefRefPtr<CefRequestCallback> callback) OVERRIDE;
-    bool OnSelectClientCertificate(
-                                   CefRefPtr<CefBrowser> browser,
+    bool OnSelectClientCertificate(CefRefPtr<CefBrowser> browser,
                                    bool isProxy,
                                    const CefString& host,
                                    int port,
@@ -225,8 +210,7 @@ namespace client {
     int GetBrowserCount() const;
     
     // Show a new DevTools popup window.
-    void ShowDevTools(CefRefPtr<CefBrowser> browser,
-                      const CefPoint& inspect_element_at);
+    void ShowDevTools(CefRefPtr<CefBrowser> browser, const CefPoint& inspect_element_at);
     
     // Close the existing DevTools popup window, if any.
     void CloseDevTools(CefRefPtr<CefBrowser> browser);
@@ -289,7 +273,6 @@ namespace client {
     // The following members will only be accessed on the main thread. This will
     // be the same as the CEF UI thread except when using multi-threaded message
     // loop mode on Windows.
-    
     Delegate* delegate_;
     
     // UI THREAD MEMBERS

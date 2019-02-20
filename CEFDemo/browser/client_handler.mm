@@ -220,8 +220,7 @@ namespace client {
     // Read command line settings.
     CefRefPtr<CefCommandLine> command_line =
     CefCommandLine::GetGlobalCommandLine();
-    mouse_cursor_change_disabled_ =
-    command_line->HasSwitch(switches::kMouseCursorChangeDisabled);
+    mouse_cursor_change_disabled_ = command_line->HasSwitch(switches::kMouseCursorChangeDisabled);
   }
   
   void ClientHandler::DetachDelegate() {
@@ -235,8 +234,7 @@ namespace client {
     delegate_ = NULL;
   }
   
-  bool ClientHandler::OnProcessMessageReceived(
-                                               CefRefPtr<CefBrowser> browser,
+  bool ClientHandler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
                                                CefProcessId source_process,
                                                CefRefPtr<CefProcessMessage> message) {
     CEF_REQUIRE_UI_THREAD();
