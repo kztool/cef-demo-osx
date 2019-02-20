@@ -13,6 +13,14 @@
   return YES;
 }
 
+- (BOOL)canBecomeKeyWindow {
+  return YES;
+}
+
+- (BOOL)canBecomeMainWindow {
+  return YES;
+}
+
 - (void)performClose:(id)sender {
   if([[self delegate] respondsToSelector:@selector(windowShouldClose:)])
   {
