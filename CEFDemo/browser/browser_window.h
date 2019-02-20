@@ -126,8 +126,7 @@ namespace client {
   private:
     DISALLOW_COPY_AND_ASSIGN(BrowserWindow);
   };
-  
 }  // namespace client
 
-#endif  // CEF_TESTS_CEFCLIENT_BROWSER_BROWSER_WINDOW_H_
+#endif  // CEF_BROWSER_WINDOW_H_
 
