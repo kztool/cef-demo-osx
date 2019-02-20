@@ -52,50 +52,50 @@ namespace client {
     explicit BrowserWindow(Delegate* delegate, const std::string& startup_url);
     
     // Create a new browser and native window.
-    virtual void CreateBrowser(ClientWindowHandle parent_handle,
-                               const CefRect& rect,
-                               const CefBrowserSettings& settings,
-                               CefRefPtr<CefRequestContext> request_context);
+    void CreateBrowser(ClientWindowHandle parent_handle,
+                       const CefRect& rect,
+                       const CefBrowserSettings& settings,
+                       CefRefPtr<CefRequestContext> request_context);
     
     // Retrieve the configuration that will be used when creating a popup window.
     // The popup browser will initially be parented to |temp_handle| which should
     // be a pre-existing hidden window. The native window will be created later
     // after the browser has been created. This method will be called on the
     // browser process UI thread.
-    virtual void GetPopupConfig(CefWindowHandle temp_handle,
-                                CefWindowInfo& windowInfo,
-                                CefRefPtr<CefClient>& client,
-                                CefBrowserSettings& settings);
+    void GetPopupConfig(CefWindowHandle temp_handle,
+                        CefWindowInfo& windowInfo,
+                        CefRefPtr<CefClient>& client,
+                        CefBrowserSettings& settings);
     
     // Show the popup window with correct parent and bounds in parent coordinates.
-    virtual void ShowPopup(ClientWindowHandle parent_handle,
-                           int x,
-                           int y,
-                           size_t width,
-                           size_t height);
+    void ShowPopup(ClientWindowHandle parent_handle,
+                   int x,
+                   int y,
+                   size_t width,
+                   size_t height);
     
     // Show the window.
-    virtual void Show();
+    void Show();
     
     // Hide the window.
-    virtual void Hide();
+    void Hide();
     
     // Set the window bounds in parent coordinates.
-    virtual void SetBounds(int x, int y, size_t width, size_t height);
+    void SetBounds(int x, int y, size_t width, size_t height);
     
     // Set focus to the window.
-    virtual void SetFocus(bool focus);
+    void SetFocus(bool focus);
     
     // Set the device scale factor. Only used in combination with off-screen
     // rendering.
-    virtual void SetDeviceScaleFactor(float device_scale_factor);
+    void SetDeviceScaleFactor(float device_scale_factor);
     
     // Returns the device scale factor. Only used in combination with off-screen
     // rendering.
-    virtual float GetDeviceScaleFactor() const;
+    float GetDeviceScaleFactor() const;
     
     // Returns the window handle.
-    virtual ClientWindowHandle GetWindowHandle() const;
+    ClientWindowHandle GetWindowHandle() const;
     
     // Returns the browser owned by the window.
     CefRefPtr<CefBrowser> GetBrowser() const;
@@ -129,4 +129,5 @@ namespace client {
 }  // namespace client
 
 #endif  // CEF_BROWSER_WINDOW_H_
+
 
