@@ -206,7 +206,7 @@ namespace client {
   
   
   // static
-  scoped_refptr<RootWindow> RootWindow::GetForBrowser(int browser_id) {
+  CefRefPtr<RootWindow> RootWindow::GetForBrowser(int browser_id) {
     return MainContext::Get()->GetRootWindowManager()->GetWindowForBrowser(
                                                                            browser_id);
   }
@@ -706,14 +706,14 @@ namespace client {
   }
   
   // static
-  scoped_refptr<RootWindow> RootWindow::GetForNSWindow(NSWindow* window) {
+  CefRefPtr<RootWindow> RootWindow::GetForNSWindow(NSWindow* window) {
     RootWindowDelegate* delegate =
     static_cast<RootWindowDelegate*>([window delegate]);
     return [delegate root_window];
   }
   
   // static
-  scoped_refptr<RootWindow> RootWindow::Create() {
+  CefRefPtr<RootWindow> RootWindow::Create() {
     return new RootWindow();
   }
 }  // namespace client

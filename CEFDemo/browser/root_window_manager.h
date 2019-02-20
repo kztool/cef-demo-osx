@@ -21,28 +21,28 @@ namespace client {
     
     // Create a new top-level native window. This method can be called from
     // anywhere.
-    scoped_refptr<RootWindow> CreateRootWindow(const RootWindowConfig& config);
+    CefRefPtr<RootWindow> CreateRootWindow(const RootWindowConfig& config);
     
     // Create a new native popup window.
     // If |with_controls| is true the window will show controls.
     // This method is called from ClientHandler::CreatePopupWindow() to
     // create a new popup or DevTools window. Must be called on the UI thread.
-    scoped_refptr<RootWindow> CreateRootWindowAsPopup(
-                                                      bool with_controls,
-                                                      const CefPopupFeatures& popupFeatures,
-                                                      CefWindowInfo& windowInfo,
-                                                      CefRefPtr<CefClient>& client,
-                                                      CefBrowserSettings& settings);
+    CefRefPtr<RootWindow> CreateRootWindowAsPopup(
+                                                  bool with_controls,
+                                                  const CefPopupFeatures& popupFeatures,
+                                                  CefWindowInfo& windowInfo,
+                                                  CefRefPtr<CefClient>& client,
+                                                  CefBrowserSettings& settings);
     
     // Create a new top-level native window to host |extension|.
     // If |with_controls| is true the window will show controls.
     // This method can be called from anywhere.
-    scoped_refptr<RootWindow> CreateRootWindowAsExtension(
-                                                          CefRefPtr<CefExtension> extension,
-                                                          const CefRect& source_bounds,
-                                                          CefRefPtr<CefWindow> parent_window,
-                                                          const base::Closure& close_callback,
-                                                          bool with_controls);
+    CefRefPtr<RootWindow> CreateRootWindowAsExtension(
+                                                      CefRefPtr<CefExtension> extension,
+                                                      const CefRect& source_bounds,
+                                                      CefRefPtr<CefWindow> parent_window,
+                                                      const base::Closure& close_callback,
+                                                      bool with_controls);
     
     // Returns true if a window hosting |extension| currently exists. Must be
     // called on the main thread.
@@ -50,11 +50,11 @@ namespace client {
     
     // Returns the RootWindow associated with the specified browser ID. Must be
     // called on the main thread.
-    scoped_refptr<RootWindow> GetWindowForBrowser(int browser_id) const;
+    CefRefPtr<RootWindow> GetWindowForBrowser(int browser_id) const;
     
     // Returns the currently active/foreground RootWindow. May return NULL. Must
     // be called on the main thread.
-    scoped_refptr<RootWindow> GetActiveRootWindow() const;
+    CefRefPtr<RootWindow> GetActiveRootWindow() const;
     
     // Returns the currently active/foreground browser. May return NULL. Safe to
     // call from any thread.
@@ -78,13 +78,12 @@ namespace client {
     
     ~RootWindowManager();
     
-    void OnRootWindowCreated(scoped_refptr<RootWindow> root_window);
+    void OnRootWindowCreated(CefRefPtr<RootWindow> root_window);
     void NotifyExtensionsChanged();
     
     // RootWindow::Delegate methods.
-    CefRefPtr<CefRequestContext> GetRequestContext(
-                                                   RootWindow* root_window) OVERRIDE;
-    scoped_refptr<ImageCache> GetImageCache() OVERRIDE;
+    CefRefPtr<CefRequestContext> GetRequestContext(RootWindow* root_window) OVERRIDE;
+    CefRefPtr<ImageCache> GetImageCache() OVERRIDE;
     void OnExit(RootWindow* root_window) OVERRIDE;
     void OnRootWindowDestroyed(RootWindow* root_window) OVERRIDE;
     void OnRootWindowActivated(RootWindow* root_window) OVERRIDE;
@@ -102,12 +101,12 @@ namespace client {
     bool request_context_shared_cache_;
     
     // Existing root windows. Only accessed on the main thread.
-    typedef std::set<scoped_refptr<RootWindow>> RootWindowSet;
+    typedef std::set<CefRefPtr<RootWindow>> RootWindowSet;
     RootWindowSet root_windows_;
     
     // The currently active/foreground RootWindow. Only accessed on the main
     // thread.
-    scoped_refptr<RootWindow> active_root_window_;
+    CefRefPtr<RootWindow> active_root_window_;
     
     // The currently active/foreground browser. Access is protected by
     // |active_browser_lock_;
@@ -122,11 +121,10 @@ namespace client {
     // Loaded extensions. Only accessed on the main thread.
     ExtensionSet extensions_;
     
-    scoped_refptr<ImageCache> image_cache_;
+    CefRefPtr<ImageCache> image_cache_;
     
     DISALLOW_COPY_AND_ASSIGN(RootWindowManager);
   };
 }  // namespace client
 
 #endif  // CEF_TESTS_CEFCLIENT_BROWSER_ROOT_WINDOW_MANAGER_H_
-

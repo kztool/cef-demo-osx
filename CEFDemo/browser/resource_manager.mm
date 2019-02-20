@@ -139,7 +139,7 @@ namespace client {
           DCHECK(!url.empty());
         }
         
-        bool OnRequest(scoped_refptr<CefResourceManager::Request> request) OVERRIDE {
+        bool OnRequest(CefRefPtr<CefResourceManager::Request> request) OVERRIDE {
           CEF_REQUIRE_IO_THREAD();
           
           const std::string& url = request->url();

@@ -292,7 +292,7 @@ namespace client {
     CefRefPtr<CefImage> GetCachedImage(const std::string& image_id);
     
   private:
-    // Only allow deletion via scoped_refptr.
+    // Only allow deletion via CefRefPtr.
     friend struct CefDeleteOnThread<TID_UI>;
     friend class base::RefCountedThreadSafe<ImageCache, CefDeleteOnUIThread>;
     
@@ -378,14 +378,14 @@ namespace client {
   //   void DoSomething();
   //
   //  private:
-  //   // Allow deletion via scoped_refptr only.
+  //   // Allow deletion via CefRefPtr only.
   //   friend struct DeleteOnMainThread;
   //   friend class base::RefCountedThreadSafe<Foo, DeleteOnMainThread>;
   //
   //   virtual ~Foo() {}
   // };
   //
-  // base::scoped_refptr<Foo> foo = new Foo();
+  // base::CefRefPtr<Foo> foo = new Foo();
   // foo->DoSomething();
   // foo = NULL;  // Deletion of |foo| will occur on the main thread.
   //

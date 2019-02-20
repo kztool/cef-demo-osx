@@ -72,7 +72,7 @@ namespace client {
                                                                RootWindow* root_window) = 0;
         
         // Returns the ImageCache.
-        virtual scoped_refptr<ImageCache> GetImageCache() = 0;
+        virtual CefRefPtr<ImageCache> GetImageCache() = 0;
         
         // Called to exit the application.
         virtual void OnExit(RootWindow* root_window) = 0;
@@ -102,15 +102,15 @@ namespace client {
       // Use RootWindowManager::CreateRootWindow() or CreateRootWindowAsPopup()
       // instead of calling this method directly. |use_views| will be true if the
       // Views framework should be used.
-      static scoped_refptr<RootWindow> Create();
+      static CefRefPtr<RootWindow> Create();
       
       // Returns the RootWindow associated with the specified |browser_id|. Must be
       // called on the main thread.
-      static scoped_refptr<RootWindow> GetForBrowser(int browser_id);
+      static CefRefPtr<RootWindow> GetForBrowser(int browser_id);
       
       // Returns the RootWindow associated with the specified |window|. Must be
       // called on the main thread.
-      static scoped_refptr<RootWindow> GetForNSWindow(NSWindow* window);
+      static CefRefPtr<RootWindow> GetForNSWindow(NSWindow* window);
       
     // Constructor may be called on any thread.
     RootWindow();
@@ -186,7 +186,7 @@ namespace client {
     RootWindow::Delegate* delegate() const { return delegate_; }
     
   private:
-    // Allow deletion via scoped_refptr only.
+    // Allow deletion via CefRefPtr only.
     friend struct DeleteOnMainThread;
     friend class base::RefCountedThreadSafe<RootWindow, DeleteOnMainThread>;
       

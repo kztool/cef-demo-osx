@@ -123,13 +123,11 @@ namespace client {
     DCHECK(root_windows_.empty());
   }
   
-  scoped_refptr<RootWindow> RootWindowManager::CreateRootWindow(
-                                                                const RootWindowConfig& config) {
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindow(const RootWindowConfig& config) {
     CefBrowserSettings settings;
     MainContext::Get()->PopulateBrowserSettings(&settings);
     
-    scoped_refptr<RootWindow> root_window =
-    RootWindow::Create();
+    CefRefPtr<RootWindow> root_window = RootWindow::Create();
     root_window->Init(this, config, settings);
     
     // Store a reference to the root window on the main thread.
@@ -138,7 +136,7 @@ namespace client {
     return root_window;
   }
   
-  scoped_refptr<RootWindow> RootWindowManager::CreateRootWindowAsPopup(
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsPopup(
                                                                        bool with_controls,
                                                                        const CefPopupFeatures& popupFeatures,
                                                                        CefWindowInfo& windowInfo,
@@ -153,7 +151,7 @@ namespace client {
     
     MainContext::Get()->PopulateBrowserSettings(&settings);
     
-    scoped_refptr<RootWindow> root_window = RootWindow::Create();
+    CefRefPtr<RootWindow> root_window = RootWindow::Create();
     root_window->InitAsPopup(this, with_controls, popupFeatures, windowInfo, client, settings);
     
     // Store a reference to the root window on the main thread.
@@ -162,7 +160,7 @@ namespace client {
     return root_window;
   }
   
-  scoped_refptr<RootWindow> RootWindowManager::CreateRootWindowAsExtension(
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsExtension(
                                                                            CefRefPtr<CefExtension> extension,
                                                                            const CefRect& source_bounds,
                                                                            CefRefPtr<CefWindow> parent_window,
@@ -212,7 +210,7 @@ namespace client {
     return false;
   }
   
-  scoped_refptr<RootWindow> RootWindowManager::GetWindowForBrowser(
+  CefRefPtr<RootWindow> RootWindowManager::GetWindowForBrowser(
                                                                    int browser_id) const {
     REQUIRE_MAIN_THREAD();
     
@@ -225,7 +223,7 @@ namespace client {
     return NULL;
   }
   
-  scoped_refptr<RootWindow> RootWindowManager::GetActiveRootWindow() const {
+  CefRefPtr<RootWindow> RootWindowManager::GetActiveRootWindow() const {
     REQUIRE_MAIN_THREAD();
     return active_root_window_;
   }
@@ -278,8 +276,7 @@ namespace client {
     NotifyExtensionsChanged();
   }
   
-  void RootWindowManager::OnRootWindowCreated(
-                                              scoped_refptr<RootWindow> root_window) {
+  void RootWindowManager::OnRootWindowCreated(CefRefPtr<RootWindow> root_window) {
     if (!CURRENTLY_ON_MAIN_THREAD()) {
       // Execute this method on the main thread.
       MAIN_POST_CLOSURE(base::Bind(&RootWindowManager::OnRootWindowCreated,
@@ -348,7 +345,7 @@ namespace client {
     return shared_request_context_;
   }
   
-  scoped_refptr<ImageCache> RootWindowManager::GetImageCache() {
+  CefRefPtr<ImageCache> RootWindowManager::GetImageCache() {
     REQUIRE_MAIN_THREAD();
     
     return image_cache_;
