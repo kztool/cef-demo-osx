@@ -14,8 +14,7 @@
 @property(nonatomic, readonly) client::RootWindow* root_window;
 @property(nonatomic, readwrite) bool force_close;
 
-- (id)initWithWindow:(NSWindow*)window
-       andRootWindow:(client::RootWindow*)root_window;
+- (id)initWithWindow:(NSWindow*)window andRootWindow:(client::RootWindow*)root_window;
 - (IBAction)goBack:(id)sender;
 - (IBAction)goForward:(id)sender;
 - (IBAction)reload:(id)sender;
@@ -28,8 +27,7 @@
 @synthesize root_window = root_window_;
 @synthesize force_close = force_close_;
 
-- (id)initWithWindow:(NSWindow*)window
-       andRootWindow:(client::RootWindow*)root_window {
+- (id)initWithWindow:(NSWindow*)window andRootWindow:(client::RootWindow*)root_window {
   if (self = [super init]) {
     window_ = window;
     [window_ setDelegate:self];
@@ -189,7 +187,6 @@
   
   [self release];
 }
-
 @end
 
 namespace client {
@@ -200,11 +197,9 @@ namespace client {
   initially_hidden(false),
   url(MainContext::Get()->GetMainURL()) {}
   
-  
   // static
   CefRefPtr<RootWindow> RootWindow::GetForBrowser(int browser_id) {
-    return MainContext::Get()->GetRootWindowManager()->GetWindowForBrowser(
-                                                                           browser_id);
+    return MainContext::Get()->GetRootWindowManager()->GetWindowForBrowser(browser_id);
   }
   
   void RootWindow::OnExtensionsChanged(const ExtensionSet& extensions) {
@@ -212,8 +207,9 @@ namespace client {
     DCHECK(delegate_);
     DCHECK(!WithExtension());
     
-    if (extensions.empty())
+    if (extensions.empty()) {
       return;
+    }
     
     ExtensionSet::const_iterator it = extensions.begin();
     for (; it != extensions.end(); ++it) {
@@ -271,8 +267,8 @@ namespace client {
   }
   
   void RootWindow::Init(RootWindow::Delegate* delegate,
-                           const RootWindowConfig& config,
-                           const CefBrowserSettings& settings) {
+                        const RootWindowConfig& config,
+                        const CefBrowserSettings& settings) {
     DCHECK(delegate);
     DCHECK(!initialized_);
     
@@ -295,11 +291,11 @@ namespace client {
   }
   
   void RootWindow::InitAsPopup(RootWindow::Delegate* delegate,
-                                  bool with_controls,
-                                  const CefPopupFeatures& popupFeatures,
-                                  CefWindowInfo& windowInfo,
-                                  CefRefPtr<CefClient>& client,
-                                  CefBrowserSettings& settings) {
+                               bool with_controls,
+                               const CefPopupFeatures& popupFeatures,
+                               CefWindowInfo& windowInfo,
+                               CefRefPtr<CefClient>& client,
+                               CefBrowserSettings& settings) {
     DCHECK(delegate);
     DCHECK(!initialized_);
     
@@ -435,7 +431,7 @@ namespace client {
   }
   
   void RootWindow::CreateRootWindow(const CefBrowserSettings& settings,
-                                       bool initially_hidden) {
+                                    bool initially_hidden) {
     REQUIRE_MAIN_THREAD();
     DCHECK(!window_);
     
@@ -489,7 +485,7 @@ namespace client {
     // sub-views have layers. This is necessary to ensure correct layer
     // ordering of all child views and their layers.
     [contentView setWantsLayer:YES];
-
+    
     if (with_controls_) {
       // Create the buttons.
       NSRect button_rect = contentBounds;
@@ -595,7 +591,7 @@ namespace client {
   }
   
   void RootWindow::OnSetDraggableRegions(
-                                            const std::vector<CefDraggableRegion>& regions) {
+                                         const std::vector<CefDraggableRegion>& regions) {
     REQUIRE_MAIN_THREAD();
     // TODO(cef): Implement support for draggable regions on this platform.
   }
@@ -657,8 +653,8 @@ namespace client {
   }
   
   void RootWindow::OnSetLoadingState(bool isLoading,
-                                        bool canGoBack,
-                                        bool canGoForward) {
+                                     bool canGoBack,
+                                     bool canGoForward) {
     REQUIRE_MAIN_THREAD();
     
     if (with_controls_) {
@@ -701,4 +697,3 @@ namespace client {
     return new RootWindow();
   }
 }  // namespace client
-
