@@ -1,6 +1,3 @@
-// Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
 #import "browser_window.h"
 
 namespace client {
@@ -8,12 +5,6 @@ namespace client {
   : delegate_(delegate), is_closing_(false) {
     DCHECK(delegate_);
     client_handler_ = new ClientHandler(this, startup_url);
-  }
-  
-  void BrowserWindow::SetDeviceScaleFactor(float device_scale_factor) {}
-  
-  float BrowserWindow::GetDeviceScaleFactor() const {
-    return 1.0f;
   }
   
   CefRefPtr<CefBrowser> BrowserWindow::GetBrowser() const {
@@ -30,7 +21,6 @@ namespace client {
     REQUIRE_MAIN_THREAD();
     DCHECK(!browser_);
     browser_ = browser;
-    
     delegate_->OnBrowserCreated(browser);
   }
   
@@ -38,7 +28,6 @@ namespace client {
     REQUIRE_MAIN_THREAD();
     DCHECK_EQ(browser->GetIdentifier(), browser_->GetIdentifier());
     is_closing_ = true;
-    
     delegate_->OnBrowserWindowClosing();
   }
   
@@ -83,8 +72,7 @@ namespace client {
     delegate_->OnSetLoadingState(isLoading, canGoBack, canGoForward);
   }
   
-  void BrowserWindow::OnSetDraggableRegions(
-                                            const std::vector<CefDraggableRegion>& regions) {
+  void BrowserWindow::OnSetDraggableRegions(const std::vector<CefDraggableRegion>& regions) {
     REQUIRE_MAIN_THREAD();
     delegate_->OnSetDraggableRegions(regions);
   }
@@ -96,11 +84,11 @@ namespace client {
     REQUIRE_MAIN_THREAD();
     
     CefWindowInfo window_info;
-    window_info.SetAsChild(parent_handle, rect.x, rect.y, rect.width,
-                           rect.height);
-    
-    CefBrowserHost::CreateBrowser(window_info, client_handler_,
-                                  client_handler_->startup_url(), settings,
+    window_info.SetAsChild(parent_handle, rect.x, rect.y, rect.width, rect.height);
+    CefBrowserHost::CreateBrowser(window_info,
+                                  client_handler_,
+                                  client_handler_->startup_url(),
+                                  settings,
                                   request_context);
   }
   
@@ -109,7 +97,6 @@ namespace client {
                                      CefRefPtr<CefClient>& client,
                                      CefBrowserSettings& settings) {
     CEF_REQUIRE_UI_THREAD();
-    
     // The window will be properly sized after the browser is created.
     windowInfo.SetAsChild(temp_handle, 0, 0, 0, 0);
     client = client_handler_;
@@ -160,5 +147,3 @@ namespace client {
     return NULL;
   }
 }  // namespace client
-
-

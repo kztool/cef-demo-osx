@@ -86,14 +86,6 @@ namespace client {
     // Set focus to the window.
     void SetFocus(bool focus);
     
-    // Set the device scale factor. Only used in combination with off-screen
-    // rendering.
-    void SetDeviceScaleFactor(float device_scale_factor);
-    
-    // Returns the device scale factor. Only used in combination with off-screen
-    // rendering.
-    float GetDeviceScaleFactor() const;
-    
     // Returns the window handle.
     ClientWindowHandle GetWindowHandle() const;
     
