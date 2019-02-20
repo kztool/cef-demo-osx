@@ -1,7 +1,3 @@
-// Copyright (c) 2015 The Chromium Embedded Framework Authors. All rights
-// reserved. Use of this source code is governed by a BSD-style license that
-// can be found in the LICENSE file.
-
 #import "root_window.h"
 #import "main_context.h"
 #import "temp_window.h"
@@ -410,17 +406,6 @@ namespace client {
     }
   }
   
-  void RootWindow::SetDeviceScaleFactor(float device_scale_factor) {
-    REQUIRE_MAIN_THREAD();
-  }
-  
-  float RootWindow::GetDeviceScaleFactor() const {
-    REQUIRE_MAIN_THREAD();
-
-    NOTREACHED();
-    return 0.0f;
-  }
-  
   CefRefPtr<CefBrowser> RootWindow::GetBrowser() const {
     REQUIRE_MAIN_THREAD();
     
@@ -505,7 +490,6 @@ namespace client {
     // ordering of all child views and their layers.
     [contentView setWantsLayer:YES];
 
-    
     if (with_controls_) {
       // Create the buttons.
       NSRect button_rect = contentBounds;
