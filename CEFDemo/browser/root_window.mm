@@ -583,8 +583,9 @@ namespace client {
     
     // For popup browsers create the root window once the browser has been
     // created.
-    if (is_popup_)
-      CreateRootWindow(CefBrowserSettings(), false);
+    if (is_popup_) {
+      CreateRootWindow(CefBrowserSettings());
+    }
     
     delegate_->OnBrowserCreated(this, browser);
   }
