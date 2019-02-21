@@ -156,7 +156,6 @@ namespace client {
     RootWindowConfig config;
     config.with_controls = with_controls;
     config.with_extension = true;
-    config.initially_hidden = true;
     config.source_bounds = source_bounds;
     config.close_callback = close_callback;
     config.url = extension_url;

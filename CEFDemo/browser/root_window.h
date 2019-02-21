@@ -18,8 +18,6 @@ namespace client {
     // If true the window is hosting an extension app.
     bool with_extension;
     
-    // If true the window will be created initially hidden.
-    bool initially_hidden;
     
     // Requested window position. If |bounds| and |source_bounds| are empty the
     // default window size and location will be used.
@@ -168,8 +166,7 @@ namespace client {
     friend class base::RefCountedThreadSafe<RootWindow, DeleteOnMainThread>;
     
     void CreateBrowserWindow(const std::string& startup_url);
-    void CreateRootWindow(const CefBrowserSettings& settings,
-                          bool initially_hidden);
+    void CreateRootWindow(const CefBrowserSettings& settings);
     
     // BrowserWindow::Delegate methods.
     void OnBrowserCreated(CefRefPtr<CefBrowser> browser) OVERRIDE;

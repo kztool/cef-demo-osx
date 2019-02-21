@@ -229,7 +229,6 @@ namespace client {
   : always_on_top(false),
   with_controls(true),
   with_extension(false),
-  initially_hidden(false),
   url(MainContext::Get()->GetMainURL()) {}
   
   // static
@@ -318,10 +317,9 @@ namespace client {
     
     // Create the native root window on the main thread.
     if (CURRENTLY_ON_MAIN_THREAD()) {
-      CreateRootWindow(settings, config.initially_hidden);
+      CreateRootWindow(settings);
     } else {
-      MAIN_POST_CLOSURE(base::Bind(&RootWindow::CreateRootWindow, this,
-                                   settings, config.initially_hidden));
+      MAIN_POST_CLOSURE(base::Bind(&RootWindow::CreateRootWindow, this, settings));
     }
   }
   
@@ -465,7 +463,7 @@ namespace client {
     browser_window_.reset(new BrowserWindow(this, startup_url));
   }
   
-  void RootWindow::CreateRootWindow(const CefBrowserSettings& settings, bool initially_hidden) {
+  void RootWindow::CreateRootWindow(const CefBrowserSettings& settings) {
     REQUIRE_MAIN_THREAD();
     DCHECK(!window_);
     
@@ -566,23 +564,18 @@ namespace client {
     
     if (!is_popup_) {
       // Create the browser window.
-      browser_window_->CreateBrowser(contentView, CefRect(0, 0, width, height),
-                                     settings,
-                                     delegate_->GetRequestContext(this));
+      browser_window_->CreateBrowser(contentView, CefRect(0, 0, width, height), settings, delegate_->GetRequestContext(this));
     } else {
       // With popups we already have a browser window. Parent the browser window
       // to the root window and show it in the correct location.
-      browser_window_->ShowPopup(contentView, 0, 0, contentBounds.size.width,
-                                 contentBounds.size.height);
+      browser_window_->ShowPopup(contentView, 0, 0, contentBounds.size.width, contentBounds.size.height);
     }
     
-    if (!initially_hidden) {
-      // Show the window.
-      Show(ShowNormal);
-      
-      // Size the window.
-      SetBounds(x, y, width, height);
-    }
+    // Show the window.
+    Show(ShowNormal);
+    
+    // Size the window.
+    SetBounds(x, y, width, height);
   }
   
   void RootWindow::OnBrowserCreated(CefRefPtr<CefBrowser> browser) {
