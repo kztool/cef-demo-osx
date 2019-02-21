@@ -104,12 +104,14 @@ namespace client {
     DCHECK(root_windows_.empty());
   }
   
-  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindow(const RootWindowConfig& config) {
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindow(const WindowType window_type,
+                                                            const bool with_extension,
+                                                            const std::string url) {
     CefBrowserSettings settings;
     MainContext::Get()->PopulateBrowserSettings(&settings);
     
     CefRefPtr<RootWindow> root_window = RootWindow::Create();
-    root_window->Init(this, config, settings);
+    root_window->Init(this, window_type, with_extension,  url, settings);
     
     // Store a reference to the root window on the main thread.
     OnRootWindowCreated(root_window);
@@ -117,7 +119,7 @@ namespace client {
     return root_window;
   }
   
-  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsPopup(bool with_controls,
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsPopup(WindowType window_type,
                                                                        const CefPopupFeatures& popupFeatures,
                                                                        CefWindowInfo& windowInfo,
                                                                        CefRefPtr<CefClient>& client,
@@ -132,7 +134,7 @@ namespace client {
     MainContext::Get()->PopulateBrowserSettings(&settings);
     
     CefRefPtr<RootWindow> root_window = RootWindow::Create();
-    root_window->InitAsPopup(this, with_controls, popupFeatures, windowInfo, client, settings);
+    root_window->InitAsPopup(this, window_type, popupFeatures, windowInfo, client, settings);
     
     // Store a reference to the root window on the main thread.
     OnRootWindowCreated(root_window);
@@ -140,9 +142,7 @@ namespace client {
     return root_window;
   }
   
-  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension,
-                                                                           const base::Closure& close_callback,
-                                                                           bool with_controls) {
+  CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension, WindowType window_type) {
     const std::string& extension_url = utils::GetExtensionURL(extension);
     if (extension_url.empty()) {
       NOTREACHED() << "Extension cannot be loaded directly.";
@@ -152,12 +152,7 @@ namespace client {
     // Create an initially hidden browser window that loads the extension URL.
     // We'll show the window when the desired size becomes available via
     // ClientHandler::OnAutoResize.
-    RootWindowConfig config;
-    config.with_controls = with_controls;
-    config.with_extension = true;
-    config.close_callback = close_callback;
-    config.url = extension_url;
-    return CreateRootWindow(config);
+    return CreateRootWindow(window_type, true, extension_url);
   }
   
   bool RootWindowManager::HasRootWindowAsExtension(CefRefPtr<CefExtension> extension) {
@@ -378,12 +373,11 @@ namespace client {
     }
   }
   
-  void RootWindowManager::CreateExtensionWindow(CefRefPtr<CefExtension> extension,
-                                                const base::Closure& close_callback) {
+  void RootWindowManager::CreateExtensionWindow(CefRefPtr<CefExtension> extension) {
     REQUIRE_MAIN_THREAD();
     
     if (!HasRootWindowAsExtension(extension)) {
-      CreateRootWindowAsExtension(extension, close_callback, false);
+      CreateRootWindowAsExtension(extension, WindowType_Extension);
     }
   }
   

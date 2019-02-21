@@ -500,7 +500,7 @@ namespace client {
     CEF_REQUIRE_UI_THREAD();
     
     // Return true to cancel the popup window.
-    return !CreatePopupWindow(browser, false, popupFeatures, windowInfo, client, settings);
+    return !CreatePopupWindow(browser, WindowType_Other, popupFeatures, windowInfo, client, settings);
   }
   
   void ClientHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
@@ -599,10 +599,7 @@ namespace client {
         target_disposition == WOD_NEW_FOREGROUND_TAB) {
       // Handle middle-click and ctrl + left-click by opening the URL in a new
       // browser window.
-      RootWindowConfig config;
-      config.with_controls = true;
-      config.url = target_url;
-      MainContext::Get()->GetRootWindowManager()->CreateRootWindow(config);
+      MainContext::Get()->GetRootWindowManager()->CreateRootWindow(WindowType_Web, false, target_url);
       return true;
     }
     
@@ -730,7 +727,7 @@ namespace client {
     if (!has_devtools) {
       // Create a new RootWindow for the DevTools browser that will be created
       // by ShowDevTools().
-      has_devtools = CreatePopupWindow(browser, true, CefPopupFeatures(), windowInfo, client, settings);
+      has_devtools = CreatePopupWindow(browser, WindowType_DevTools, CefPopupFeatures(), windowInfo, client, settings);
     }
     
     if (has_devtools) {
@@ -791,14 +788,11 @@ namespace client {
     
     ss << "</body></html>";
     
-    RootWindowConfig config;
-    config.with_controls = false;
-    config.url = utils::GetDataURI(ss.str(), "text/html");
-    MainContext::Get()->GetRootWindowManager()->CreateRootWindow(config);
+    MainContext::Get()->GetRootWindowManager()->CreateRootWindow(WindowType_SSL, false, utils::GetDataURI(ss.str(), "text/html"));
   }
   
   bool ClientHandler::CreatePopupWindow(CefRefPtr<CefBrowser> browser,
-                                        bool is_devtools,
+                                        WindowType window_type,
                                         const CefPopupFeatures& popupFeatures,
                                         CefWindowInfo& windowInfo,
                                         CefRefPtr<CefClient>& client,
@@ -807,7 +801,7 @@ namespace client {
     
     // The popup browser will be parented to a new native window.
     // Don't show URL bar and navigation buttons on DevTools windows.
-    MainContext::Get()->GetRootWindowManager()->CreateRootWindowAsPopup(!is_devtools, popupFeatures, windowInfo, client, settings);
+    MainContext::Get()->GetRootWindowManager()->CreateRootWindowAsPopup(window_type, popupFeatures, windowInfo, client, settings);
     
     return true;
   }

@@ -97,9 +97,6 @@ namespace client {
     // Returns true if the browser is closing.
     bool IsClosing() const;
   protected:
-    // Allow deletion via scoped_ptr only.
-    friend struct base::DefaultDeleter<BrowserWindow>;
-    
     // ClientHandler::Delegate methods.
     void OnBrowserCreated(CefRefPtr<CefBrowser> browser) OVERRIDE;
     void OnBrowserClosing(CefRefPtr<CefBrowser> browser) OVERRIDE;

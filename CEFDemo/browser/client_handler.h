@@ -228,7 +228,7 @@ namespace client {
     // proceed with popup browser creation or false to cancel the popup browser.
     // May be called on any thead.
     bool CreatePopupWindow(CefRefPtr<CefBrowser> browser,
-                           bool is_devtools,
+                           WindowType window_type,
                            const CefPopupFeatures& popupFeatures,
                            CefWindowInfo& windowInfo,
                            CefRefPtr<CefClient>& client,

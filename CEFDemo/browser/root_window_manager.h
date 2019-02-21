@@ -14,26 +14,23 @@ namespace client {
     // after all windows have closed.
     explicit RootWindowManager(bool terminate_when_all_windows_closed);
     
-    // Create a new top-level native window. This method can be called from
-    // anywhere.
-    CefRefPtr<RootWindow> CreateRootWindow(const RootWindowConfig& config);
+    // Create a new top-level native window. This method can be called from anywhere.
+    CefRefPtr<RootWindow> CreateRootWindow(const WindowType window_type,
+                                           const bool with_extension,
+                                           const std::string url);
     
     // Create a new native popup window.
-    // If |with_controls| is true the window will show controls.
     // This method is called from ClientHandler::CreatePopupWindow() to
     // create a new popup or DevTools window. Must be called on the UI thread.
-    CefRefPtr<RootWindow> CreateRootWindowAsPopup(bool with_controls,
+    CefRefPtr<RootWindow> CreateRootWindowAsPopup(WindowType window_type,
                                                   const CefPopupFeatures& popupFeatures,
                                                   CefWindowInfo& windowInfo,
                                                   CefRefPtr<CefClient>& client,
                                                   CefBrowserSettings& settings);
     
     // Create a new top-level native window to host |extension|.
-    // If |with_controls| is true the window will show controls.
     // This method can be called from anywhere.
-    CefRefPtr<RootWindow> CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension,
-                                                      const base::Closure& close_callback,
-                                                      bool with_controls);
+    CefRefPtr<RootWindow> CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension, WindowType window_type);
     
     // Returns true if a window hosting |extension| currently exists. Must be
     // called on the main thread.
@@ -79,8 +76,7 @@ namespace client {
     void OnRootWindowActivated(RootWindow* root_window) OVERRIDE;
     void OnBrowserCreated(RootWindow* root_window,
                           CefRefPtr<CefBrowser> browser) OVERRIDE;
-    void CreateExtensionWindow(CefRefPtr<CefExtension> extension,
-                               const base::Closure& close_callback) OVERRIDE;
+    void CreateExtensionWindow(CefRefPtr<CefExtension> extension) OVERRIDE;
     
     void CleanupOnUIThread();
     

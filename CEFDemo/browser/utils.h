@@ -69,6 +69,19 @@ class NSTextField;
 #endif
 
 namespace client {
+  enum WindowType {
+    WindowType_None,
+    WindowType_Home,
+    WindowType_App,
+    WindowType_Web,
+    WindowType_DevTools,
+    WindowType_Extension,
+    WindowType_SSL,
+    WindowType_Other,
+  };
+}
+
+namespace client {
   namespace switches {
     // CEF and Chromium support a wide range of command-line switches. This file
     // only contains command-line switches specific to the cefclient application.
@@ -86,7 +99,6 @@ namespace client {
     const char kRequestContextPerBrowser[] = "request-context-per-browser";
     const char kRequestContextSharedCache[] = "request-context-shared-cache";
     const char kRequestContextBlockCookies[] = "request-context-block-cookies";
-    const char kHideControls[] = "hide-controls";
     const char kWidevineCdmPath[] = "widevine-cdm-path";
     const char kSslClientCertificate[] = "ssl-client-certificate";
     const char kLoadExtension[] = "load-extension";
@@ -294,8 +306,7 @@ namespace client {
   private:
     // Only allow deletion via CefRefPtr.
     friend struct CefDeleteOnThread<TID_UI>;
-    friend class base::RefCountedThreadSafe<ImageCache, CefDeleteOnUIThread>;
-    
+
     ~ImageCache();
     
     enum ImageType {

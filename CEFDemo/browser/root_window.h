@@ -5,24 +5,6 @@
 #import "browser_window.h"
 
 namespace client {
-  // Used to configure how a RootWindow is created.
-  struct RootWindowConfig {
-    RootWindowConfig();
-    
-    // If true the window will show controls.
-    bool with_controls;
-    
-    // If true the window is hosting an extension app.
-    bool with_extension;
-    
-    // Callback to be executed when the window is closed. Will be executed on the
-    // main thread. This is currently only implemented for Views-based windows.
-    base::Closure close_callback;
-    
-    // Initial URL to load.
-    std::string url;
-  };
-  
   typedef std::set<CefRefPtr<CefExtension>> ExtensionSet;
   
   // OS X implementation of a top-level native window in the browser process.
@@ -36,7 +18,7 @@ namespace client {
       ShowMaximized,
       ShowNoActivate,
     };
-    
+        
     // This interface is implemented by the owner of the RootWindow. The methods
     // of this class will be called on the main thread.
     class Delegate {
@@ -62,7 +44,7 @@ namespace client {
                                     CefRefPtr<CefBrowser> browser) = 0;
       
       // Create a window for |extension|.
-      virtual void CreateExtensionWindow(CefRefPtr<CefExtension> extension, const base::Closure& close_callback) = 0;
+      virtual void CreateExtensionWindow(CefRefPtr<CefExtension> extension) = 0;
     protected:
       virtual ~Delegate() {}
     };
@@ -92,7 +74,9 @@ namespace client {
     // Use RootWindowManager::CreateRootWindow() instead of calling this method
     // directly.
     void Init(RootWindow::Delegate* delegate,
-              const RootWindowConfig& config,
+              const WindowType window_type,
+              const bool with_extension,
+              const std::string url,
               const CefBrowserSettings& settings);
     
     // Initialize as a popup window. This is used to attach a new native window to
@@ -102,7 +86,7 @@ namespace client {
     // Use RootWindowManager::CreateRootWindowAsPopup() instead of calling this
     // method directly. Called on the UI thread.
     void InitAsPopup(RootWindow::Delegate* delegate,
-                     bool with_controls,
+                     WindowType window_type,
                      const CefPopupFeatures& popupFeatures,
                      CefWindowInfo& windowInfo,
                      CefRefPtr<CefClient>& client,
@@ -143,10 +127,6 @@ namespace client {
     BrowserWindow* browser_window() const { return browser_window_.get(); }
     RootWindow::Delegate* delegate() const { return delegate_; }
   private:
-    // Allow deletion via CefRefPtr only.
-    friend struct DeleteOnMainThread;
-    friend class base::RefCountedThreadSafe<RootWindow, DeleteOnMainThread>;
-    
     void CreateBrowserWindow(const std::string& startup_url);
     void CreateRootWindow(const CefBrowserSettings& settings);
     
@@ -168,7 +148,7 @@ namespace client {
     
     // After initialization all members are only accessed on the main thread.
     // Members set during initialization.
-    bool with_controls_;
+    WindowType window_type_;
     bool with_extension_;
     bool is_popup_;
     CefRect start_rect_;

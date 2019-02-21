@@ -225,11 +225,6 @@
 @end
 
 namespace client {
-  RootWindowConfig::RootWindowConfig()
-  : with_controls(true),
-  with_extension(false),
-  url(MainContext::Get()->GetMainURL()) {}
-  
   // static
   CefRefPtr<RootWindow> RootWindow::GetForBrowser(int browser_id) {
     return MainContext::Get()->GetRootWindowManager()->GetWindowForBrowser(browser_id);
@@ -246,7 +241,7 @@ namespace client {
     
     ExtensionSet::const_iterator it = extensions.begin();
     for (; it != extensions.end(); ++it) {
-      delegate_->CreateExtensionWindow(*it, base::Closure());
+      delegate_->CreateExtensionWindow(*it);
     }
   }
   
@@ -278,7 +273,7 @@ namespace client {
   }  // namespace
   
   RootWindow::RootWindow()
-  : with_controls_(false),
+  : window_type_(WindowType_None),
   is_popup_(false),
   initialized_(false),
   window_(nil),
@@ -300,16 +295,19 @@ namespace client {
   }
   
   void RootWindow::Init(RootWindow::Delegate* delegate,
-                        const RootWindowConfig& config,
+                        const WindowType window_type,
+                        const bool with_extension,
+                        const std::string url,
                         const CefBrowserSettings& settings) {
     DCHECK(delegate);
     DCHECK(!initialized_);
     
     delegate_ = delegate;
-    with_controls_ = config.with_controls;
-    with_extension_ = config.with_extension;
+    
+    window_type_ = window_type;
+    with_extension_ = with_extension;
 
-    CreateBrowserWindow(config.url);
+    CreateBrowserWindow(url);
     
     initialized_ = true;
     
@@ -322,7 +320,7 @@ namespace client {
   }
   
   void RootWindow::InitAsPopup(RootWindow::Delegate* delegate,
-                               bool with_controls,
+                               WindowType window_type,
                                const CefPopupFeatures& popupFeatures,
                                CefWindowInfo& windowInfo,
                                CefRefPtr<CefClient>& client,
@@ -331,7 +329,7 @@ namespace client {
     DCHECK(!initialized_);
     
     delegate_ = delegate;
-    with_controls_ = with_controls;
+    window_type_ = window_type;
     is_popup_ = true;
     
     if (popupFeatures.xSet)
@@ -413,8 +411,8 @@ namespace client {
     // Desired content rectangle.
     NSRect content_rect;
     content_rect.size.width = static_cast<int>(width);
-    content_rect.size.height =
-    static_cast<int>(height) + (with_controls_ ? URLBAR_HEIGHT : 0);
+    
+    content_rect.size.height = static_cast<int>(height) + (window_type_ == WindowType_Web ? URLBAR_HEIGHT : 0);
     
     // Convert to a frame rectangle.
     NSRect frame_rect = [window_ frameRectForContentRect:content_rect];
@@ -514,7 +512,7 @@ namespace client {
     // ordering of all child views and their layers.
     [contentView setWantsLayer:YES];
     
-    if (with_controls_) {
+    if (window_type_ == WindowType_Web) {
       // Create the buttons.
       NSRect button_rect = contentBounds;
       button_rect.origin.y = window_rect.size.height - URLBAR_HEIGHT +
@@ -662,7 +660,7 @@ namespace client {
     NSRect content_rect;
     content_rect.size.width = static_cast<int>(new_size.width);
     content_rect.size.height =
-    static_cast<int>(new_size.height) + (with_controls_ ? URLBAR_HEIGHT : 0);
+    static_cast<int>(new_size.height) + (window_type_ == WindowType_Web ? URLBAR_HEIGHT : 0);
     
     // Convert to a frame rectangle.
     NSRect frame_rect = [window_ frameRectForContentRect:content_rect];
@@ -680,7 +678,7 @@ namespace client {
                                      bool canGoForward) {
     REQUIRE_MAIN_THREAD();
     
-    if (with_controls_) {
+    if (window_type_ == WindowType_Web) {
       [url_textfield_ setEnabled:YES];
       [reload_button_ setEnabled:!isLoading];
       [stop_button_ setEnabled:isLoading];

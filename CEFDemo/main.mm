@@ -8,12 +8,7 @@
 #import "browser/main_context.h"
 
 // Receives notifications from the application. Will delete itself when done.
-@interface ClientAppDelegate : NSObject<NSApplicationDelegate> {
-@private
-  bool with_controls_;
-}
-
-- (id)initWithControls:(bool)with_controls;
+@interface ClientAppDelegate : NSObject<NSApplicationDelegate>
 - (void)createApplication:(id)object;
 - (void)tryToTerminateApplication:(NSApplication*)app;
 @end
@@ -84,25 +79,15 @@
 @end
 
 @implementation ClientAppDelegate
-- (id)initWithControls:(bool)with_controls {
-  if (self = [super init]) {
-    with_controls_ = with_controls;
-  }
-  return self;
-}
-
 // Create the application on the UI thread.
 - (void)createApplication:(id)object {
-  NSApplication* application = [NSApplication sharedApplication];
-  
   // Set the delegate for application events.
-  [application setDelegate:self];
-  
-  client::RootWindowConfig window_config;
-  window_config.with_controls = with_controls_;
+  [[NSApplication sharedApplication] setDelegate:self];
   
   // Create the first window.
-  client::MainContext::Get()->GetRootWindowManager()->CreateRootWindow(window_config);
+  client::MainContext::Get()->GetRootWindowManager()->CreateRootWindow(client::WindowType_Web,
+                                                                       false,
+                                                                       client::MainContext::Get()->GetMainURL());
 }
 
 - (void)tryToTerminateApplication:(NSApplication*)app {
@@ -191,8 +176,7 @@ namespace client {
       context->Initialize(main_args, settings, app, NULL);
       
       // Create the application delegate and window.
-      ClientAppDelegate* delegate = [[ClientAppDelegate alloc]
-                                     initWithControls:!command_line->HasSwitch(switches::kHideControls)];
+      ClientAppDelegate* delegate = [[ClientAppDelegate alloc] init];
       [delegate performSelectorOnMainThread:@selector(createApplication:)
                                  withObject:nil
                               waitUntilDone:NO];
