@@ -226,8 +226,7 @@
 
 namespace client {
   RootWindowConfig::RootWindowConfig()
-  : always_on_top(false),
-  with_controls(true),
+  : with_controls(true),
   with_extension(false),
   url(MainContext::Get()->GetMainURL()) {}
   
@@ -247,7 +246,7 @@ namespace client {
     
     ExtensionSet::const_iterator it = extensions.begin();
     for (; it != extensions.end(); ++it) {
-      delegate_->CreateExtensionWindow(*it, CefRect(), base::Closure());
+      delegate_->CreateExtensionWindow(*it, base::Closure());
     }
   }
   
@@ -309,8 +308,7 @@ namespace client {
     delegate_ = delegate;
     with_controls_ = config.with_controls;
     with_extension_ = config.with_extension;
-    start_rect_ = config.bounds;
-    
+
     CreateBrowserWindow(config.url);
     
     initialized_ = true;

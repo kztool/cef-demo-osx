@@ -32,7 +32,6 @@ namespace client {
     // If |with_controls| is true the window will show controls.
     // This method can be called from anywhere.
     CefRefPtr<RootWindow> CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension,
-                                                      const CefRect& source_bounds,
                                                       const base::Closure& close_callback,
                                                       bool with_controls);
     
@@ -81,7 +80,6 @@ namespace client {
     void OnBrowserCreated(RootWindow* root_window,
                           CefRefPtr<CefBrowser> browser) OVERRIDE;
     void CreateExtensionWindow(CefRefPtr<CefExtension> extension,
-                               const CefRect& source_bounds,
                                const base::Closure& close_callback) OVERRIDE;
     
     void CleanupOnUIThread();

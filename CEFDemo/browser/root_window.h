@@ -9,25 +9,11 @@ namespace client {
   struct RootWindowConfig {
     RootWindowConfig();
     
-    // If true the window will always display above other windows.
-    bool always_on_top;
-    
     // If true the window will show controls.
     bool with_controls;
     
     // If true the window is hosting an extension app.
     bool with_extension;
-    
-    
-    // Requested window position. If |bounds| and |source_bounds| are empty the
-    // default window size and location will be used.
-    CefRect bounds;
-    
-    // Position of the UI element that triggered the window creation. If |bounds|
-    // is empty and |source_bounds| is non-empty the new window will be positioned
-    // relative to |source_bounds|. This is currently only implemented for Views-
-    // based windows when |initially_hidden| is also true.
-    CefRect source_bounds;
     
     // Callback to be executed when the window is closed. Will be executed on the
     // main thread. This is currently only implemented for Views-based windows.
@@ -75,12 +61,8 @@ namespace client {
       virtual void OnBrowserCreated(RootWindow* root_window,
                                     CefRefPtr<CefBrowser> browser) = 0;
       
-      // Create a window for |extension|. |source_bounds| are the bounds of the
-      // UI element, like a button, that triggered the extension.
-      virtual void CreateExtensionWindow(CefRefPtr<CefExtension> extension,
-                                         const CefRect& source_bounds,
-                                         const base::Closure& close_callback) = 0;
-      
+      // Create a window for |extension|.
+      virtual void CreateExtensionWindow(CefRefPtr<CefExtension> extension, const base::Closure& close_callback) = 0;
     protected:
       virtual ~Delegate() {}
     };

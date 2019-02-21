@@ -141,7 +141,6 @@ namespace client {
   }
   
   CefRefPtr<RootWindow> RootWindowManager::CreateRootWindowAsExtension(CefRefPtr<CefExtension> extension,
-                                                                           const CefRect& source_bounds,
                                                                            const base::Closure& close_callback,
                                                                            bool with_controls) {
     const std::string& extension_url = utils::GetExtensionURL(extension);
@@ -156,7 +155,6 @@ namespace client {
     RootWindowConfig config;
     config.with_controls = with_controls;
     config.with_extension = true;
-    config.source_bounds = source_bounds;
     config.close_callback = close_callback;
     config.url = extension_url;
     return CreateRootWindow(config);
@@ -381,12 +379,11 @@ namespace client {
   }
   
   void RootWindowManager::CreateExtensionWindow(CefRefPtr<CefExtension> extension,
-                                                const CefRect& source_bounds,
                                                 const base::Closure& close_callback) {
     REQUIRE_MAIN_THREAD();
     
     if (!HasRootWindowAsExtension(extension)) {
-      CreateRootWindowAsExtension(extension, source_bounds, close_callback, false);
+      CreateRootWindowAsExtension(extension, close_callback, false);
     }
   }
   
