@@ -133,52 +133,23 @@
 
 // Called when we are activated (when we gain focus).
 - (void)windowDidBecomeKey:(NSNotification*)notification {
-  client::BrowserWindow* browser_window = root_window_->browser_window();
-  if (browser_window)
-    browser_window->SetFocus(true);
   root_window_->delegate()->OnRootWindowActivated(root_window_);
 }
 
 // Called when we are deactivated (when we lose focus).
-- (void)windowDidResignKey:(NSNotification*)notification {
-  client::BrowserWindow* browser_window = root_window_->browser_window();
-  if (browser_window)
-    browser_window->SetFocus(false);
-}
+- (void)windowDidResignKey:(NSNotification*)notification {}
 
 // Called when we have been minimized.
-- (void)windowDidMiniaturize:(NSNotification*)notification {
-  client::BrowserWindow* browser_window = root_window_->browser_window();
-  if (browser_window)
-    browser_window->Hide();
-}
+- (void)windowDidMiniaturize:(NSNotification*)notification {}
 
 // Called when we have been unminimized.
-- (void)windowDidDeminiaturize:(NSNotification*)notification {
-  client::BrowserWindow* browser_window = root_window_->browser_window();
-  if (browser_window)
-    browser_window->Show();
-}
+- (void)windowDidDeminiaturize:(NSNotification*)notification {}
 
 // Called when the application has been hidden.
-- (void)applicationDidHide:(NSNotification*)notification {
-  // If the window is miniaturized then nothing has really changed.
-  if (![window_ isMiniaturized]) {
-    client::BrowserWindow* browser_window = root_window_->browser_window();
-    if (browser_window)
-      browser_window->Hide();
-  }
-}
+- (void)applicationDidHide:(NSNotification*)notification {}
 
 // Called when the application has been unhidden.
-- (void)applicationDidUnhide:(NSNotification*)notification {
-  // If the window is miniaturized then nothing has really changed.
-  if (![window_ isMiniaturized]) {
-    client::BrowserWindow* browser_window = root_window_->browser_window();
-    if (browser_window)
-      browser_window->Show();
-  }
-}
+- (void)applicationDidUnhide:(NSNotification*)notification {}
 
 // Called when the window is about to close. Perform the self-destruction
 // sequence by getting rid of the window. By returning YES, we allow the window

@@ -76,18 +76,6 @@ namespace client {
                    size_t width,
                    size_t height);
     
-    // Show the window.
-    void Show();
-    
-    // Hide the window.
-    void Hide();
-    
-    // Set the window bounds in parent coordinates.
-    void SetBounds(int x, int y, size_t width, size_t height);
-    
-    // Set focus to the window.
-    void SetFocus(bool focus);
-    
     // Returns the window handle.
     ClientWindowHandle GetWindowHandle() const;
     

@@ -123,27 +123,7 @@ namespace client {
     NSSize size = NSMakeSize(static_cast<int>(width), static_cast<int>(height));
     [browser_view setFrameSize:size];
   }
-  
-  void BrowserWindow::Show() {
-    REQUIRE_MAIN_THREAD();
-    // Nothing to do here. Chromium internally handles window show/hide.
-  }
-  
-  void BrowserWindow::Hide() {
-    REQUIRE_MAIN_THREAD();
-    // Nothing to do here. Chromium internally handles window show/hide.
-  }
-  
-  void BrowserWindow::SetBounds(int x, int y, size_t width, size_t height) {
-    REQUIRE_MAIN_THREAD();
-    // Nothing to do here. Cocoa will size the browser for us.
-  }
-  
-  void BrowserWindow::SetFocus(bool focus) {
-    REQUIRE_MAIN_THREAD();
-    // Nothing to do here. Chromium internally handles window focus assignment.
-  }
-  
+    
   ClientWindowHandle BrowserWindow::GetWindowHandle() const {
     REQUIRE_MAIN_THREAD();
     
