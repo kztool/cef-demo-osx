@@ -156,9 +156,8 @@
 // to be removed from the screen.
 - (BOOL)windowShouldClose:(id)window {
   if (!force_close_) {
-    client::BrowserWindow* browser_window = root_window_->browser_window();
-    if (browser_window && !browser_window->IsClosing()) {
-      CefRefPtr<CefBrowser> browser = browser_window->GetBrowser();
+    if (root_window_ && !root_window_->IsClosing()) {
+      CefRefPtr<CefBrowser> browser = root_window_->GetBrowser();
       if (browser.get()) {
         // Notify the browser window that we would like to close it. This
         // will result in a call to ClientHandler::DoClose() if the
@@ -255,7 +254,12 @@ namespace client {
   url_textfield_(nil),
   window_destroyed_(false),
   browser_destroyed_(false),
-  delegate_(NULL) {}
+  is_closing_(false),
+  client_handler_(NULL),
+  browser_(NULL),
+  delegate_(NULL) {
+
+  }
   
   RootWindow::~RootWindow() {
     REQUIRE_MAIN_THREAD();
@@ -278,7 +282,7 @@ namespace client {
     window_type_ = window_type;
     with_extension_ = with_extension;
 
-    CreateBrowserWindow(url);
+    client_handler_ = new ClientHandler(this, url);
     
     initialized_ = true;
     
@@ -296,6 +300,7 @@ namespace client {
                                CefWindowInfo& windowInfo,
                                CefRefPtr<CefClient>& client,
                                CefBrowserSettings& settings) {
+    REQUIRE_MAIN_THREAD();
     DCHECK(delegate);
     DCHECK(!initialized_);
     
@@ -312,15 +317,17 @@ namespace client {
     if (popupFeatures.heightSet)
       start_rect_.height = popupFeatures.height;
     
-    CreateBrowserWindow(std::string());
+    client_handler_ = new ClientHandler(this, std::string());
     
     initialized_ = true;
     
     // The new popup is initially parented to a temporary window. The native root
     // window will be created after the browser is created and the popup window
     // will be re-parented to it at that time.
-    browser_window_->GetPopupConfig(TempWindow::GetWindowHandle(), windowInfo,
-                                    client, settings);
+    
+    // The window will be properly sized after the browser is created.
+    windowInfo.SetAsChild(TempWindow::GetWindowHandle(), 0, 0, 0, 0);
+    client = client_handler_;
   }
   
   void RootWindow::Show(ShowMode mode) {
@@ -404,10 +411,7 @@ namespace client {
   
   CefRefPtr<CefBrowser> RootWindow::GetBrowser() const {
     REQUIRE_MAIN_THREAD();
-    
-    if (browser_window_)
-      return browser_window_->GetBrowser();
-    return NULL;
+    return browser_;
   }
   
   ClientWindowHandle RootWindow::GetWindowHandle() const {
@@ -425,9 +429,12 @@ namespace client {
     window_destroyed_ = true;
     NotifyDestroyedIfDone();
   }
+
   
-  void RootWindow::CreateBrowserWindow(const std::string& startup_url) {
-    browser_window_.reset(new BrowserWindow(this, startup_url));
+  
+  bool RootWindow::IsClosing() const {
+    REQUIRE_MAIN_THREAD();
+    return is_closing_;
   }
   
   void RootWindow::CreateRootWindow(const CefBrowserSettings& settings) {
@@ -460,7 +467,7 @@ namespace client {
     
     window_ = [[window_class alloc]
                initWithContentRect:window_rect
-               styleMask:(NSClosableWindowMask |  NSResizableWindowMask)
+               styleMask:(NSClosableWindowMask |  NSResizableWindowMask | NSTitledWindowMask)
                backing:NSBackingStoreBuffered
                defer:NO];
     [window_ setTitle:@"cefclient"];
@@ -531,11 +538,23 @@ namespace client {
     
     if (!is_popup_) {
       // Create the browser window.
-      browser_window_->CreateBrowser(contentView, CefRect(0, 0, width, height), settings, delegate_->GetRequestContext(this));
+      CefWindowInfo window_info;
+      window_info.SetAsChild(contentView, 0, 0, width, height);
+      CefBrowserHost::CreateBrowser(window_info,
+                                    client_handler_,
+                                    client_handler_->startup_url(),
+                                    settings,
+                                    delegate_->GetRequestContext(this));
     } else {
       // With popups we already have a browser window. Parent the browser window
       // to the root window and show it in the correct location.
-      browser_window_->ShowPopup(contentView, 0, 0, contentBounds.size.width, contentBounds.size.height);
+      NSView* browser_view = browser_->GetHost()->GetWindowHandle();
+      // Re-parent |browser_view| to |parent_handle|.
+      [browser_view removeFromSuperview];
+      [contentView addSubview:browser_view];
+      
+      NSSize size = NSMakeSize(static_cast<int>(contentBounds.size.width), static_cast<int>(contentBounds.size.height));
+      [browser_view setFrameSize:size];
     }
     
     // Show the window.
@@ -544,10 +563,11 @@ namespace client {
     // Size the window.
     SetBounds(x, y, width, height);
   }
-  
+    
   void RootWindow::OnBrowserCreated(CefRefPtr<CefBrowser> browser) {
     REQUIRE_MAIN_THREAD();
-    
+    DCHECK(!browser_);
+    browser_ = browser;
     // For popup browsers create the root window once the browser has been
     // created.
     if (is_popup_) {
@@ -557,10 +577,28 @@ namespace client {
     delegate_->OnBrowserCreated(this, browser);
   }
   
+  void RootWindow::OnBrowserClosing(CefRefPtr<CefBrowser> browser) {
+    REQUIRE_MAIN_THREAD();
+    DCHECK_EQ(browser->GetIdentifier(), browser_->GetIdentifier());
+    is_closing_ = true;
+  }
+  
+  void RootWindow::OnBrowserClosed(CefRefPtr<CefBrowser> browser) {
+    REQUIRE_MAIN_THREAD();
+    if (browser_.get()) {
+      DCHECK_EQ(browser->GetIdentifier(), browser_->GetIdentifier());
+      browser_ = NULL;
+    }
+    
+    client_handler_->DetachDelegate();
+    client_handler_ = NULL;
+    
+    // |this| may be deleted.
+    OnBrowserWindowDestroyed();
+  }
+  
   void RootWindow::OnBrowserWindowDestroyed() {
     REQUIRE_MAIN_THREAD();
-    
-    browser_window_.reset();
     
     if (!window_destroyed_) {
       // The browser was destroyed first. This could be due to the use of

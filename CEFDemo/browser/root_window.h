@@ -2,7 +2,7 @@
 #define CEF_ROOT_WINDOW_MAC_H_
 #pragma once
 #import "utils.h"
-#import "browser_window.h"
+#import "client_handler.h"
 
 namespace client {
   typedef std::set<CefRefPtr<CefExtension>> ExtensionSet;
@@ -10,7 +10,7 @@ namespace client {
   // OS X implementation of a top-level native window in the browser process.
   // The methods of this class must be called on the main thread unless otherwise
   // indicated.
-  class RootWindow: public base::RefCountedThreadSafe<RootWindow, DeleteOnMainThread>, public BrowserWindow::Delegate {
+  class RootWindow: public base::RefCountedThreadSafe<RootWindow, DeleteOnMainThread>, public ClientHandler::Delegate {
   public:
     enum ShowMode {
       ShowNormal,
@@ -123,27 +123,30 @@ namespace client {
     // Called by RootWindowDelegate after the associated NSWindow has been
     // destroyed.
     void WindowDestroyed();
-    
-    BrowserWindow* browser_window() const { return browser_window_.get(); }
     RootWindow::Delegate* delegate() const { return delegate_; }
+    
+    // Returns true if the browser is closing.
+    bool IsClosing() const;
   private:
-    void CreateBrowserWindow(const std::string& startup_url);
     void CreateRootWindow(const CefBrowserSettings& settings);
     
     // BrowserWindow::Delegate methods.
     void OnBrowserCreated(CefRefPtr<CefBrowser> browser) OVERRIDE;
-    void OnBrowserWindowDestroyed() OVERRIDE;
+    void OnBrowserClosing(CefRefPtr<CefBrowser> browser) OVERRIDE;
+    void OnBrowserClosed(CefRefPtr<CefBrowser> browser) OVERRIDE;
     void OnSetAddress(const std::string& url) OVERRIDE;
     void OnSetTitle(const std::string& title) OVERRIDE;
     void OnSetFavicon(CefRefPtr<CefImage> image) OVERRIDE;
+    
     void OnSetFullscreen(bool fullscreen) OVERRIDE;
     void OnAutoResize(const CefSize& new_size) OVERRIDE;
     void OnSetLoadingState(bool isLoading,
                            bool canGoBack,
                            bool canGoForward) OVERRIDE;
-    void OnSetDraggableRegions(
-                               const std::vector<CefDraggableRegion>& regions) OVERRIDE;
+    void OnSetDraggableRegions(const std::vector<CefDraggableRegion>& regions) OVERRIDE;
     
+    
+    void OnBrowserWindowDestroyed();
     void NotifyDestroyedIfDone();
     
     // After initialization all members are only accessed on the main thread.
@@ -152,7 +155,6 @@ namespace client {
     bool with_extension_;
     bool is_popup_;
     CefRect start_rect_;
-    scoped_ptr<BrowserWindow> browser_window_;
     bool initialized_;
     
     // Main window.
@@ -171,6 +173,10 @@ namespace client {
     bool browser_destroyed_;
     
     Delegate* delegate_;
+    
+    CefRefPtr<CefBrowser> browser_;
+    CefRefPtr<ClientHandler> client_handler_;
+    bool is_closing_;
     
     DISALLOW_COPY_AND_ASSIGN(RootWindow);
   };
