@@ -74,8 +74,7 @@ namespace client {
     void OnExit(RootWindow* root_window) OVERRIDE;
     void OnRootWindowDestroyed(RootWindow* root_window) OVERRIDE;
     void OnRootWindowActivated(RootWindow* root_window) OVERRIDE;
-    void OnBrowserCreated(RootWindow* root_window,
-                          CefRefPtr<CefBrowser> browser) OVERRIDE;
+    void OnBrowserCreated(RootWindow* root_window, CefRefPtr<CefBrowser> browser) OVERRIDE;
     void CreateExtensionWindow(CefRefPtr<CefExtension> extension) OVERRIDE;
     
     void CleanupOnUIThread();
