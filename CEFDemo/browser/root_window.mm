@@ -1,7 +1,5 @@
 #import "root_window.h"
-#import "main_context.h"
 #import "temp_window.h"
-
 
 @interface NSBorderlessWindow: NSWindow
 - (void)performClose:(id)sender;
@@ -9,25 +7,15 @@
 @end
 
 @implementation NSBorderlessWindow: NSWindow
-- (BOOL)windowShouldClose:(id)sender {
-  return YES;
-}
-
-- (BOOL)canBecomeKeyWindow {
-  return YES;
-}
-
-- (BOOL)canBecomeMainWindow {
-  return YES;
-}
+- (BOOL)windowShouldClose:(id)sender { return YES; }
+- (BOOL)canBecomeKeyWindow { return YES; }
+- (BOOL)canBecomeMainWindow { return YES; }
 
 - (void)performClose:(id)sender {
-  if([[self delegate] respondsToSelector:@selector(windowShouldClose:)])
-  {
+  if([[self delegate] respondsToSelector:@selector(windowShouldClose:)]) {
     if(![[self delegate] windowShouldClose:self]) return;
   }
-  else if([self respondsToSelector:@selector(windowShouldClose:)])
-  {
+  else if([self respondsToSelector:@selector(windowShouldClose:)]) {
     if(![self windowShouldClose:self]) return;
   }
   
@@ -111,7 +99,8 @@
   if (browser.get())
     browser->StopLoad();
   
-  [window_ performClose:nil];
+  
+  root_window_->Close(false);
 }
 
 - (IBAction)takeURLStringValueFrom:(NSTextField*)sender {
@@ -169,16 +158,11 @@
       }
     }
   }
-  
   // Try to make the window go away.
   [window autorelease];
-  
   // Clean ourselves up after clearing the stack of anything that might have the
   // window on it.
-  [self performSelectorOnMainThread:@selector(cleanup:)
-                         withObject:window
-                      waitUntilDone:NO];
-  
+  [self performSelectorOnMainThread:@selector(cleanup:) withObject:window waitUntilDone:NO];
   // Allow the close.
   return YES;
 }
@@ -186,20 +170,13 @@
 // Deletes itself.
 - (void)cleanup:(id)window {
   root_window_->WindowDestroyed();
-  
   // Don't want any more delegate callbacks after we destroy ourselves.
   [window setDelegate:nil];
-  
   [self release];
 }
 @end
 
-namespace client {
-  // static
-  CefRefPtr<RootWindow> RootWindow::GetForBrowser(int browser_id) {
-    return MainContext::Get()->GetRootWindowManager()->GetWindowForBrowser(browser_id);
-  }
-  
+namespace client {  
   void RootWindow::OnExtensionsChanged(const ExtensionSet& extensions) {
     REQUIRE_MAIN_THREAD();
     DCHECK(delegate_);
@@ -216,7 +193,6 @@ namespace client {
   }
   
   namespace {
-    
     // Sizes for URL bar layout.
 #define BUTTON_HEIGHT 22
 #define BUTTON_WIDTH 72
@@ -239,7 +215,6 @@ namespace client {
         screen = [NSScreen mainScreen];
       return [screen visibleFrame];
     }
-    
   }  // namespace
   
   RootWindow::RootWindow()
@@ -257,9 +232,7 @@ namespace client {
   is_closing_(false),
   client_handler_(NULL),
   browser_(NULL),
-  delegate_(NULL) {
-
-  }
+  delegate_(NULL) {}
   
   RootWindow::~RootWindow() {
     REQUIRE_MAIN_THREAD();
@@ -278,12 +251,10 @@ namespace client {
     DCHECK(!initialized_);
     
     delegate_ = delegate;
-    
     window_type_ = window_type;
     with_extension_ = with_extension;
-
-    client_handler_ = new ClientHandler(this, url);
     
+    client_handler_ = new ClientHandler(this, url);
     initialized_ = true;
     
     // Create the native root window on the main thread.
@@ -318,7 +289,7 @@ namespace client {
       start_rect_.height = popupFeatures.height;
     
     client_handler_ = new ClientHandler(this, std::string());
-    
+
     initialized_ = true;
     
     // The new popup is initially parented to a temporary window. The native root
@@ -330,38 +301,12 @@ namespace client {
     client = client_handler_;
   }
   
-  void RootWindow::Show(ShowMode mode) {
+  void RootWindow::Show() {
     REQUIRE_MAIN_THREAD();
     
-    if (!window_)
-      return;
-    
-    const bool is_visible = [window_ isVisible];
-    const bool is_minimized = [window_ isMiniaturized];
-    const bool is_maximized = [window_ isZoomed];
-    
-    if ((mode == ShowMinimized && is_minimized) ||
-        (mode == ShowMaximized && is_maximized) ||
-        (mode == ShowNormal && is_visible)) {
-      // The window is already in the desired state.
-      return;
-    }
-    
-    // Undo the previous state since it's not the desired state.
-    if (is_minimized)
-      [window_ deminiaturize:nil];
-    else if (is_maximized)
-      [window_ performZoom:nil];
-    
-    // Window visibility may change after (for example) deminiaturizing the
-    // window.
-    if (![window_ isVisible])
+    if (window_ && ![window_ isVisible]) {
       [window_ makeKeyAndOrderFront:nil];
-    
-    if (mode == ShowMinimized)
-      [window_ performMiniaturize:nil];
-    else if (mode == ShowMaximized)
-      [window_ performZoom:nil];
+    }
   }
   
   void RootWindow::Hide() {
@@ -414,11 +359,6 @@ namespace client {
     return browser_;
   }
   
-  ClientWindowHandle RootWindow::GetWindowHandle() const {
-    REQUIRE_MAIN_THREAD();
-    return [window_ contentView];
-  }
-  
   bool RootWindow::WithExtension() const {
     REQUIRE_MAIN_THREAD();
     return with_extension_;
@@ -430,8 +370,6 @@ namespace client {
     NotifyDestroyedIfDone();
   }
 
-  
-  
   bool RootWindow::IsClosing() const {
     REQUIRE_MAIN_THREAD();
     return is_closing_;
@@ -557,8 +495,8 @@ namespace client {
       [browser_view setFrameSize:size];
     }
     
-    // Show the window.
-    Show(ShowNormal);
+    // Show the window
+    Show();
     
     // Size the window.
     SetBounds(x, y, width, height);
@@ -668,8 +606,7 @@ namespace client {
     // Desired content rectangle.
     NSRect content_rect;
     content_rect.size.width = static_cast<int>(new_size.width);
-    content_rect.size.height =
-    static_cast<int>(new_size.height) + (window_type_ == WindowType_Web ? URLBAR_HEIGHT : 0);
+    content_rect.size.height = static_cast<int>(new_size.height) + (window_type_ == WindowType_Web ? URLBAR_HEIGHT : 0);
     
     // Convert to a frame rectangle.
     NSRect frame_rect = [window_ frameRectForContentRect:content_rect];
@@ -679,7 +616,7 @@ namespace client {
     [window_ setFrame:frame_rect display:YES];
     
     // Make sure the window is visible.
-    Show(ShowNormal);
+    Show();
   }
   
   void RootWindow::OnSetLoadingState(bool isLoading,
@@ -713,17 +650,5 @@ namespace client {
     // Notify once both the window and the browser have been destroyed.
     if (window_destroyed_ && browser_destroyed_)
       delegate_->OnRootWindowDestroyed(this);
-  }
-  
-  // static
-  CefRefPtr<RootWindow> RootWindow::GetForNSWindow(NSWindow* window) {
-    RootWindowDelegate* delegate =
-    static_cast<RootWindowDelegate*>([window delegate]);
-    return [delegate root_window];
-  }
-  
-  // static
-  CefRefPtr<RootWindow> RootWindow::Create() {
-    return new RootWindow();
   }
 }  // namespace client

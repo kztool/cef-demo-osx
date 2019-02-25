@@ -40,28 +40,13 @@ namespace client {
       virtual void OnRootWindowActivated(RootWindow* root_window) = 0;
       
       // Called when the browser is created for the RootWindow.
-      virtual void OnBrowserCreated(RootWindow* root_window,
-                                    CefRefPtr<CefBrowser> browser) = 0;
+      virtual void OnBrowserCreated(RootWindow* root_window, CefRefPtr<CefBrowser> browser) = 0;
       
       // Create a window for |extension|.
       virtual void CreateExtensionWindow(CefRefPtr<CefExtension> extension) = 0;
     protected:
       virtual ~Delegate() {}
     };
-    
-    // Create a new RootWindow object. This method may be called on any thread.
-    // Use RootWindowManager::CreateRootWindow() or CreateRootWindowAsPopup()
-    // instead of calling this method directly. |use_views| will be true if the
-    // Views framework should be used.
-    static CefRefPtr<RootWindow> Create();
-    
-    // Returns the RootWindow associated with the specified |browser_id|. Must be
-    // called on the main thread.
-    static CefRefPtr<RootWindow> GetForBrowser(int browser_id);
-    
-    // Returns the RootWindow associated with the specified |window|. Must be
-    // called on the main thread.
-    static CefRefPtr<RootWindow> GetForNSWindow(NSWindow* window);
     
     // Constructor may be called on any thread.
     RootWindow();
@@ -92,10 +77,8 @@ namespace client {
                      CefRefPtr<CefClient>& client,
                      CefBrowserSettings& settings);
     
-    
-    
     // Show the window.
-    void Show(ShowMode mode);
+    void Show();
     
     // Hide the window.
     void Hide();
@@ -110,19 +93,17 @@ namespace client {
     // Returns the browser that this window contains, if any.
     CefRefPtr<CefBrowser> GetBrowser() const;
     
-    // Returns the native handle for this window, if any.
-    ClientWindowHandle GetWindowHandle() const;
-    
     // Returns true if this window is hosting an extension app.
     bool WithExtension() const;
     
     // Called when the set of loaded extensions changes. The default
     // implementation will create a single window instance for each extension.
-    virtual void OnExtensionsChanged(const ExtensionSet& extensions);
+    void OnExtensionsChanged(const ExtensionSet& extensions);
     
     // Called by RootWindowDelegate after the associated NSWindow has been
     // destroyed.
     void WindowDestroyed();
+    
     RootWindow::Delegate* delegate() const { return delegate_; }
     
     // Returns true if the browser is closing.

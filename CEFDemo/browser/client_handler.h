@@ -212,9 +212,6 @@ namespace client {
     // Test if the current site has SSL information available.
     bool HasSSLInformation(CefRefPtr<CefBrowser> browser);
     
-    // Show SSL information for the current site.
-    void ShowSSLInformation(CefRefPtr<CefBrowser> browser);
-    
     // Returns the Delegate.
     Delegate* delegate() const { return delegate_; }
     
@@ -223,16 +220,8 @@ namespace client {
   private:
     friend class ClientDownloadImageCallback;
     
-    // Create a new popup window using the specified information. |is_devtools|
-    // will be true if the window will be used for DevTools. Return true to
-    // proceed with popup browser creation or false to cancel the popup browser.
-    // May be called on any thead.
-    bool CreatePopupWindow(CefRefPtr<CefBrowser> browser,
-                           WindowType window_type,
-                           const CefPopupFeatures& popupFeatures,
-                           CefWindowInfo& windowInfo,
-                           CefRefPtr<CefClient>& client,
-                           CefBrowserSettings& settings);
+    // Show SSL information for the current site.
+    void ShowSSLInformation(CefRefPtr<CefBrowser> browser);
     
     // Execute Delegate notifications on the main thread.
     void NotifyBrowserCreated(CefRefPtr<CefBrowser> browser);
@@ -267,13 +256,6 @@ namespace client {
     
     // UI THREAD MEMBERS
     // The following members will only be accessed on the CEF UI thread.
-    
-    // Track state information for the text context menu.
-    struct TestMenuState {
-      TestMenuState() : check_item(true), radio_item(0) {}
-      bool check_item;
-      int radio_item;
-    } test_menu_state_;
     
     // The current number of browsers using this handler.
     int browser_count_;

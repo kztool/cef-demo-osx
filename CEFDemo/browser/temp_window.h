@@ -13,7 +13,7 @@ namespace client {
     
   private:
     // A single instance will be created/owned by RootWindowManager.
-    friend class RootWindowManager;
+    friend class BrowserManager;
     // Allow deletion via scoped_ptr only.
     friend struct base::DefaultDeleter<TempWindow>;
     

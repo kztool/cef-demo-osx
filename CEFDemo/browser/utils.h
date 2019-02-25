@@ -82,6 +82,8 @@ namespace client {
 }
 
 namespace client {
+  const char kDefaultUrl[] = "http://www.google.com";
+  
   namespace switches {
     // CEF and Chromium support a wide range of command-line switches. This file
     // only contains command-line switches specific to the cefclient application.
@@ -96,7 +98,6 @@ namespace client {
     const char kCachePath[] = "cache-path";
     const char kUrl[] = "url";
     const char kMouseCursorChangeDisabled[] = "mouse-cursor-change-disabled";
-    const char kRequestContextPerBrowser[] = "request-context-per-browser";
     const char kRequestContextSharedCache[] = "request-context-shared-cache";
     const char kRequestContextBlockCookies[] = "request-context-block-cookies";
     const char kWidevineCdmPath[] = "widevine-cdm-path";
@@ -208,6 +209,11 @@ namespace client {
     // handled internally.
     std::string GetExtensionIconPath(CefRefPtr<CefExtension> extension, bool* internal);
   }
+}
+
+namespace client {
+  // Set up the resource manager for tests.
+  void SetupResourceManager(CefRefPtr<CefResourceManager> resource_manager);
 }
 
 namespace client {
@@ -357,26 +363,24 @@ namespace client {
     
     // Run the message loop. The thread that this method is called on will be
     // considered the main thread. This blocks until Quit() is called.
-    virtual int Run();
+    int Run();
     
     // Quit the message loop.
-    virtual void Quit();
+    void Quit();
     
     // Post a task for execution on the main message loop.
-    virtual void PostTask(CefRefPtr<CefTask> task);
+    void PostTask(CefRefPtr<CefTask> task);
     
     // Returns true if this message loop runs tasks on the current thread.
-    virtual bool RunsTasksOnCurrentThread() const;
+    bool RunsTasksOnCurrentThread() const;
     
     // Post a closure for execution on the main message loop.
     void PostClosure(const base::Closure& closure);
-    
-  protected:
+  private:
     // Only allow deletion via scoped_ptr.
     friend struct base::DefaultDeleter<MainMessageLoop>;
-    virtual ~MainMessageLoop();
+    ~MainMessageLoop();
     
-  private:
     DISALLOW_COPY_AND_ASSIGN(MainMessageLoop);
   };
 

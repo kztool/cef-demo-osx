@@ -5,7 +5,7 @@
 
 #import "browser/utils.h"
 
-#import "browser/main_context.h"
+#import "browser/browser_manager.h"
 
 // Receives notifications from the application. Will delete itself when done.
 @interface ClientAppDelegate : NSObject<NSApplicationDelegate>
@@ -85,13 +85,13 @@
   [[NSApplication sharedApplication] setDelegate:self];
   
   // Create the first window.
-  client::MainContext::Get()->GetRootWindowManager()->CreateRootWindow(client::WindowType_Web,
+  client::BrowserManager::Get()->CreateRootWindow(client::WindowType_Web,
                                                                        false,
-                                                                       client::MainContext::Get()->GetMainURL());
+                                                                       client::kDefaultUrl);
 }
 
 - (void)tryToTerminateApplication:(NSApplication*)app {
-  client::MainContext::Get()->GetRootWindowManager()->CloseAllWindows(false);
+  client::BrowserManager::Get()->CloseAllWindows(false);
 }
 
 - (void)orderFrontStandardAboutPanel:(id)sender {
@@ -115,6 +115,10 @@ namespace client {
     void OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) OVERRIDE {
       // Pass additional command-line flags to the browser process.
       if (process_type.empty()) {
+        if (!command_line->HasSwitch("load-extension")) {
+          command_line->AppendSwitchWithValue("load-extension", "set_page_color");
+        }
+        
         if (!command_line->HasSwitch(switches::kCachePath) &&
             !command_line->HasSwitch("disable-gpu-shader-disk-cache")) {
           // Don't create a "GPUCache" directory when cache-path is unspecified.
@@ -161,19 +165,19 @@ namespace client {
       // Create a ClientApp of the correct type.
       CefRefPtr<CefApp> app(new ClientApp);
       
-      // Create the main context object.
-      scoped_ptr<MainContext> context(new MainContext(command_line, true));
+
       
       CefSettings settings;
       
       // Populate the settings based on command line arguments.
-      context->PopulateSettings(&settings);
+      CefString(&settings.cache_path) = command_line->GetSwitchValue(switches::kCachePath);
       
       // Create the main message loop object.
       scoped_ptr<MainMessageLoop> message_loop(new MainMessageLoop);
       
       // Initialize CEF.
-      context->Initialize(main_args, settings, app, NULL);
+      // Create the main context object.
+      scoped_ptr<BrowserManager> browser_manager(new BrowserManager(command_line, main_args, settings, app, NULL));
       
       // Create the application delegate and window.
       ClientAppDelegate* delegate = [[ClientAppDelegate alloc] init];
@@ -185,12 +189,12 @@ namespace client {
       int result = message_loop->Run();
       
       // Shut down CEF.
-      context->Shutdown();
+      browser_manager->Shutdown();
       
       // Release objects in reverse order of creation.
       [delegate release];
       message_loop.reset();
-      context.reset();
+      browser_manager.reset();
       [autopool release];
       
       return result;
