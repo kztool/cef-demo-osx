@@ -135,6 +135,14 @@ namespace client {
     DCHECK(thread_checker_.CalledOnValidThread());
     DCHECK(initialized_);
     DCHECK(!shutdown_);
+    DCHECK(root_windows_.empty());
+    DCHECK(!active_root_window_);
+    DCHECK(!active_browser_);
+    DCHECK(!temp_window_);
+    
+    shared_request_context_ = NULL;
+    image_cache_ = NULL;
+    extensions_.clear();
     
     CefShutdown();
     shutdown_ = true;
